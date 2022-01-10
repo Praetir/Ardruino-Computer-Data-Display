@@ -54,8 +54,7 @@
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(138, 17);
-            this.toolStripStatusLabel1.Text = "Connecting to Arduino...";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
             // 
             // timerData
             // 
@@ -67,7 +66,6 @@
             // 
             // ardPort
             // 
-            this.ardPort.RtsEnable = true;
             this.ardPort.ErrorReceived += new System.IO.Ports.SerialErrorReceivedEventHandler(this.ardPort_ErrorReceived);
             this.ardPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.ardPort_DataReceived);
             // 
@@ -120,7 +118,7 @@
             this.Controls.Add(this.portCBox);
             this.Controls.Add(this.statusStrip1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Arduino Computer Monitor";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();

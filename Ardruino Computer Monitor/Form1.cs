@@ -63,6 +63,7 @@ namespace Ardruino_Computer_Monitor
         private void timerCom_Tick(object sender, EventArgs e)
         {
             Console.WriteLine("Timer2 ticked");
+
             // Reset Arduino and wait a couple of seconds
             ardPort.WriteLine("@");
             Thread.Sleep(waitTime);
@@ -74,6 +75,9 @@ namespace Ardruino_Computer_Monitor
         {
             try
             {
+                // Update status
+                toolStripStatusLabel1.Text = ("Connecting to Arduino...");
+
                 // Open selected port
                 ardPort.PortName = portCBox.Text;
                 ardPort.Open();
@@ -94,7 +98,7 @@ namespace Ardruino_Computer_Monitor
         {
             try
             {
-                // Close selected port after sending disconnect line and disabling timer1
+                // Close selected port after sending disconnect line and disabling timerData
                 timerData.Stop();
                 ardPort.WriteLine("_");
                 ardPort.Close();
@@ -119,6 +123,7 @@ namespace Ardruino_Computer_Monitor
                 comVerify();
             }
         }
+
         private void ardPort_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
         {
             errorClose();
@@ -149,7 +154,7 @@ namespace Ardruino_Computer_Monitor
             {
                 estContact = true;
                 toolStripStatusLabel1.Text = "Connected to Arduino...";
-                timerData.Start();
+                Invoke(new Action(() => timerData.Start()));
                 Console.WriteLine("Communication verified");
             }
             else
