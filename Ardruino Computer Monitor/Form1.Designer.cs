@@ -66,6 +66,7 @@
             // 
             // ardPort
             // 
+            this.ardPort.DtrEnable = true;
             this.ardPort.ErrorReceived += new System.IO.Ports.SerialErrorReceivedEventHandler(this.ardPort_ErrorReceived);
             this.ardPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.ardPort_DataReceived);
             // 

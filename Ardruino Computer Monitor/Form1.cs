@@ -146,10 +146,10 @@ namespace Ardruino_Computer_Monitor
 
         private void comVerify()
         {
-            // Rechecks character if arduino throws ⸮ or blank back after the reset
+            // Rechecks character if arduino throws ? back after the reset
             while (nextChar)
             {
-                if (mChar == '⸮' || mChar == '\0')
+                if (mChar == '?')
                 {
                     mChar = (char)ardPort.ReadChar();
                     Console.WriteLine(mChar);
