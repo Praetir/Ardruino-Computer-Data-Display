@@ -18,7 +18,10 @@ namespace Ardruino_Computer_Monitor
         char mChar;
         bool estContact = false;
         float tempCPU, tempGPU;
+        float sumCPU, sumGPU;
         bool nextChar = true;
+        int sizeSam = 10;
+        int curSam = 1;
         int waitTime = 2000;  // Will be read from text file later
         int dataTime = 1000; // Will be read from text file later
 
@@ -57,8 +60,21 @@ namespace Ardruino_Computer_Monitor
             // Get hardware data
             numsGet();
 
-            // Send to Arduino
-            sendArd();
+            // Add up the values and index
+            sumCPU = sumCPU + tempCPU;
+            sumGPU = sumGPU + tempGPU;
+            curSam = curSam + 1;
+
+            // Average then send to Arduino if at sample size
+            if (curSam == sizeSam)
+            {
+                tempCPU = sumCPU / 10;
+                tempGPU = sumGPU  / 10;
+                sendArd();
+                sumCPU = 0;
+                sumGPU = 0;
+                curSam = 1;
+            }
         }
 
         private void timerCom_Tick(object sender, EventArgs e)
