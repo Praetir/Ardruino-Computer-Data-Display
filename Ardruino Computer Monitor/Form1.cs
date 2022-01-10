@@ -15,9 +15,10 @@ namespace Ardruino_Computer_Monitor
 {
     public partial class Form1 : Form
     {
-        Char mChar;
-        Boolean estContact = false;
+        char mChar;
+        bool estContact = false;
         float tempCPU, tempGPU;
+        bool nextChar = true;
         int waitTime = 2000;  // Will be read from text file later
         int dataTime = 1000; // Will be read from text file later
 
@@ -81,6 +82,7 @@ namespace Ardruino_Computer_Monitor
                 // Open selected port
                 ardPort.PortName = portCBox.Text;
                 ardPort.Open();
+                Thread.Sleep(1000);
 
                 // Change buttons
                 buttonOpenPort.Enabled = false;
@@ -144,10 +146,18 @@ namespace Ardruino_Computer_Monitor
 
         private void comVerify()
         {
-            // Rechecks character if arduino throws ⸮ back after the reset
-            if (mChar == '⸮')
+            // Rechecks character if arduino throws ⸮ or blank back after the reset
+            while (nextChar)
             {
-                mChar = (char)ardPort.ReadChar();
+                if (mChar == '⸮' || mChar == '\0')
+                {
+                    mChar = (char)ardPort.ReadChar();
+                    Console.WriteLine(mChar);
+                }
+                else
+                {
+                    nextChar = false;
+                }
             }
 
             if (mChar == '&')
