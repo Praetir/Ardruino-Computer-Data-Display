@@ -58,17 +58,17 @@
             // 
             // timerData
             // 
-            this.timerData.Tick += new System.EventHandler(this.timerData_Tick);
+            this.timerData.Tick += new System.EventHandler(this.TimerData_Tick);
             // 
             // timerCom
             // 
-            this.timerCom.Tick += new System.EventHandler(this.timerCom_Tick);
+            this.timerCom.Tick += new System.EventHandler(this.TimerCom_Tick);
             // 
             // ardPort
             // 
             this.ardPort.DtrEnable = true;
-            this.ardPort.ErrorReceived += new System.IO.Ports.SerialErrorReceivedEventHandler(this.ardPort_ErrorReceived);
-            this.ardPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.ardPort_DataReceived);
+            this.ardPort.ErrorReceived += new System.IO.Ports.SerialErrorReceivedEventHandler(this.ArdPort_ErrorReceived);
+            this.ardPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.ArdPort_DataReceived);
             // 
             // portCBox
             // 
@@ -95,7 +95,7 @@
             this.buttonOpenPort.TabIndex = 5;
             this.buttonOpenPort.Text = "Open";
             this.buttonOpenPort.UseVisualStyleBackColor = true;
-            this.buttonOpenPort.Click += new System.EventHandler(this.buttonOpenPort_Click);
+            this.buttonOpenPort.Click += new System.EventHandler(this.ButtonOpenPort_Click);
             // 
             // buttonClosePort
             // 
@@ -106,7 +106,7 @@
             this.buttonClosePort.TabIndex = 6;
             this.buttonClosePort.Text = "Close";
             this.buttonClosePort.UseVisualStyleBackColor = true;
-            this.buttonClosePort.Click += new System.EventHandler(this.buttonClosePort_Click);
+            this.buttonClosePort.Click += new System.EventHandler(this.ButtonClosePort_Click);
             // 
             // Form1
             // 

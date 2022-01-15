@@ -53,12 +53,12 @@ namespace Ardruino_Computer_Data_Display
             portCBox.Items.AddRange(ports);
         }
 
-        private void timerData_Tick(object sender, EventArgs e)
+        private void TimerData_Tick(object sender, EventArgs e)
         {
             Console.WriteLine("Timer1 ticked");
             
             // Get hardware data
-            numsGet();
+            NumsGet();
 
             // Add up the values and index
             sumCPU = sumCPU + tempCPU;
@@ -70,14 +70,14 @@ namespace Ardruino_Computer_Data_Display
             {
                 tempCPU = sumCPU / 10;
                 tempGPU = sumGPU  / 10;
-                sendArd();
+                SendArd();
                 sumCPU = 0;
                 sumGPU = 0;
                 curSam = 1;
             }
         }
 
-        private void timerCom_Tick(object sender, EventArgs e)
+        private void TimerCom_Tick(object sender, EventArgs e)
         {
             Console.WriteLine("Timer2 ticked");
 
@@ -88,7 +88,7 @@ namespace Ardruino_Computer_Data_Display
             ardPort.WriteLine("!");
         }
 
-        private void buttonOpenPort_Click(object sender, EventArgs e)
+        private void ButtonOpenPort_Click(object sender, EventArgs e)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace Ardruino_Computer_Data_Display
             }
         }
 
-        private void buttonClosePort_Click(object sender, EventArgs e)
+        private void ButtonClosePort_Click(object sender, EventArgs e)
         {
             try
             {
@@ -131,20 +131,20 @@ namespace Ardruino_Computer_Data_Display
             }
         }
 
-        private void ardPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        private void ArdPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             mChar = (char)ardPort.ReadChar();
             Console.WriteLine(mChar);
             if (!estContact)
             {
                 timerCom.Stop();
-                comVerify();
+                ComVerify();
             }
         }
 
-        private void ardPort_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
+        private void ArdPort_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
         {
-            errorClose();
+            ErrorClose();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -160,7 +160,7 @@ namespace Ardruino_Computer_Data_Display
             c.Close();
         }
 
-        private void comVerify()
+        private void ComVerify()
         {
             // Rechecks character if arduino throws ? back after the reset
             while (nextChar)
@@ -186,18 +186,18 @@ namespace Ardruino_Computer_Data_Display
             else
             {
                 Console.WriteLine("Did not receive contact symbol &");
-                errorClose();
+                ErrorClose();
             }
         }
 
-        private void errorClose()
+        private void ErrorClose()
         {
             toolStripStatusLabel1.Text = "Closing";
             Console.WriteLine("Some error caused the form to close.");
             Application.Exit();
         }
 
-        private void numsGet()
+        private void NumsGet()
         {
             Console.WriteLine("Getting hardware info");
             foreach (var hardware in c.Hardware)
@@ -241,7 +241,7 @@ namespace Ardruino_Computer_Data_Display
             }
         }
 
-        private void sendArd()
+        private void SendArd()
         {
             Console.WriteLine("<" + tempCPU + ")" + tempGPU + ">");
             ardPort.WriteLine("<" + tempCPU + ")" + tempGPU + ">");
