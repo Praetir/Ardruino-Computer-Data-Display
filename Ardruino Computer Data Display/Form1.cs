@@ -17,13 +17,16 @@ namespace Ardruino_Computer_Data_Display
     {
         char mChar;
         bool estContact = false;
+        bool nextChar = true;
+        bool autoStart = false;
         float tempCPU, tempGPU;
         float sumCPU, sumGPU;
-        bool nextChar = true;
-        int sizeSam = 10; // Number of samples before the OLED display updates
+        int sizeSam; // Number of samples before the OLED display updates
         int curSam = 1;
-        int waitTime = 2000;  // Amount of time before next communication verification cycle starts
-        int dataTime = 1000; // Amount of time before the OLED display updates
+        int waitTime;  // Amount of time before next communication verification cycle starts
+        int dataTime; // Amount of time before the OLED display updates
+        string[] prefData; // Preferences read from text file
+
 
         readonly Computer c = new Computer()
         {
@@ -38,6 +41,12 @@ namespace Ardruino_Computer_Data_Display
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            // Read preferences from text file
+            prefData = System.IO.File.ReadAllLines(@"C:\Users\William\source\repos\Ardruino-Computer-Data-Display\Ardruino Computer Data Display\pref.txt");
+
+            // Set preference values
+            PrefSet();
+
             // Open computer to get hardware data
             c.Open();
 
@@ -245,6 +254,21 @@ namespace Ardruino_Computer_Data_Display
         {
             Console.WriteLine("<" + tempCPU + ")" + tempGPU + ">");
             ardPort.WriteLine("<" + tempCPU + ")" + tempGPU + ">");
+        }
+
+        private void PrefSet()
+        {
+            sizeSam = int.Parse(SeparatePrefNum(0));
+            waitTime = int.Parse(SeparatePrefNum(1));
+            dataTime = int.Parse(SeparatePrefNum(2));
+            autoStart = bool.Parse(SeparatePrefNum(3));
+        }
+
+        private string SeparatePrefNum(int prefLineIndex)
+        {
+            string prefLine = prefData[prefLineIndex];
+            string[] prefBoth = prefLine.Split('=');
+            return prefBoth[1];
         }
     }
 }
