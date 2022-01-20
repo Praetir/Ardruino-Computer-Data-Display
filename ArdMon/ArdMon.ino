@@ -5,6 +5,8 @@ String myStr = "";
 char myChar = 0;
 bool strBool = false;
 bool estCon = false;
+int n = 0; // Incrementing variable for turning off display
+int nOff = 10000; // Used to determine how many loops of a function until display is turned off
 
 // Declare reset function
 void(* resetFunc) (void) = 0;
@@ -25,11 +27,23 @@ void(* resetFunc) (void) = 0;
 #include <Adafruit_SSD1351.h>
 #include <SPI.h>
 
+// SSD1331 color definitions
 #define BLACK           0x0000
+#define BLUE            0x001F
+#define RED             0xF800
+#define GREEN           0x07E0
+#define CYAN            0x07FF
+#define MAGENTA         0xF81F
+#define YELLOW          0xFFE0
 #define WHITE           0xFFFF
 
+// Colors to use
+uint16_t textColor = WHITE;
+uint16_t backColor = BLACK;
+
 // Display
-Adafruit_SSD1351 tft = Adafruit_SSD1351(SCREEN_WIDTH, SCREEN_HEIGHT, &SPI, CS_PIN, DC_PIN, RST_PIN);
+Adafruit_SSD1351 disp = Adafruit_SSD1351(SCREEN_WIDTH, SCREEN_HEIGHT, &SPI, CS_PIN, DC_PIN, RST_PIN);
+bool dispOn = false;
 
 void setup() {
   
@@ -38,24 +52,30 @@ void setup() {
   delay(100);
 
   // Start display
-  tft.begin();
-  delay(100);
-  tft.fillScreen(BLACK);
+  disp.begin();
+  disp.setFont();
+  disp.fillScreen(backColor);
+  disp.setTextColor(textColor);
+  disp.setTextSize(1);
+  dispOn = true;
+
+  // Cursor position for startup messages
+  disp.setCursor(0,64);
 
   // Wait for serial port to connect. Needed for native USB port only
-  tft.print("Waiting for serial port");
+  disp.print("Waiting for serial port");
   while (!Serial) {
     ;
   }
 
   // Recieve then send a synbol to establish contact with program
-  tft.fillScreen(BLACK);
-  tft.setCursor(0,0);
-  tft.print("Waiting for contact\nwith computer program");
+  disp.fillScreen(backColor);
+  disp.setCursor(0,64);
+  disp.print("Waiting for contact\nwith computer program");
   delay(100);
   establishContact();
-  tft.fillScreen(BLACK);
-  tft.setCursor(0,0);
+  disp.fillScreen(backColor);
+  disp.setCursor(0,0);
 }
 
 void loop() {
@@ -69,9 +89,10 @@ void loop() {
 
     // Check if Arduino has been disconnected
     if (myChar == '_') {
-      tft.setCursor(0,0);
-      tft.fillScreen(BLACK);
-      tft.print("Disconnected");
+      disp.setCursor(0,0);
+      disp.fillScreen(BLACK);
+      disp.print("Disconnected");
+      dispOffTimer();
     }
     
     // Check if last value is collected (must be BEFORE adding myChar to myStr to keep > out of myStr)
@@ -84,7 +105,7 @@ void loop() {
 
     // Check if first value is collected (must be BEFORE adding myChar to myStr to keep ) out of myStr)
     if (myChar == ')') {
-      tft.fillScreen(BLACK);
+      disp.fillScreen(BLACK);
       valPrint(myStr, 't', "CPU ", 0, 0);
       myStr = "";
       return;
@@ -110,8 +131,11 @@ void loop() {
   */
 }
 
+
+// Waits for computer program to send symbol to establish contact and confirm correct program
 void establishContact() {
   while (!estCon) {
+    n++;
     myChar = Serial.read();
     if (myChar == '!')
     {
@@ -119,7 +143,9 @@ void establishContact() {
       Serial.println('&');
     }
     checkReset();
+    if (n >= nOff) dispDisable();
   }
+  n = 0;
 }
 
 void checkReset() {
@@ -133,11 +159,28 @@ void checkReset() {
 void valPrint(String val, char param, String comp, int cur1, int cur2) {
   switch (param) {
     case 't':
-      tft.setCursor(cur1, cur2);
-      tft.print(comp + "Temp" + char(58) + " " + val + char(247) + "C");
+      disp.setCursor(cur1, cur2);
+      disp.print(comp + "Temp" + char(58) + " " + val + char(247) + "C");
       break;
       
     default:
       break;
   }    
+}
+
+// Timer for turning the display off, may be removed if not used anywhere else
+void dispOffTimer() {
+  while (dispOn && (n <= nOff)) {
+    myChar = Serial.read();
+    checkReset();
+    n++;
+  }
+  dispDisable();
+}
+
+// Sets the display to off
+void dispDisable() {
+  dispOn = !dispOn;
+  disp.enableDisplay(dispOn);
+  n = 0;
 }
