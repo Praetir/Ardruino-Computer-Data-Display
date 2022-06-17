@@ -5,6 +5,11 @@ VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ardruino Computer Data Display", "Ardruino Computer Data Display\Ardruino Computer Data Display.csproj", "{4C886EC6-D3E4-4DC9-A795-E0E4875DC625}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7B7E1AE8-4D5E-4573-8632-FF3F82527816}"
+	ProjectSection(SolutionItems) = preProject
+		ArdMon\ArdMon.ino = ArdMon\ArdMon.ino
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
