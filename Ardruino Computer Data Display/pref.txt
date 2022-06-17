@@ -1,4 +1,5 @@
 sizeSam=10
 waitTime=2000
 dataTime=1000
-autoStart=false
+autoStart=true
+port=COM6

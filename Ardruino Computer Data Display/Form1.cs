@@ -25,7 +25,8 @@ namespace Ardruino_Computer_Data_Display
         int curSam = 1;
         int waitTime;  // Amount of time before next communication verification cycle starts
         int dataTime; // Amount of time before the OLED display updates
-        string[] prefData; // Preferences read from text file
+        string[] prefData; // All pref.txt
+        string prefPort; // Port set in pref.txt
 
 
         readonly Computer c = new Computer()
@@ -60,6 +61,12 @@ namespace Ardruino_Computer_Data_Display
             // Add all ports to combo box
             string[] ports = SerialPort.GetPortNames();
             portCBox.Items.AddRange(ports);
+
+            // For automatic start
+            if (autoStart)
+            {
+                ButtonOpenPort_Click(this, new EventArgs());
+            }
         }
 
         private void TimerData_Tick(object sender, EventArgs e)
@@ -70,9 +77,9 @@ namespace Ardruino_Computer_Data_Display
             NumsGet();
 
             // Add up the values and index
-            sumCPU = sumCPU + tempCPU;
-            sumGPU = sumGPU + tempGPU;
-            curSam = curSam + 1;
+            sumCPU += tempCPU;
+            sumGPU += tempGPU;
+            curSam += 1;
 
             // Average then send to Arduino if at sample size
             if (curSam >= sizeSam)
@@ -105,7 +112,15 @@ namespace Ardruino_Computer_Data_Display
                 toolStripStatusLabel1.Text = ("Connecting to Arduino...");
 
                 // Open selected port
-                ardPort.PortName = portCBox.Text;
+                if (autoStart)
+                {
+                    ardPort.PortName = prefPort;
+                } 
+                else
+                {
+                    ardPort.PortName = portCBox.Text;
+                }
+                
                 ardPort.Open();
                 Thread.Sleep(1000);
 
@@ -258,13 +273,14 @@ namespace Ardruino_Computer_Data_Display
 
         private void PrefSet()
         {
-            sizeSam = int.Parse(SeparatePrefNum(0));
-            waitTime = int.Parse(SeparatePrefNum(1));
-            dataTime = int.Parse(SeparatePrefNum(2));
-            autoStart = bool.Parse(SeparatePrefNum(3));
+            sizeSam = int.Parse(SeparatePref(0));
+            waitTime = int.Parse(SeparatePref(1));
+            dataTime = int.Parse(SeparatePref(2));
+            autoStart = bool.Parse(SeparatePref(3));
+            prefPort = SeparatePref(4);
         }
 
-        private string SeparatePrefNum(int prefLineIndex)
+        private string SeparatePref(int prefLineIndex)
         {
             string prefLine = prefData[prefLineIndex];
             string[] prefBoth = prefLine.Split('=');
