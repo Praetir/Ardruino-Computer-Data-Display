@@ -52,16 +52,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="DispEditForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="DispEditForm.Designer.cs">
+      <DependentUpon>DispEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ACDDForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ACDDForm.Designer.cs">
+      <DependentUpon>ACDDForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="DispEditForm.resx">
+      <DependentUpon>DispEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ACDDForm.resx">
+      <DependentUpon>ACDDForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
