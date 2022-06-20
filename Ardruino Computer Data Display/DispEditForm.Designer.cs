@@ -36,7 +36,8 @@
             this.tempCPUCL = new System.Windows.Forms.CheckedListBox();
             this.dispCPU = new System.Windows.Forms.CheckBox();
             this.GPUTab = new System.Windows.Forms.TabPage();
-            this.coreCPUTip = new System.Windows.Forms.ToolTip(this.components);
+            this.dispSetTips = new System.Windows.Forms.ToolTip(this.components);
+            this.tempCPULabel = new System.Windows.Forms.Label();
             this.hardwareTabs.SuspendLayout();
             this.CPU.SuspendLayout();
             this.SuspendLayout();
@@ -54,6 +55,7 @@
             // CPU
             // 
             this.CPU.AutoScroll = true;
+            this.CPU.Controls.Add(this.tempCPULabel);
             this.CPU.Controls.Add(this.coreCPUText);
             this.CPU.Controls.Add(this.coreCPULabel);
             this.CPU.Controls.Add(this.tempCPUCL);
@@ -69,7 +71,7 @@
             // coreCPUText
             // 
             this.coreCPUText.Enabled = false;
-            this.coreCPUText.Location = new System.Drawing.Point(83, 42);
+            this.coreCPUText.Location = new System.Drawing.Point(169, 4);
             this.coreCPUText.MaxLength = 2;
             this.coreCPUText.Name = "coreCPUText";
             this.coreCPUText.ShortcutsEnabled = false;
@@ -80,12 +82,12 @@
             // coreCPULabel
             // 
             this.coreCPULabel.AutoSize = true;
-            this.coreCPULabel.Location = new System.Drawing.Point(6, 45);
+            this.coreCPULabel.Location = new System.Drawing.Point(92, 7);
             this.coreCPULabel.Name = "coreCPULabel";
             this.coreCPULabel.Size = new System.Drawing.Size(71, 13);
             this.coreCPULabel.TabIndex = 1;
             this.coreCPULabel.Text = "Core Amount:";
-            this.coreCPUTip.SetToolTip(this.coreCPULabel, "Choose how many cores you wish to show.\r\nWill always show the first (#) of cores." +
+            this.dispSetTips.SetToolTip(this.coreCPULabel, "Choose how many cores you wish to show.\r\nWill always show the first (#) of cores." +
         " ");
             // 
             // tempCPUCL
@@ -95,9 +97,9 @@
             this.tempCPUCL.Items.AddRange(new object[] {
             "CPU Package",
             "CPU Core Average"});
-            this.tempCPUCL.Location = new System.Drawing.Point(9, 68);
+            this.tempCPUCL.Location = new System.Drawing.Point(17, 58);
             this.tempCPUCL.Name = "tempCPUCL";
-            this.tempCPUCL.Size = new System.Drawing.Size(120, 94);
+            this.tempCPUCL.Size = new System.Drawing.Size(138, 94);
             this.tempCPUCL.TabIndex = 0;
             // 
             // dispCPU
@@ -121,6 +123,15 @@
             this.GPUTab.Text = "GPU";
             this.GPUTab.UseVisualStyleBackColor = true;
             // 
+            // tempCPULabel
+            // 
+            this.tempCPULabel.AutoSize = true;
+            this.tempCPULabel.Location = new System.Drawing.Point(14, 42);
+            this.tempCPULabel.Name = "tempCPULabel";
+            this.tempCPULabel.Size = new System.Drawing.Size(67, 13);
+            this.tempCPULabel.TabIndex = 3;
+            this.tempCPULabel.Text = "Temperature";
+            // 
             // DispEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -128,7 +139,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.hardwareTabs);
             this.Name = "DispEditForm";
-            this.Text = "Display Editing";
+            this.Text = "Display Settings";
             this.hardwareTabs.ResumeLayout(false);
             this.CPU.ResumeLayout(false);
             this.CPU.PerformLayout();
@@ -145,6 +156,7 @@
         private System.Windows.Forms.CheckBox dispCPU;
         private System.Windows.Forms.Label coreCPULabel;
         private System.Windows.Forms.TextBox coreCPUText;
-        private System.Windows.Forms.ToolTip coreCPUTip;
+        private System.Windows.Forms.ToolTip dispSetTips;
+        private System.Windows.Forms.Label tempCPULabel;
     }
 }
