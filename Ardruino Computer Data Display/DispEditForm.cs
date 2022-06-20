@@ -18,5 +18,28 @@ namespace Ardruino_Computer_Data_Display
         {
             InitializeComponent();
         }
+
+        private void DispCPU_CheckedChanged(object sender, EventArgs e)
+        {
+            if (dispCPU.Checked)
+            {
+                tempCPUCL.Enabled = true;
+                coreCPUText.Enabled = true;
+            }
+            else
+            {
+                tempCPUCL.Enabled = false;
+                coreCPUText.Enabled = false;
+            }
+            
+        }
+
+        private void CoreCPUText_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
     }
 }

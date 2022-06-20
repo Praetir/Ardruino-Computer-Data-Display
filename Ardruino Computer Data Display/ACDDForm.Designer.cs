@@ -35,7 +35,7 @@
             this.timerCom = new System.Windows.Forms.Timer(this.components);
             this.ardPort = new System.IO.Ports.SerialPort(this.components);
             this.portCBox = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.portLabel = new System.Windows.Forms.Label();
             this.buttonOpenPort = new System.Windows.Forms.Button();
             this.buttonClosePort = new System.Windows.Forms.Button();
             this.editDispButton = new System.Windows.Forms.Button();
@@ -79,14 +79,14 @@
             this.portCBox.Size = new System.Drawing.Size(121, 21);
             this.portCBox.TabIndex = 3;
             // 
-            // label1
+            // portLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Arduino Port:";
+            this.portLabel.AutoSize = true;
+            this.portLabel.Location = new System.Drawing.Point(12, 9);
+            this.portLabel.Name = "portLabel";
+            this.portLabel.Size = new System.Drawing.Size(68, 13);
+            this.portLabel.TabIndex = 4;
+            this.portLabel.Text = "Arduino Port:";
             // 
             // buttonOpenPort
             // 
@@ -127,7 +127,7 @@
             this.Controls.Add(this.editDispButton);
             this.Controls.Add(this.buttonClosePort);
             this.Controls.Add(this.buttonOpenPort);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.portLabel);
             this.Controls.Add(this.portCBox);
             this.Controls.Add(this.statusStrip1);
             this.Name = "ACDDForm";
@@ -149,7 +149,7 @@
         private System.Windows.Forms.Timer timerCom;
         private System.IO.Ports.SerialPort ardPort;
         private System.Windows.Forms.ComboBox portCBox;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label portLabel;
         private System.Windows.Forms.Button buttonOpenPort;
         private System.Windows.Forms.Button buttonClosePort;
         private System.Windows.Forms.Button editDispButton;
