@@ -112,8 +112,7 @@
             this.tempCPUCL.Name = "tempCPUCL";
             this.tempCPUCL.Size = new System.Drawing.Size(138, 94);
             this.tempCPUCL.TabIndex = 0;
-            this.tempCPUCL.SelectedIndexChanged += new System.EventHandler(this.TempCPUCL_SelectedIndexChanged);
-            this.tempCPUCL.SelectedValueChanged += new System.EventHandler(this.tempCPUCL_SelectedValueChanged);
+            this.tempCPUCL.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.tempCPUCL_ItemCheck);
             // 
             // dispCPU
             // 
