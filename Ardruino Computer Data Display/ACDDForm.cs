@@ -38,6 +38,8 @@ namespace Ardruino_Computer_Data_Display
             CPUEnabled = true
         };
 
+        public DispEditForm edit = new DispEditForm();
+
         public ACDDForm()
         {
             InitializeComponent();
@@ -189,8 +191,7 @@ namespace Ardruino_Computer_Data_Display
 
         private void EditDispButton_Click(object sender, EventArgs e)
         {
-            DispEditForm edit = new DispEditForm();
-            edit.ShowDialog();
+                edit.ShowDialog();
         }
 
         private void ComVerify()
