@@ -57,7 +57,7 @@ namespace Ardruino_Computer_Data_Display
             }
         }
 
-        private void tempCPUCL_ItemCheck(object sender, ItemCheckEventArgs e)
+        private void TempCPUCL_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             Console.WriteLine(sender.ToString());
 
@@ -77,6 +77,11 @@ namespace Ardruino_Computer_Data_Display
                 dispTable.Rows.Add(tempCPUCL, index, DispAdd(checkName + "Label", "Label", ""));
 
                 Console.WriteLine("Added");
+            }
+            else
+            {
+                // Remove label from form/data table, and remove corresponding row of data table
+
             }
         }
 
@@ -102,7 +107,7 @@ namespace Ardruino_Computer_Data_Display
             return;
         }
 
-        // Add text label to menu to represent display items
+        // Add text label to form to represent display items
         private Label DispAdd(string labelName, string labelText, string dataType)
         {
             Label labelDisp = new Label
@@ -113,8 +118,16 @@ namespace Ardruino_Computer_Data_Display
                 AutoSize = true,
                 Font = new Font("Microsoft Sans Serif", 8.25f)
             };
+            ControlExtension.Draggable(labelDisp, true);
             Controls.Add(labelDisp);
+            labelDisp.BringToFront();
             return labelDisp;
+        }
+
+        // Remove particular text label from form
+        private void DispRemove()
+        {
+
         }
     }
 }

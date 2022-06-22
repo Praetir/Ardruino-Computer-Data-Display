@@ -112,7 +112,7 @@
             this.tempCPUCL.Name = "tempCPUCL";
             this.tempCPUCL.Size = new System.Drawing.Size(138, 94);
             this.tempCPUCL.TabIndex = 0;
-            this.tempCPUCL.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.tempCPUCL_ItemCheck);
+            this.tempCPUCL.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.TempCPUCL_ItemCheck);
             // 
             // dispCPU
             // 
@@ -137,6 +137,7 @@
             // 
             // dispArea
             // 
+            this.dispArea.BackColor = System.Drawing.Color.Transparent;
             this.dispArea.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.dispArea.Location = new System.Drawing.Point(20, 220);
             this.dispArea.Name = "dispArea";
