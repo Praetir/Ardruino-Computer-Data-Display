@@ -23,9 +23,10 @@ namespace Ardruino_Computer_Data_Display
         private void DispEditForm_Load(object sender, EventArgs e)
         {
             dispTable = new DataTable();
-            dispTable.Columns.Add(new DataColumn("Checklist Name"));
-            dispTable.Columns.Add(new DataColumn("Checklist Index"));
-            dispTable.Columns.Add(new DataColumn("Label Name"));
+            dispTable.Columns.Add(new DataColumn("Checklist"));
+            dispTable.Columns.Add(new DataColumn("Index"));
+            dispTable.Columns.Add(new DataColumn("Label"));
+            dataGridView1.DataSource = dispTable; // Temporary for viewing if data table is working properly
         }
 
         private void DispCPU_CheckedChanged(object sender, EventArgs e)
@@ -59,8 +60,6 @@ namespace Ardruino_Computer_Data_Display
 
         private void TempCPUCL_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Console.WriteLine(sender.ToString());
-
             // Get checklist information
             int index = tempCPUCL.SelectedIndex;
             bool checkedItem = tempCPUCL.GetItemChecked(index);
@@ -81,7 +80,8 @@ namespace Ardruino_Computer_Data_Display
             else
             {
                 // Remove label from form/data table, and remove corresponding row of data table
-
+                DataRow[] tempRow = dispTable.Select(string.Format("Checklist = '{0}' AND Index = '{1}'", tempCPUCL, index));
+                DispRemove(tempRow[0]);
             }
         }
 
@@ -125,9 +125,13 @@ namespace Ardruino_Computer_Data_Display
         }
 
         // Remove particular text label from form
-        private void DispRemove()
+        private void DispRemove(DataRow rowRemove)
         {
+            Label labelDisp = rowRemove[2] as Label;
 
+            Controls.Remove(labelDisp);
+            dispTable.Rows.Remove(rowRemove);
+            return;
         }
     }
 }

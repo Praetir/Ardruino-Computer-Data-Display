@@ -39,9 +39,11 @@
             this.GPUTab = new System.Windows.Forms.TabPage();
             this.dispSetTips = new System.Windows.Forms.ToolTip(this.components);
             this.dispArea = new System.Windows.Forms.PictureBox();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.hardwareTabs.SuspendLayout();
             this.CPU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dispArea)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // hardwareTabs
@@ -145,11 +147,20 @@
             this.dispArea.TabIndex = 1;
             this.dispArea.TabStop = false;
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(446, 264);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
+            this.dataGridView1.TabIndex = 2;
+            // 
             // DispEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.dispArea);
             this.Controls.Add(this.hardwareTabs);
             this.Name = "DispEditForm";
@@ -159,6 +170,7 @@
             this.CPU.ResumeLayout(false);
             this.CPU.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dispArea)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -175,5 +187,6 @@
         private System.Windows.Forms.ToolTip dispSetTips;
         private System.Windows.Forms.Label tempCPULabel;
         private System.Windows.Forms.PictureBox dispArea;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
