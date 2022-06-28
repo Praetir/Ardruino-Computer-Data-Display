@@ -50,10 +50,11 @@
             // 
             this.hardwareTabs.Controls.Add(this.CPU);
             this.hardwareTabs.Controls.Add(this.GPUTab);
-            this.hardwareTabs.Location = new System.Drawing.Point(12, 12);
+            this.hardwareTabs.Location = new System.Drawing.Point(16, 15);
+            this.hardwareTabs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.hardwareTabs.Name = "hardwareTabs";
             this.hardwareTabs.SelectedIndex = 0;
-            this.hardwareTabs.Size = new System.Drawing.Size(610, 187);
+            this.hardwareTabs.Size = new System.Drawing.Size(813, 230);
             this.hardwareTabs.TabIndex = 0;
             // 
             // CPU
@@ -64,10 +65,11 @@
             this.CPU.Controls.Add(this.coreCPULabel);
             this.CPU.Controls.Add(this.tempCPUCL);
             this.CPU.Controls.Add(this.dispCPU);
-            this.CPU.Location = new System.Drawing.Point(4, 22);
+            this.CPU.Location = new System.Drawing.Point(4, 25);
+            this.CPU.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.CPU.Name = "CPU";
-            this.CPU.Padding = new System.Windows.Forms.Padding(3);
-            this.CPU.Size = new System.Drawing.Size(602, 161);
+            this.CPU.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.CPU.Size = new System.Drawing.Size(805, 201);
             this.CPU.TabIndex = 0;
             this.CPU.Text = "CPU";
             this.CPU.UseVisualStyleBackColor = true;
@@ -75,29 +77,32 @@
             // tempCPULabel
             // 
             this.tempCPULabel.AutoSize = true;
-            this.tempCPULabel.Location = new System.Drawing.Point(14, 42);
+            this.tempCPULabel.Location = new System.Drawing.Point(19, 52);
+            this.tempCPULabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.tempCPULabel.Name = "tempCPULabel";
-            this.tempCPULabel.Size = new System.Drawing.Size(67, 13);
+            this.tempCPULabel.Size = new System.Drawing.Size(90, 17);
             this.tempCPULabel.TabIndex = 3;
             this.tempCPULabel.Text = "Temperature";
             // 
             // coreCPUText
             // 
             this.coreCPUText.Enabled = false;
-            this.coreCPUText.Location = new System.Drawing.Point(169, 4);
+            this.coreCPUText.Location = new System.Drawing.Point(225, 5);
+            this.coreCPUText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.coreCPUText.MaxLength = 2;
             this.coreCPUText.Name = "coreCPUText";
             this.coreCPUText.ShortcutsEnabled = false;
-            this.coreCPUText.Size = new System.Drawing.Size(22, 20);
+            this.coreCPUText.Size = new System.Drawing.Size(28, 22);
             this.coreCPUText.TabIndex = 2;
             this.coreCPUText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CoreCPUText_KeyPress);
             // 
             // coreCPULabel
             // 
             this.coreCPULabel.AutoSize = true;
-            this.coreCPULabel.Location = new System.Drawing.Point(92, 7);
+            this.coreCPULabel.Location = new System.Drawing.Point(123, 9);
+            this.coreCPULabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.coreCPULabel.Name = "coreCPULabel";
-            this.coreCPULabel.Size = new System.Drawing.Size(71, 13);
+            this.coreCPULabel.Size = new System.Drawing.Size(94, 17);
             this.coreCPULabel.TabIndex = 1;
             this.coreCPULabel.Text = "Core Amount:";
             this.dispSetTips.SetToolTip(this.coreCPULabel, "Choose how many cores you wish to show.\r\nWill always show the first (#) of cores." +
@@ -110,18 +115,20 @@
             this.tempCPUCL.Items.AddRange(new object[] {
             "CPU Package",
             "CPU Core Average"});
-            this.tempCPUCL.Location = new System.Drawing.Point(17, 58);
+            this.tempCPUCL.Location = new System.Drawing.Point(23, 71);
+            this.tempCPUCL.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tempCPUCL.Name = "tempCPUCL";
-            this.tempCPUCL.Size = new System.Drawing.Size(138, 94);
+            this.tempCPUCL.Size = new System.Drawing.Size(183, 106);
             this.tempCPUCL.TabIndex = 0;
             this.tempCPUCL.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.TempCPUCL_ItemCheck);
             // 
             // dispCPU
             // 
             this.dispCPU.AutoSize = true;
-            this.dispCPU.Location = new System.Drawing.Point(6, 6);
+            this.dispCPU.Location = new System.Drawing.Point(8, 7);
+            this.dispCPU.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dispCPU.Name = "dispCPU";
-            this.dispCPU.Size = new System.Drawing.Size(65, 17);
+            this.dispCPU.Size = new System.Drawing.Size(82, 21);
             this.dispCPU.TabIndex = 0;
             this.dispCPU.Text = "Enabled";
             this.dispCPU.UseVisualStyleBackColor = true;
@@ -129,10 +136,11 @@
             // 
             // GPUTab
             // 
-            this.GPUTab.Location = new System.Drawing.Point(4, 22);
+            this.GPUTab.Location = new System.Drawing.Point(4, 25);
+            this.GPUTab.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.GPUTab.Name = "GPUTab";
-            this.GPUTab.Padding = new System.Windows.Forms.Padding(3);
-            this.GPUTab.Size = new System.Drawing.Size(602, 161);
+            this.GPUTab.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.GPUTab.Size = new System.Drawing.Size(805, 201);
             this.GPUTab.TabIndex = 1;
             this.GPUTab.Text = "GPU";
             this.GPUTab.UseVisualStyleBackColor = true;
@@ -141,28 +149,32 @@
             // 
             this.dispArea.BackColor = System.Drawing.Color.Transparent;
             this.dispArea.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.dispArea.Location = new System.Drawing.Point(20, 220);
+            this.dispArea.Location = new System.Drawing.Point(27, 271);
+            this.dispArea.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dispArea.Name = "dispArea";
-            this.dispArea.Size = new System.Drawing.Size(128, 128);
+            this.dispArea.Size = new System.Drawing.Size(170, 157);
             this.dispArea.TabIndex = 1;
             this.dispArea.TabStop = false;
             // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(446, 264);
+            this.dataGridView1.Location = new System.Drawing.Point(595, 325);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
+            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.Size = new System.Drawing.Size(320, 185);
             this.dataGridView1.TabIndex = 2;
             // 
             // DispEditForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1067, 554);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.dispArea);
             this.Controls.Add(this.hardwareTabs);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "DispEditForm";
             this.Text = "Display Settings";
             this.Load += new System.EventHandler(this.DispEditForm_Load);

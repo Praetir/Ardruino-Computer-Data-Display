@@ -13,6 +13,7 @@ namespace Ardruino_Computer_Data_Display
 {
     public partial class DispEditForm : Form
     {
+        // Allocate for data table
         public DataTable dispTable;
 
         public DispEditForm()
@@ -22,15 +23,18 @@ namespace Ardruino_Computer_Data_Display
         
         private void DispEditForm_Load(object sender, EventArgs e)
         {
+            // Make new data table and add columns
             dispTable = new DataTable();
             dispTable.Columns.Add(new DataColumn("Checklist"));
             dispTable.Columns.Add(new DataColumn("Index"));
             dispTable.Columns.Add(new DataColumn("Label"));
+
             dataGridView1.DataSource = dispTable; // Temporary for viewing if data table is working properly
         }
 
         private void DispCPU_CheckedChanged(object sender, EventArgs e)
         {
+            // Enable/disable CPU controls
             if (dispCPU.Checked)
             {
                 tempCPUCL.Enabled = true;
@@ -41,7 +45,6 @@ namespace Ardruino_Computer_Data_Display
                 tempCPUCL.Enabled = false;
                 coreCPUText.Enabled = false;
             }
-            
         }
 
         private void CoreCPUText_KeyPress(object sender, KeyPressEventArgs e)
@@ -73,15 +76,15 @@ namespace Ardruino_Computer_Data_Display
             if (!checkedItem)
             {
                 // Add label to form/data table, and add checklist/index to data table
-                dispTable.Rows.Add(tempCPUCL, index, DispAdd(checkName + "Label", "Label", ""));
+                dispTable.Rows.Add(tempCPUCL.Name, index, DispAdd(checkName, "temp"));
 
                 Console.WriteLine("Added");
             }
             else
             {
                 // Remove label from form/data table, and remove corresponding row of data table
-                DataRow[] tempRow = dispTable.Select(string.Format("Checklist = '{0}' AND Index = '{1}'", tempCPUCL, index));
-                DispRemove(tempRow[0]);
+                
+                DispRemove("tempCPUCL", index);
             }
         }
 
@@ -108,30 +111,115 @@ namespace Ardruino_Computer_Data_Display
         }
 
         // Add text label to form to represent display items
-        private Label DispAdd(string labelName, string labelText, string dataType)
+        private string DispAdd(string checkName, string dataType)
         {
+            // Get desired label name and text
+            string[] labelInfo = MakeLabelTextName(checkName, dataType);
+
+            // Create label
             Label labelDisp = new Label
             {
-                Name = labelName,
-                Text = labelText,
+                Text = labelInfo[0],
+                Name = labelInfo[1],
                 Location = new Point(300, 280),
                 AutoSize = true,
-                Font = new Font("Microsoft Sans Serif", 8.25f)
+                Font = new Font("Microsoft Sans Serif", 6.0f)
             };
+
+            // Make label draggable, add to form, and put it to front
             ControlExtension.Draggable(labelDisp, true);
             Controls.Add(labelDisp);
             labelDisp.BringToFront();
-            return labelDisp;
+
+            // Return name of label to be stored
+            return labelDisp.Name;
         }
 
         // Remove particular text label from form
-        private void DispRemove(DataRow rowRemove)
+        private void DispRemove(string checklistName, int index)
         {
-            Label labelDisp = rowRemove[2] as Label;
+            // Get the desired data row from the data table
+            DataRow[] tempRow = dispTable.Select(string.Format("Checklist = '{0}' AND Index = '{1}'", checklistName, index));
+            DataRow removeRow = tempRow[0];
 
-            Controls.Remove(labelDisp);
-            dispTable.Rows.Remove(rowRemove);
+            // Cast the label name data to a string, get the label, and remove it from the form
+            string labelDisp = (string)removeRow[2];
+            Controls.Remove(Controls.OfType<Label>().FirstOrDefault(c => c.Name == labelDisp));
+            dispTable.Rows.Remove(removeRow);
+
+            // Nothing to return
             return;
         }
+
+        // Determine text and name for label
+        private string[] MakeLabelTextName (string checkName, string dataType)
+        {
+            // Allocate strings
+            string labelText = "";
+            string labelName = "";
+
+            // Add to label text and name based on the computer component
+            if (checkName.Contains("CPU"))
+            {
+                labelText = "CPU";
+                labelName = "CPU";
+            }
+            else if (checkName.Contains("GPU"))
+            {
+                labelText = "GPU";
+                labelName = "GPU";
+            }
+
+            // Add to label text and name based on the component part
+            if (checkName.Contains("Core Average"))
+            {
+                labelText += " Core Avg";
+                labelName += "CoreAvg";
+            }
+            else if (checkName.Contains("Package"))
+            {
+                labelText += " Package";
+                labelName += "Package";
+            }
+            else if (checkName.Contains("Core"))
+            {
+                labelText += " Core";
+                labelName += "Core";
+                string[] checkSplit = checkName.Split(' ');
+                labelText += " ";
+                labelText += checkSplit[2];
+                labelName += checkSplit[2];
+            }
+
+            // Add to label text and name based on the type of computer data
+            switch (dataType)
+            {
+                case "temp":
+                    labelText += " Temp: ##.#°C";
+                    labelName += "Temp";
+                    break;
+                case "storage":
+                    labelText += " Storage: ####.#GB";
+                    labelName += "Storage";
+                    break;
+                case "load":
+                    labelText += " Load: ##%";
+                    labelName += "Load";
+                    break;
+                default:
+                    break;
+            }
+
+            labelName += "Label";
+
+            Console.WriteLine(labelText);
+            Console.WriteLine(labelName);
+
+            string[] labelInfo = new string[2] {labelText, labelName};
+
+            // Return label name and text
+            return labelInfo;
+        }
+
     }
 }
