@@ -93,7 +93,6 @@ namespace Ardruino_Computer_Data_Display
             else
             {
                 // Remove label from form/data table, and remove corresponding row of data table
-                
                 DispRemove(myCL.Name, index);
             }
         }
