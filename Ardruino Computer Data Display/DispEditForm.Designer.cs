@@ -123,7 +123,8 @@
             this.tempCPUCL.Name = "tempCPUCL";
             this.tempCPUCL.Size = new System.Drawing.Size(183, 106);
             this.tempCPUCL.TabIndex = 0;
-            this.tempCPUCL.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.TempCPUCL_ItemCheck);
+            this.tempCPUCL.Tag = "temp";
+            this.tempCPUCL.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.CL_ItemCheck);
             // 
             // dispCPUCheck
             // 

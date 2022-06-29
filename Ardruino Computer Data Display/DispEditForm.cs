@@ -73,17 +73,20 @@ namespace Ardruino_Computer_Data_Display
             }
         }
 
-        private void TempCPUCL_ItemCheck(object sender, ItemCheckEventArgs e)
+        private void CL_ItemCheck(object sender, ItemCheckEventArgs e)
         {
+            // Get checklist
+            CheckedListBox myCL = (CheckedListBox)sender;
+
             // Get checklist information
-            int index = tempCPUCL.SelectedIndex;
-            bool checkedItem = tempCPUCL.GetItemChecked(index);
-            string checkName = (string)tempCPUCL.Items[index];
+            int index = myCL.SelectedIndex;
+            bool checkedItem = myCL.GetItemChecked(index);
+            string checkName = (string)myCL.Items[index];
 
             if (!checkedItem)
             {
                 // Add label to form/data table, and add checklist/index to data table
-                dispTable.Rows.Add(tempCPUCL.Name, index, DispAdd(checkName, "temp"));
+                dispTable.Rows.Add(myCL.Name, index, DispAdd(checkName, (string)myCL.Tag));
 
                 //Console.WriteLine("Added");
             }
@@ -91,7 +94,7 @@ namespace Ardruino_Computer_Data_Display
             {
                 // Remove label from form/data table, and remove corresponding row of data table
                 
-                DispRemove("tempCPUCL", index);
+                DispRemove(myCL.Name, index);
             }
         }
 
