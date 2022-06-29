@@ -13,8 +13,11 @@ namespace Ardruino_Computer_Data_Display
 {
     public partial class DispEditForm : Form
     {
-        // Allocate for data table
+        // Initialize data table
         public DataTable dispTable;
+
+        // Initialize trash can range (1st and 2nd values are for x, 3rd and 4th for y)
+        public int[] trashRange = new int[4];
 
         public DispEditForm()
         {
@@ -29,13 +32,22 @@ namespace Ardruino_Computer_Data_Display
             dispTable.Columns.Add(new DataColumn("Index"));
             dispTable.Columns.Add(new DataColumn("Label"));
 
+            // Get trash can range
+            Point trashCorner = trashPicBox.Location;
+            Size trashSize = trashPicBox.Size;
+            trashRange[0] = trashCorner.X;
+            trashRange[1] = trashRange[0] + trashSize.Width;
+            trashRange[2] = trashCorner.Y;
+            trashRange[3] = trashRange[2] + trashSize.Height;
+            Console.WriteLine(String.Format("{0}<x<{1} {2}>x>{3}", trashRange[0], trashRange[1], trashRange[2], trashRange[3]));
+
             dataGridView1.DataSource = dispTable; // Temporary for viewing if data table is working properly
         }
 
-        private void DispCPU_CheckedChanged(object sender, EventArgs e)
+        private void DispCPUCheck_CheckedChanged(object sender, EventArgs e)
         {
             // Enable/disable CPU controls
-            if (dispCPU.Checked)
+            if (dispCPUCheck.Checked)
             {
                 tempCPUCL.Enabled = true;
                 coreCPUText.Enabled = true;
@@ -68,17 +80,12 @@ namespace Ardruino_Computer_Data_Display
             bool checkedItem = tempCPUCL.GetItemChecked(index);
             string checkName = (string)tempCPUCL.Items[index];
 
-            Console.WriteLine(checkName);
-
-            // Determine the text of the label (to match what will be on the Arduino display)
-
-
             if (!checkedItem)
             {
                 // Add label to form/data table, and add checklist/index to data table
                 dispTable.Rows.Add(tempCPUCL.Name, index, DispAdd(checkName, "temp"));
 
-                Console.WriteLine("Added");
+                //Console.WriteLine("Added");
             }
             else
             {
@@ -130,6 +137,9 @@ namespace Ardruino_Computer_Data_Display
             ControlExtension.Draggable(labelDisp, true);
             Controls.Add(labelDisp);
             labelDisp.BringToFront();
+
+            // Add dragging event to label
+            labelDisp.MouseUp += LabelLocationAction;
 
             // Return name of label to be stored
             return labelDisp.Name;
@@ -212,8 +222,8 @@ namespace Ardruino_Computer_Data_Display
 
             labelName += "Label";
 
-            Console.WriteLine(labelText);
-            Console.WriteLine(labelName);
+            //Console.WriteLine(labelText);
+            //Console.WriteLine(labelName);
 
             string[] labelInfo = new string[2] {labelText, labelName};
 
@@ -221,5 +231,20 @@ namespace Ardruino_Computer_Data_Display
             return labelInfo;
         }
 
+        private void LabelLocationAction(object sender, MouseEventArgs e)
+        {
+            // Get cursor position by adding the label postion and cursor position(relative to label)
+            Label dragLabel = (Label)sender;
+            Point labelPoint = dragLabel.Location;
+            Point cursorPoint = e.Location;
+            int mouseLocX = labelPoint.X + cursorPoint.X;
+            int mouseLocY = labelPoint.Y + cursorPoint.Y;
+
+            // Determine if dragged label should be deleted
+            if (trashRange[0] <= mouseLocX && mouseLocX <= trashRange[1] && trashRange[2] <= mouseLocY && mouseLocY <= trashRange[3])
+            {
+                Controls.Remove((Label)sender);
+            }
+        }
     }
 }

@@ -35,15 +35,18 @@
             this.coreCPUText = new System.Windows.Forms.TextBox();
             this.coreCPULabel = new System.Windows.Forms.Label();
             this.tempCPUCL = new System.Windows.Forms.CheckedListBox();
-            this.dispCPU = new System.Windows.Forms.CheckBox();
+            this.dispCPUCheck = new System.Windows.Forms.CheckBox();
             this.GPUTab = new System.Windows.Forms.TabPage();
             this.dispSetTips = new System.Windows.Forms.ToolTip(this.components);
             this.dispArea = new System.Windows.Forms.PictureBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dispSaveButton = new System.Windows.Forms.Button();
+            this.trashPicBox = new System.Windows.Forms.PictureBox();
             this.hardwareTabs.SuspendLayout();
             this.CPU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dispArea)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trashPicBox)).BeginInit();
             this.SuspendLayout();
             // 
             // hardwareTabs
@@ -51,7 +54,7 @@
             this.hardwareTabs.Controls.Add(this.CPU);
             this.hardwareTabs.Controls.Add(this.GPUTab);
             this.hardwareTabs.Location = new System.Drawing.Point(16, 15);
-            this.hardwareTabs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.hardwareTabs.Margin = new System.Windows.Forms.Padding(4);
             this.hardwareTabs.Name = "hardwareTabs";
             this.hardwareTabs.SelectedIndex = 0;
             this.hardwareTabs.Size = new System.Drawing.Size(813, 230);
@@ -64,11 +67,11 @@
             this.CPU.Controls.Add(this.coreCPUText);
             this.CPU.Controls.Add(this.coreCPULabel);
             this.CPU.Controls.Add(this.tempCPUCL);
-            this.CPU.Controls.Add(this.dispCPU);
+            this.CPU.Controls.Add(this.dispCPUCheck);
             this.CPU.Location = new System.Drawing.Point(4, 25);
-            this.CPU.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.CPU.Margin = new System.Windows.Forms.Padding(4);
             this.CPU.Name = "CPU";
-            this.CPU.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.CPU.Padding = new System.Windows.Forms.Padding(4);
             this.CPU.Size = new System.Drawing.Size(805, 201);
             this.CPU.TabIndex = 0;
             this.CPU.Text = "CPU";
@@ -88,7 +91,7 @@
             // 
             this.coreCPUText.Enabled = false;
             this.coreCPUText.Location = new System.Drawing.Point(225, 5);
-            this.coreCPUText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.coreCPUText.Margin = new System.Windows.Forms.Padding(4);
             this.coreCPUText.MaxLength = 2;
             this.coreCPUText.Name = "coreCPUText";
             this.coreCPUText.ShortcutsEnabled = false;
@@ -116,30 +119,30 @@
             "CPU Package",
             "CPU Core Average"});
             this.tempCPUCL.Location = new System.Drawing.Point(23, 71);
-            this.tempCPUCL.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tempCPUCL.Margin = new System.Windows.Forms.Padding(4);
             this.tempCPUCL.Name = "tempCPUCL";
             this.tempCPUCL.Size = new System.Drawing.Size(183, 106);
             this.tempCPUCL.TabIndex = 0;
             this.tempCPUCL.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.TempCPUCL_ItemCheck);
             // 
-            // dispCPU
+            // dispCPUCheck
             // 
-            this.dispCPU.AutoSize = true;
-            this.dispCPU.Location = new System.Drawing.Point(8, 7);
-            this.dispCPU.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.dispCPU.Name = "dispCPU";
-            this.dispCPU.Size = new System.Drawing.Size(82, 21);
-            this.dispCPU.TabIndex = 0;
-            this.dispCPU.Text = "Enabled";
-            this.dispCPU.UseVisualStyleBackColor = true;
-            this.dispCPU.CheckedChanged += new System.EventHandler(this.DispCPU_CheckedChanged);
+            this.dispCPUCheck.AutoSize = true;
+            this.dispCPUCheck.Location = new System.Drawing.Point(8, 7);
+            this.dispCPUCheck.Margin = new System.Windows.Forms.Padding(4);
+            this.dispCPUCheck.Name = "dispCPUCheck";
+            this.dispCPUCheck.Size = new System.Drawing.Size(82, 21);
+            this.dispCPUCheck.TabIndex = 0;
+            this.dispCPUCheck.Text = "Enabled";
+            this.dispCPUCheck.UseVisualStyleBackColor = true;
+            this.dispCPUCheck.CheckedChanged += new System.EventHandler(this.DispCPUCheck_CheckedChanged);
             // 
             // GPUTab
             // 
             this.GPUTab.Location = new System.Drawing.Point(4, 25);
-            this.GPUTab.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.GPUTab.Margin = new System.Windows.Forms.Padding(4);
             this.GPUTab.Name = "GPUTab";
-            this.GPUTab.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.GPUTab.Padding = new System.Windows.Forms.Padding(4);
             this.GPUTab.Size = new System.Drawing.Size(805, 201);
             this.GPUTab.TabIndex = 1;
             this.GPUTab.Text = "GPU";
@@ -150,7 +153,7 @@
             this.dispArea.BackColor = System.Drawing.Color.Transparent;
             this.dispArea.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.dispArea.Location = new System.Drawing.Point(27, 271);
-            this.dispArea.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dispArea.Margin = new System.Windows.Forms.Padding(4);
             this.dispArea.Name = "dispArea";
             this.dispArea.Size = new System.Drawing.Size(170, 157);
             this.dispArea.TabIndex = 1;
@@ -159,22 +162,45 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(595, 325);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dataGridView1.Location = new System.Drawing.Point(587, 271);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.Size = new System.Drawing.Size(320, 185);
             this.dataGridView1.TabIndex = 2;
             // 
+            // dispSaveButton
+            // 
+            this.dispSaveButton.Location = new System.Drawing.Point(27, 435);
+            this.dispSaveButton.Name = "dispSaveButton";
+            this.dispSaveButton.Size = new System.Drawing.Size(170, 30);
+            this.dispSaveButton.TabIndex = 3;
+            this.dispSaveButton.Text = "Save Display";
+            this.dispSaveButton.UseVisualStyleBackColor = true;
+            // 
+            // trashPicBox
+            // 
+            this.trashPicBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.trashPicBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.trashPicBox.Image = global::Ardruino_Computer_Data_Display.Properties.Resources.trash_can_icon_28692;
+            this.trashPicBox.Location = new System.Drawing.Point(500, 370);
+            this.trashPicBox.Name = "trashPicBox";
+            this.trashPicBox.Size = new System.Drawing.Size(77, 83);
+            this.trashPicBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.trashPicBox.TabIndex = 4;
+            this.trashPicBox.TabStop = false;
+            // 
             // DispEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 554);
+            this.ClientSize = new System.Drawing.Size(1067, 479);
+            this.Controls.Add(this.trashPicBox);
+            this.Controls.Add(this.dispSaveButton);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.dispArea);
             this.Controls.Add(this.hardwareTabs);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "DispEditForm";
             this.Text = "Display Settings";
             this.Load += new System.EventHandler(this.DispEditForm_Load);
@@ -183,6 +209,7 @@
             this.CPU.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dispArea)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trashPicBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -193,12 +220,14 @@
         private System.Windows.Forms.TabPage CPU;
         private System.Windows.Forms.TabPage GPUTab;
         private System.Windows.Forms.CheckedListBox tempCPUCL;
-        private System.Windows.Forms.CheckBox dispCPU;
+        private System.Windows.Forms.CheckBox dispCPUCheck;
         private System.Windows.Forms.Label coreCPULabel;
         private System.Windows.Forms.TextBox coreCPUText;
         private System.Windows.Forms.ToolTip dispSetTips;
         private System.Windows.Forms.Label tempCPULabel;
         private System.Windows.Forms.PictureBox dispArea;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button dispSaveButton;
+        private System.Windows.Forms.PictureBox trashPicBox;
     }
 }
