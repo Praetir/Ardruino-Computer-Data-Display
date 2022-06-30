@@ -283,5 +283,26 @@ namespace Ardruino_Computer_Data_Display
             }
             
         }
+
+        private void FileBrowserButton_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog filePath = profileFileBrowser;
+            if (filePath.ShowDialog() == DialogResult.OK)
+            {
+                fileCB.Items.Add(filePath.SelectedPath);
+            }
+        }
+
+        private void FileEditSetCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (fileEditSetCheck.Checked)
+            {
+                fileCB.Enabled = true;
+            }
+            else
+            {
+                fileCB.Enabled = false;
+            }
+        }
     }
 }
