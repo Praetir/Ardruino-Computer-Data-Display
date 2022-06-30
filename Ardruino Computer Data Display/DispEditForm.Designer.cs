@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.hardwareTabs = new System.Windows.Forms.TabControl();
+            this.toolTabs = new System.Windows.Forms.TabControl();
             this.CPU = new System.Windows.Forms.TabPage();
             this.tempCPULabel = new System.Windows.Forms.Label();
             this.coreCPUText = new System.Windows.Forms.TextBox();
@@ -42,23 +42,26 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.dispSaveButton = new System.Windows.Forms.Button();
             this.trashPicBox = new System.Windows.Forms.PictureBox();
-            this.hardwareTabs.SuspendLayout();
+            this.ProfilesTab = new System.Windows.Forms.TabPage();
+            this.toolTabs.SuspendLayout();
             this.CPU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dispArea)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trashPicBox)).BeginInit();
+            this.ProfilesTab.SuspendLayout();
             this.SuspendLayout();
             // 
-            // hardwareTabs
+            // toolTabs
             // 
-            this.hardwareTabs.Controls.Add(this.CPU);
-            this.hardwareTabs.Controls.Add(this.GPUTab);
-            this.hardwareTabs.Location = new System.Drawing.Point(16, 15);
-            this.hardwareTabs.Margin = new System.Windows.Forms.Padding(4);
-            this.hardwareTabs.Name = "hardwareTabs";
-            this.hardwareTabs.SelectedIndex = 0;
-            this.hardwareTabs.Size = new System.Drawing.Size(813, 230);
-            this.hardwareTabs.TabIndex = 0;
+            this.toolTabs.Controls.Add(this.CPU);
+            this.toolTabs.Controls.Add(this.GPUTab);
+            this.toolTabs.Controls.Add(this.ProfilesTab);
+            this.toolTabs.Location = new System.Drawing.Point(16, 15);
+            this.toolTabs.Margin = new System.Windows.Forms.Padding(4);
+            this.toolTabs.Name = "toolTabs";
+            this.toolTabs.SelectedIndex = 0;
+            this.toolTabs.Size = new System.Drawing.Size(813, 230);
+            this.toolTabs.TabIndex = 0;
             // 
             // CPU
             // 
@@ -153,10 +156,10 @@
             // 
             this.dispArea.BackColor = System.Drawing.Color.Transparent;
             this.dispArea.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.dispArea.Location = new System.Drawing.Point(27, 271);
+            this.dispArea.Location = new System.Drawing.Point(16, 253);
             this.dispArea.Margin = new System.Windows.Forms.Padding(4);
             this.dispArea.Name = "dispArea";
-            this.dispArea.Size = new System.Drawing.Size(170, 157);
+            this.dispArea.Size = new System.Drawing.Size(128, 128);
             this.dispArea.TabIndex = 1;
             this.dispArea.TabStop = false;
             // 
@@ -172,9 +175,9 @@
             // 
             // dispSaveButton
             // 
-            this.dispSaveButton.Location = new System.Drawing.Point(27, 435);
+            this.dispSaveButton.Location = new System.Drawing.Point(49, 117);
             this.dispSaveButton.Name = "dispSaveButton";
-            this.dispSaveButton.Size = new System.Drawing.Size(170, 30);
+            this.dispSaveButton.Size = new System.Drawing.Size(128, 30);
             this.dispSaveButton.TabIndex = 3;
             this.dispSaveButton.Text = "Save Display";
             this.dispSaveButton.UseVisualStyleBackColor = true;
@@ -191,33 +194,44 @@
             this.trashPicBox.TabIndex = 4;
             this.trashPicBox.TabStop = false;
             // 
+            // ProfilesTab
+            // 
+            this.ProfilesTab.Controls.Add(this.dispSaveButton);
+            this.ProfilesTab.Location = new System.Drawing.Point(4, 25);
+            this.ProfilesTab.Name = "ProfilesTab";
+            this.ProfilesTab.Padding = new System.Windows.Forms.Padding(3);
+            this.ProfilesTab.Size = new System.Drawing.Size(805, 201);
+            this.ProfilesTab.TabIndex = 2;
+            this.ProfilesTab.Text = "Profiles";
+            this.ProfilesTab.UseVisualStyleBackColor = true;
+            // 
             // DispEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 479);
             this.Controls.Add(this.trashPicBox);
-            this.Controls.Add(this.dispSaveButton);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.dispArea);
-            this.Controls.Add(this.hardwareTabs);
+            this.Controls.Add(this.toolTabs);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "DispEditForm";
             this.Text = "Display Settings";
             this.Load += new System.EventHandler(this.DispEditForm_Load);
-            this.hardwareTabs.ResumeLayout(false);
+            this.toolTabs.ResumeLayout(false);
             this.CPU.ResumeLayout(false);
             this.CPU.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dispArea)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trashPicBox)).EndInit();
+            this.ProfilesTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TabControl hardwareTabs;
+        private System.Windows.Forms.TabControl toolTabs;
         private System.Windows.Forms.TabPage CPU;
         private System.Windows.Forms.TabPage GPUTab;
         private System.Windows.Forms.CheckedListBox tempCPUCL;
@@ -230,5 +244,6 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button dispSaveButton;
         private System.Windows.Forms.PictureBox trashPicBox;
+        private System.Windows.Forms.TabPage ProfilesTab;
     }
 }
