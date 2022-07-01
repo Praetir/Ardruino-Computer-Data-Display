@@ -25,7 +25,6 @@ namespace Ardruino_Computer_Data_Display
         int curSam = 1;
         int waitTime;  // Amount of time before next communication verification cycle starts
         int dataTime; // Amount of time before the OLED display updates
-        string[] prefData; // All pref.txt
         string prefPort; // Port set in pref.txt
 
         public static int numHorPix;
@@ -48,10 +47,10 @@ namespace Ardruino_Computer_Data_Display
         private void ACDD_Load(object sender, EventArgs e)
         {
             // Read preferences from text file
-            prefData = System.IO.File.ReadAllLines(@"C:\Users\William\source\repos\Ardruino-Computer-Data-Display\Ardruino Computer Data Display\pref.txt");
+            string[] prefData = System.IO.File.ReadAllLines(@"C:\Users\William\source\repos\Ardruino-Computer-Data-Display\Ardruino Computer Data Display\pref.txt");
 
             // Set preference values
-            PrefSet();
+            PrefSet(prefData);
 
             // Open computer to get hardware data
             c.Open();
@@ -281,18 +280,18 @@ namespace Ardruino_Computer_Data_Display
             ardPort.WriteLine("<" + tempCPU + ")" + tempGPU + ">");
         }
 
-        private void PrefSet()
+        private void PrefSet(string[] prefData)
         {
-            sizeSam = int.Parse(SeparatePref(0));
-            waitTime = int.Parse(SeparatePref(1));
-            dataTime = int.Parse(SeparatePref(2));
-            autoStart = bool.Parse(SeparatePref(3));
-            prefPort = SeparatePref(4);
-            numHorPix = int.Parse(SeparatePref(5));
-            numVertPix = int.Parse(SeparatePref(6));
+            sizeSam = int.Parse(SeparatePref(0, prefData));
+            waitTime = int.Parse(SeparatePref(1, prefData));
+            dataTime = int.Parse(SeparatePref(2, prefData));
+            autoStart = bool.Parse(SeparatePref(3, prefData));
+            prefPort = SeparatePref(4, prefData);
+            numHorPix = int.Parse(SeparatePref(5, prefData));
+            numVertPix = int.Parse(SeparatePref(6, prefData));
         }
 
-        private string SeparatePref(int prefLineIndex)
+        private string SeparatePref(int prefLineIndex, string[] prefData)
         {
             string prefLine = prefData[prefLineIndex];
             string[] prefBoth = prefLine.Split('=');

@@ -13,11 +13,17 @@ namespace Ardruino_Computer_Data_Display
 {
     public partial class DispEditForm : Form
     {
-        // Initialize data table
+        // Initialize data table for display information
         public DataTable dispTable;
+
+        // Initialize dictionary for storing folders
+        Dictionary<string, int> storedFolders = new Dictionary<string, int>();
 
         // Initialize trash can range (1st and 2nd values are for x, 3rd and 4th for y)
         public int[] trashRange = new int[4];
+
+        // File path string for folderpaths.txt
+        public string folderPaths = @"C:\Users\William\source\repos\Ardruino-Computer-Data-Display\Ardruino Computer Data Display\folderpaths.txt";
 
         public DispEditForm()
         {
@@ -40,6 +46,10 @@ namespace Ardruino_Computer_Data_Display
             dispTable.Columns.Add(new DataColumn("LabelFontSize"));
             dispTable.Columns.Add(new DataColumn("LabelLocationX"));
             dispTable.Columns.Add(new DataColumn("LabelLocationY"));
+
+            // Add folders from text file to combobox
+            string[] folders = System.IO.File.ReadAllLines(folderPaths);
+            fileCB.Items.AddRange(folders);
 
             // Get trash can range
             Point trashCorner = trashPicBox.Location;
@@ -290,6 +300,7 @@ namespace Ardruino_Computer_Data_Display
             if (filePath.ShowDialog() == DialogResult.OK)
             {
                 fileCB.Items.Add(filePath.SelectedPath);
+                UpdateFolderTextFile();
             }
         }
 
@@ -298,10 +309,53 @@ namespace Ardruino_Computer_Data_Display
             if (fileEditSetCheck.Checked)
             {
                 fileCB.Enabled = true;
+                fileDeleteButton.Enabled = true;
             }
             else
             {
                 fileCB.Enabled = false;
+                fileDeleteButton.Enabled = false;
+            }
+        }
+
+        private void FileDeleteButton_Click(object sender, EventArgs e)
+        {
+            int checkIndex = fileCB.SelectedIndex;
+            if (checkIndex != 0)
+            {
+                fileCB.Items.Remove(fileCB.SelectedItem);
+                UpdateFolderTextFile();
+            }
+        }
+
+        private void FileCB_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Update combobox if enter key has been pressed and contents are a valid directory
+            if (e.KeyChar == (char)Keys.Enter && System.IO.Directory.Exists(fileCB.Text))
+            {
+                fileCB.Items.Add(fileCB.Text);
+                UpdateFolderTextFile();
+            }
+        }
+
+        private void UpdateFolderTextFile()
+        {
+            if (fileCB.Items.Count > 1)
+            {
+                string[] folders = new string[fileCB.Items.Count];
+                string firstFolder = fileCB.Items[1].ToString();
+                for (int i = 2; i < fileCB.Items.Count; i++)
+                {
+                    folders[i] = fileCB.Items[i].ToString();
+                    Console.WriteLine(folders[i]);
+                }
+
+                // Overwrite with new folder list
+                System.IO.File.WriteAllText(folderPaths, firstFolder, Encoding.UTF8);
+                if (fileCB.Items.Count > 2)
+                {
+                    System.IO.File.AppendAllLines(folderPaths, folders, Encoding.UTF8);
+                }
             }
         }
     }

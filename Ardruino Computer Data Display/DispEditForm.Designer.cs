@@ -195,15 +195,16 @@
             // 
             // fileCB
             // 
-            this.fileCB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.fileCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList;
             this.fileCB.Enabled = false;
             this.fileCB.FormattingEnabled = true;
+            this.fileCB.Items.AddRange(new object[] {
+            ""});
             this.fileCB.Location = new System.Drawing.Point(127, 123);
             this.fileCB.Name = "fileCB";
             this.fileCB.Size = new System.Drawing.Size(290, 24);
             this.fileCB.TabIndex = 16;
-            this.dispSetTips.SetToolTip(this.fileCB, "Choose your profile here.");
+            this.dispSetTips.SetToolTip(this.fileCB, "Choose your profile folder here.");
+            this.fileCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FileCB_KeyPress);
             // 
             // fileBrowserButton
             // 
@@ -217,12 +218,14 @@
             // 
             // fileDeleteButton
             // 
+            this.fileDeleteButton.Enabled = false;
             this.fileDeleteButton.Location = new System.Drawing.Point(672, 119);
             this.fileDeleteButton.Name = "fileDeleteButton";
             this.fileDeleteButton.Size = new System.Drawing.Size(102, 30);
             this.fileDeleteButton.TabIndex = 13;
             this.fileDeleteButton.Text = "Delete Path";
             this.fileDeleteButton.UseVisualStyleBackColor = true;
+            this.fileDeleteButton.Click += new System.EventHandler(this.FileDeleteButton_Click);
             // 
             // fileLabel
             // 

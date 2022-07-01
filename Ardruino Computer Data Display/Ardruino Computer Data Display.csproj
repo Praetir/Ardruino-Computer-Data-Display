@@ -102,7 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="pref.txt" />
-    <Content Include="filepaths.txt" />
+    <Content Include="folderpaths.txt" />
     <None Include="Resources\trash-can-icon-28692.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
