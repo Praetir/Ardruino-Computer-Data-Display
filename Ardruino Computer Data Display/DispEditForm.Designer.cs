@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DispEditForm));
             this.toolTabs = new System.Windows.Forms.TabControl();
             this.CPU = new System.Windows.Forms.TabPage();
             this.tempCPULabel = new System.Windows.Forms.Label();
@@ -39,8 +38,8 @@
             this.dispCPUCheck = new System.Windows.Forms.CheckBox();
             this.GPUTab = new System.Windows.Forms.TabPage();
             this.ProfilesTab = new System.Windows.Forms.TabPage();
-            this.fileEditSetCheck = new System.Windows.Forms.CheckBox();
-            this.fileCB = new System.Windows.Forms.ComboBox();
+            this.folderEditSetCheck = new System.Windows.Forms.CheckBox();
+            this.folderCB = new System.Windows.Forms.ComboBox();
             this.fileBrowserButton = new System.Windows.Forms.Button();
             this.fileDeleteButton = new System.Windows.Forms.Button();
             this.fileLabel = new System.Windows.Forms.Label();
@@ -51,7 +50,7 @@
             this.dispSaveButton = new System.Windows.Forms.Button();
             this.dispSetTips = new System.Windows.Forms.ToolTip(this.components);
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.profileFileBrowser = new System.Windows.Forms.FolderBrowserDialog();
+            this.profileFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.trashPicBox = new System.Windows.Forms.PictureBox();
             this.dispArea = new System.Windows.Forms.PictureBox();
             this.toolTabs.SuspendLayout();
@@ -83,7 +82,7 @@
             this.CPU.Controls.Add(this.dispCPUCheck);
             this.CPU.Location = new System.Drawing.Point(4, 22);
             this.CPU.Name = "CPU";
-            this.CPU.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.CPU.Padding = new System.Windows.Forms.Padding(3);
             this.CPU.Size = new System.Drawing.Size(602, 161);
             this.CPU.TabIndex = 0;
             this.CPU.Text = "CPU";
@@ -149,7 +148,7 @@
             // 
             this.GPUTab.Location = new System.Drawing.Point(4, 22);
             this.GPUTab.Name = "GPUTab";
-            this.GPUTab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.GPUTab.Padding = new System.Windows.Forms.Padding(3);
             this.GPUTab.Size = new System.Drawing.Size(602, 161);
             this.GPUTab.TabIndex = 1;
             this.GPUTab.Text = "GPU";
@@ -157,8 +156,8 @@
             // 
             // ProfilesTab
             // 
-            this.ProfilesTab.Controls.Add(this.fileEditSetCheck);
-            this.ProfilesTab.Controls.Add(this.fileCB);
+            this.ProfilesTab.Controls.Add(this.folderEditSetCheck);
+            this.ProfilesTab.Controls.Add(this.folderCB);
             this.ProfilesTab.Controls.Add(this.fileBrowserButton);
             this.ProfilesTab.Controls.Add(this.fileDeleteButton);
             this.ProfilesTab.Controls.Add(this.fileLabel);
@@ -168,63 +167,62 @@
             this.ProfilesTab.Controls.Add(this.profileCB);
             this.ProfilesTab.Controls.Add(this.dispSaveButton);
             this.ProfilesTab.Location = new System.Drawing.Point(4, 22);
-            this.ProfilesTab.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ProfilesTab.Margin = new System.Windows.Forms.Padding(2);
             this.ProfilesTab.Name = "ProfilesTab";
-            this.ProfilesTab.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ProfilesTab.Padding = new System.Windows.Forms.Padding(2);
             this.ProfilesTab.Size = new System.Drawing.Size(602, 161);
             this.ProfilesTab.TabIndex = 2;
             this.ProfilesTab.Text = "Profiles";
             this.ProfilesTab.UseVisualStyleBackColor = true;
             // 
-            // fileEditSetCheck
+            // folderEditSetCheck
             // 
-            this.fileEditSetCheck.AutoSize = true;
-            this.fileEditSetCheck.Location = new System.Drawing.Point(326, 102);
-            this.fileEditSetCheck.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.fileEditSetCheck.Name = "fileEditSetCheck";
-            this.fileEditSetCheck.Size = new System.Drawing.Size(90, 17);
-            this.fileEditSetCheck.TabIndex = 17;
-            this.fileEditSetCheck.Text = "Edit/Set Path";
-            this.fileEditSetCheck.UseVisualStyleBackColor = true;
-            this.fileEditSetCheck.CheckedChanged += new System.EventHandler(this.FileEditSetCheck_CheckedChanged);
+            this.folderEditSetCheck.AutoSize = true;
+            this.folderEditSetCheck.Location = new System.Drawing.Point(326, 102);
+            this.folderEditSetCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.folderEditSetCheck.Name = "folderEditSetCheck";
+            this.folderEditSetCheck.Size = new System.Drawing.Size(90, 17);
+            this.folderEditSetCheck.TabIndex = 17;
+            this.folderEditSetCheck.Text = "Edit/Set Path";
+            this.folderEditSetCheck.UseVisualStyleBackColor = true;
+            this.folderEditSetCheck.CheckedChanged += new System.EventHandler(this.FolderEditSetCheck_CheckedChanged);
             // 
-            // fileCB
+            // folderCB
             // 
-            this.fileCB.Enabled = false;
-            this.fileCB.FormattingEnabled = true;
-            this.fileCB.Items.AddRange(new object[] {
+            this.folderCB.Enabled = false;
+            this.folderCB.FormattingEnabled = true;
+            this.folderCB.Items.AddRange(new object[] {
             "C:\\Users\\William\\source\\repos\\Ardruino-Computer-Data-Display\\Ardruino Computer Da" +
                 "ta Display\\Profiles"});
-            this.fileCB.Location = new System.Drawing.Point(95, 100);
-            this.fileCB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.fileCB.Name = "fileCB";
-            this.fileCB.Size = new System.Drawing.Size(218, 21);
-            this.fileCB.TabIndex = 16;
-            this.dispSetTips.SetToolTip(this.fileCB, resources.GetString("fileCB.ToolTip"));
-            this.fileCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FileCB_KeyPress);
+            this.folderCB.Location = new System.Drawing.Point(95, 100);
+            this.folderCB.Margin = new System.Windows.Forms.Padding(2);
+            this.folderCB.Name = "folderCB";
+            this.folderCB.Size = new System.Drawing.Size(218, 21);
+            this.folderCB.TabIndex = 16;
+            this.folderCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FolderCB_KeyPress);
             // 
             // fileBrowserButton
             // 
             this.fileBrowserButton.Location = new System.Drawing.Point(415, 97);
-            this.fileBrowserButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.fileBrowserButton.Margin = new System.Windows.Forms.Padding(2);
             this.fileBrowserButton.Name = "fileBrowserButton";
             this.fileBrowserButton.Size = new System.Drawing.Size(76, 24);
             this.fileBrowserButton.TabIndex = 15;
             this.fileBrowserButton.Text = "Browser";
             this.fileBrowserButton.UseVisualStyleBackColor = true;
-            this.fileBrowserButton.Click += new System.EventHandler(this.FileBrowserButton_Click);
+            this.fileBrowserButton.Click += new System.EventHandler(this.FolderBrowserButton_Click);
             // 
             // fileDeleteButton
             // 
             this.fileDeleteButton.Enabled = false;
             this.fileDeleteButton.Location = new System.Drawing.Point(504, 97);
-            this.fileDeleteButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.fileDeleteButton.Margin = new System.Windows.Forms.Padding(2);
             this.fileDeleteButton.Name = "fileDeleteButton";
             this.fileDeleteButton.Size = new System.Drawing.Size(76, 24);
             this.fileDeleteButton.TabIndex = 13;
             this.fileDeleteButton.Text = "Delete Path";
             this.fileDeleteButton.UseVisualStyleBackColor = true;
-            this.fileDeleteButton.Click += new System.EventHandler(this.FileDeleteButton_Click);
+            this.fileDeleteButton.Click += new System.EventHandler(this.FolderDeleteButton_Click);
             // 
             // fileLabel
             // 
@@ -239,7 +237,7 @@
             // dispDeleteButton
             // 
             this.dispDeleteButton.Location = new System.Drawing.Point(476, 39);
-            this.dispDeleteButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dispDeleteButton.Margin = new System.Windows.Forms.Padding(2);
             this.dispDeleteButton.Name = "dispDeleteButton";
             this.dispDeleteButton.Size = new System.Drawing.Size(76, 24);
             this.dispDeleteButton.TabIndex = 10;
@@ -249,7 +247,7 @@
             // dispLoadButton
             // 
             this.dispLoadButton.Location = new System.Drawing.Point(386, 39);
-            this.dispLoadButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dispLoadButton.Margin = new System.Windows.Forms.Padding(2);
             this.dispLoadButton.Name = "dispLoadButton";
             this.dispLoadButton.Size = new System.Drawing.Size(74, 24);
             this.dispLoadButton.TabIndex = 6;
@@ -272,17 +270,18 @@
             this.profileCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList;
             this.profileCB.FormattingEnabled = true;
             this.profileCB.Location = new System.Drawing.Point(58, 42);
-            this.profileCB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.profileCB.Margin = new System.Windows.Forms.Padding(2);
             this.profileCB.Name = "profileCB";
             this.profileCB.Size = new System.Drawing.Size(218, 21);
             this.profileCB.TabIndex = 4;
             this.dispSetTips.SetToolTip(this.profileCB, "Choose your profile here.\r\nPress Enter to create profile.\r\n^^^ This does not save" +
         " anything to the profile.");
+            this.profileCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ProfileCB_KeyPress);
             // 
             // dispSaveButton
             // 
             this.dispSaveButton.Location = new System.Drawing.Point(297, 39);
-            this.dispSaveButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dispSaveButton.Margin = new System.Windows.Forms.Padding(2);
             this.dispSaveButton.Name = "dispSaveButton";
             this.dispSaveButton.Size = new System.Drawing.Size(74, 24);
             this.dispSaveButton.TabIndex = 3;
@@ -368,8 +367,8 @@
         private System.Windows.Forms.Button fileDeleteButton;
         private System.Windows.Forms.Label fileLabel;
         private System.Windows.Forms.Button fileBrowserButton;
-        private System.Windows.Forms.FolderBrowserDialog profileFileBrowser;
-        private System.Windows.Forms.ComboBox fileCB;
-        private System.Windows.Forms.CheckBox fileEditSetCheck;
+        private System.Windows.Forms.FolderBrowserDialog profileFolderBrowser;
+        private System.Windows.Forms.ComboBox folderCB;
+        private System.Windows.Forms.CheckBox folderEditSetCheck;
     }
 }

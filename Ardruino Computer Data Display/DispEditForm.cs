@@ -45,13 +45,13 @@ namespace Ardruino_Computer_Data_Display
             dispTable.Columns.Add(new DataColumn("LabelLocationY"));
 
             // Add profile folders to combobox
-            fileCB.Items.AddRange(System.IO.File.ReadAllLines(folderPaths));
+            folderCB.Items.AddRange(System.IO.File.ReadAllLines(folderPaths));
 
             // Set folder paths combobox based on last set folder
             if (Properties.Settings.Default.LastProfileFolder != "")
             {
-                fileCB.SelectedText = Properties.Settings.Default.LastProfileFolder;
-                fileCB.SelectedItem = fileCB.SelectedText;
+                folderCB.SelectedText = Properties.Settings.Default.LastProfileFolder;
+                folderCB.SelectedItem = folderCB.SelectedText;
             }
 
             // Get trash can range
@@ -64,7 +64,10 @@ namespace Ardruino_Computer_Data_Display
             //Console.WriteLine(String.Format("{0}<x<{1} {2}>x>{3}", trashRange[0], trashRange[1], trashRange[2], trashRange[3]));
 
             dataGridView1.DataSource = dispTable; // Temporary for viewing if data table is working properly
-            Console.WriteLine(System.IO.Directory.GetCurrentDirectory());
+            Console.WriteLine();
+
+            string tempPath = System.IO.Directory.GetCurrentDirectory();
+
         }
         
         private void DispEditForm_Load(object sender, EventArgs e)
@@ -303,32 +306,32 @@ namespace Ardruino_Computer_Data_Display
             
         }
 
-        private void FileBrowserButton_Click(object sender, EventArgs e)
+        private void FolderBrowserButton_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog filePath = profileFileBrowser;
-            if (filePath.ShowDialog() == DialogResult.OK)
+            FolderBrowserDialog folderPath = profileFolderBrowser;
+            if (folderPath.ShowDialog() == DialogResult.OK)
             {
-                fileCB.Items.Add(filePath.SelectedPath);
+                folderCB.Items.Add(folderPath.SelectedPath);
                 UpdateFolderTextFile();
             }
         }
 
-        private void FileEditSetCheck_CheckedChanged(object sender, EventArgs e)
+        private void FolderEditSetCheck_CheckedChanged(object sender, EventArgs e)
         {
-            if (fileEditSetCheck.Checked)
+            if (folderEditSetCheck.Checked)
             {
                 // Enable combobox and delete button
-                fileCB.Enabled = true;
+                folderCB.Enabled = true;
                 fileDeleteButton.Enabled = true;
             }
             else
             {
                 // Disable combobox and delete button
-                fileCB.Enabled = false;
+                folderCB.Enabled = false;
                 fileDeleteButton.Enabled = false;
 
                 // Check if there is a valid profile path selected
-                string currentFolder = (string)fileCB.SelectedItem;
+                string currentFolder = (string)folderCB.SelectedItem;
                 if (System.IO.Directory.Exists(currentFolder))
                 {
                     // Load profile files into combobox if selected folder is different
@@ -374,46 +377,64 @@ namespace Ardruino_Computer_Data_Display
             }
         }
 
-        private void FileDeleteButton_Click(object sender, EventArgs e)
+        private void FolderDeleteButton_Click(object sender, EventArgs e)
         {
-            int checkIndex = fileCB.SelectedIndex;
+            int checkIndex = folderCB.SelectedIndex;
             if (checkIndex != 0)
             {
-                fileCB.Items.Remove(fileCB.SelectedItem);
+                folderCB.Items.Remove(folderCB.SelectedItem);
                 UpdateFolderTextFile();
             }
         }
 
-        private void FileCB_KeyPress(object sender, KeyPressEventArgs e)
+        private void FolderCB_KeyPress(object sender, KeyPressEventArgs e)
         {
             // Update combobox if enter key has been pressed and contents are a valid directory
-            if (e.KeyChar == (char)Keys.Enter && System.IO.Directory.Exists(fileCB.Text))
+            if ((e.KeyChar == (char)Keys.Enter) && System.IO.Directory.Exists(folderCB.Text))
             {
-                fileCB.Items.Add(fileCB.Text);
+                folderCB.Items.Add(folderCB.Text);
                 UpdateFolderTextFile();
             }
-            
         }
 
         private void UpdateFolderTextFile()
         {
             // Only do if there is more than the default folder in the combobox
-            if (fileCB.Items.Count > 1)
+            if (folderCB.Items.Count > 1)
             {
-                string[] folders = new string[fileCB.Items.Count];
-                string firstFolder = fileCB.Items[1].ToString();
-                for (int i = 2; i < fileCB.Items.Count; i++)
-                {
-                    folders[i] = fileCB.Items[i].ToString();
-                    Console.WriteLine(folders[i]);
-                }
+                // Get first folder after default folder
+                string firstFolder = folderCB.Items[1].ToString();
 
-                // Overwrite with new folder list
+                // Overwrite with first new folder
                 System.IO.File.WriteAllText(folderPaths, firstFolder, Encoding.UTF8);
-                if (fileCB.Items.Count > 2)
+                
+                // Add rest of folders if there are more to add
+                if (folderCB.Items.Count > 2)
                 {
+                    string[] folders = new string[folderCB.Items.Count];
+                    for (int i = 2; i < folderCB.Items.Count; i++)
+                    {
+                        folders[i] = folderCB.Items[i].ToString();
+                    }
                     System.IO.File.AppendAllLines(folderPaths, folders, Encoding.UTF8);
                 }
+            }
+        }
+
+        private void ProfileCB_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Only allow numbers and letters in the text box
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsLetter(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+            
+            // Update combobox and create file if enter key has been pressed
+            if ((e.KeyChar == (char)Keys.Enter) && System.IO.Directory.Exists(folderCB.Text))
+            {
+                Console.WriteLine("adding");
+                profileCB.Items.Add(profileCB.Text);
+                System.IO.File.WriteAllText((string)folderCB.SelectedItem, "ACDD Profile", Encoding.UTF8);
             }
         }
     }
