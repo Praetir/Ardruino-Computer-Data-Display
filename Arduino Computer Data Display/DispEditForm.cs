@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Ardruino_Computer_Data_Display
+namespace Arduino_Computer_Data_Display
 {
     public partial class DispEditForm : Form
     {
@@ -20,7 +20,7 @@ namespace Ardruino_Computer_Data_Display
         public int[] trashRange = new int[4];
 
         // File path string for folderpaths.txt
-        public string folderPaths = @"C:\Users\William\source\repos\Ardruino-Computer-Data-Display\Ardruino Computer Data Display\folderpaths.txt";
+        public string folderPaths = @"C:\Users\William\source\repos\Arduino-Computer-Data-Display\Arduino Computer Data Display\folderpaths.txt";
 
         // Initialize dictionary for profile names and profile
         public Dictionary<string, string> profiles = new Dictionary<string, string>();

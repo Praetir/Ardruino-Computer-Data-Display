@@ -1,4 +1,4 @@
-﻿namespace Ardruino_Computer_Data_Display
+﻿namespace Arduino_Computer_Data_Display
 {
     partial class ACDDForm
     {

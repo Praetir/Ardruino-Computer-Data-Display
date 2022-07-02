@@ -1,4 +1,4 @@
-﻿namespace Ardruino_Computer_Data_Display
+﻿namespace Arduino_Computer_Data_Display
 {
     partial class DispEditForm
     {
@@ -192,7 +192,7 @@
             this.folderCB.Enabled = false;
             this.folderCB.FormattingEnabled = true;
             this.folderCB.Items.AddRange(new object[] {
-            "C:\\Users\\William\\source\\repos\\Ardruino-Computer-Data-Display\\Ardruino Computer Da" +
+            "C:\\Users\\William\\source\\repos\\Arduino-Computer-Data-Display\\Arduino Computer Da" +
                 "ta Display\\Profiles"});
             this.folderCB.Location = new System.Drawing.Point(95, 100);
             this.folderCB.Margin = new System.Windows.Forms.Padding(2);
@@ -301,7 +301,6 @@
             // 
             this.trashPicBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.trashPicBox.Cursor = System.Windows.Forms.Cursors.Default;
-            this.trashPicBox.Image = global::Ardruino_Computer_Data_Display.Properties.Resources.trash_can_icon_28692;
             this.trashPicBox.Location = new System.Drawing.Point(375, 301);
             this.trashPicBox.Margin = new System.Windows.Forms.Padding(2);
             this.trashPicBox.Name = "trashPicBox";

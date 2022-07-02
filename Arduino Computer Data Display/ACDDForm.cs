@@ -11,7 +11,7 @@ using System.IO.Ports;
 using OpenHardwareMonitor.Hardware;
 using System.Threading;
 
-namespace Ardruino_Computer_Data_Display
+namespace Arduino_Computer_Data_Display
 {
     public partial class ACDDForm : Form
     {
@@ -48,7 +48,7 @@ namespace Ardruino_Computer_Data_Display
         private void ACDD_Load(object sender, EventArgs e)
         {
             // Read preferences from text file
-            string[] prefData = System.IO.File.ReadAllLines(@"C:\Users\William\source\repos\Ardruino-Computer-Data-Display\Ardruino Computer Data Display\pref.txt");
+            string[] prefData = System.IO.File.ReadAllLines(@"C:\Users\William\source\repos\Arduino-Computer-Data-Display\Arduino Computer Data Display\pref.txt");
 
             // Set preference values
             PrefSet(prefData);

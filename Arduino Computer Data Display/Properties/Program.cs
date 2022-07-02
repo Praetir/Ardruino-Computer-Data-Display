@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Ardruino_Computer_Data_Display
+namespace Arduino_Computer_Data_Display
 {
     static class Program
     {

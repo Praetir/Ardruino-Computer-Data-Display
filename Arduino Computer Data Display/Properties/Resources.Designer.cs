@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ardruino_Computer_Data_Display.Properties {
+namespace Arduino_Computer_Data_Display.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Ardruino_Computer_Data_Display.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ardruino_Computer_Data_Display.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Arduino_Computer_Data_Display.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
