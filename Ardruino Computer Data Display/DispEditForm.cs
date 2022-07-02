@@ -61,13 +61,29 @@ namespace Ardruino_Computer_Data_Display
             trashRange[1] = trashRange[0] + trashSize.Width;
             trashRange[2] = trashCorner.Y;
             trashRange[3] = trashRange[2] + trashSize.Height;
-            //Console.WriteLine(String.Format("{0}<x<{1} {2}>x>{3}", trashRange[0], trashRange[1], trashRange[2], trashRange[3]));
 
             dataGridView1.DataSource = dispTable; // Temporary for viewing if data table is working properly
-            Console.WriteLine();
 
+            // Find path to folderpaths.txt
+            bool foundProgramFolder = false;
             string tempPath = System.IO.Directory.GetCurrentDirectory();
-
+            while (!foundProgramFolder) 
+            {
+                Console.WriteLine(tempPath);
+                if (System.IO.Path.GetFileName(tempPath) == "Arduino Computer Data Display")
+                {
+                    foundProgramFolder = true;
+                    Console.WriteLine(System.IO.Path.GetFileName(tempPath));
+                    continue;
+                }
+                Console.WriteLine(System.IO.Path.GetFileName(tempPath));
+                if (tempPath == null)
+                {
+                    
+                }
+                tempPath = System.IO.Directory.GetParent(tempPath).ToString();
+            }
+            Console.WriteLine(tempPath);
         }
         
         private void DispEditForm_Load(object sender, EventArgs e)
