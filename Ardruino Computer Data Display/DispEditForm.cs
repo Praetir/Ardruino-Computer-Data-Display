@@ -22,6 +22,9 @@ namespace Ardruino_Computer_Data_Display
         // File path string for folderpaths.txt
         public string folderPaths = @"C:\Users\William\source\repos\Ardruino-Computer-Data-Display\Ardruino Computer Data Display\folderpaths.txt";
 
+        // Initialize dictionary for profile names and profile
+        public Dictionary<string, string> profiles = new Dictionary<string, string>();
+
         public DispEditForm()
         {
             InitializeComponent();
@@ -41,6 +44,9 @@ namespace Ardruino_Computer_Data_Display
             dispTable.Columns.Add(new DataColumn("LabelLocationX"));
             dispTable.Columns.Add(new DataColumn("LabelLocationY"));
 
+            // Add profile folders to combobox
+            fileCB.Items.AddRange(System.IO.File.ReadAllLines(folderPaths));
+
             // Set folder paths combobox based on last set folder
             if (Properties.Settings.Default.LastProfileFolder != "")
             {
@@ -58,6 +64,7 @@ namespace Ardruino_Computer_Data_Display
             //Console.WriteLine(String.Format("{0}<x<{1} {2}>x>{3}", trashRange[0], trashRange[1], trashRange[2], trashRange[3]));
 
             dataGridView1.DataSource = dispTable; // Temporary for viewing if data table is working properly
+            Console.WriteLine(System.IO.Directory.GetCurrentDirectory());
         }
         
         private void DispEditForm_Load(object sender, EventArgs e)
@@ -320,11 +327,49 @@ namespace Ardruino_Computer_Data_Display
                 fileCB.Enabled = false;
                 fileDeleteButton.Enabled = false;
 
-                // Check if there is a valid profile path selected and change settings option if there is
-                if (System.IO.Directory.Exists((string)fileCB.SelectedItem))
+                // Check if there is a valid profile path selected
+                string currentFolder = (string)fileCB.SelectedItem;
+                if (System.IO.Directory.Exists(currentFolder))
                 {
-                    Properties.Settings.Default.LastProfileFolder = (string)fileCB.SelectedItem;
-                    Console.WriteLine(Properties.Settings.Default.LastProfileFolder);
+                    // Load profile files into combobox if selected folder is different
+                    if (currentFolder != Properties.Settings.Default.LastProfileFolder)
+                    {
+                        // Clear profiles and declare string for text lines
+                        profileCB.Items.Clear();
+                        string[] lines;
+                        string line = "";
+                        string fileName = "";
+                        string fileNameNoExt = "";
+
+                        // Check each file and only add text files with specific header line
+                        foreach (string filePath in System.IO.Directory.GetFiles(currentFolder))
+                        {
+                            // Get file name with extension
+                            fileName = System.IO.Path.GetFileName(filePath);
+                            if (fileName.Contains(".txt"))
+                            {
+                                lines = System.IO.File.ReadAllLines(filePath);
+                                // Check if file has any lines before proceeding
+                                if (lines.Length > 0)
+                                {
+                                    // Use first line to determine if this is a file to use for a profile
+                                    line = lines[0];
+                                    if (line.Contains("ACDD Profile"))
+                                    {
+                                        fileNameNoExt = System.IO.Path.GetFileNameWithoutExtension(filePath);
+                                        // Add file path and file name to dictionary
+                                        profiles.Add(fileNameNoExt, filePath);
+                                        profileCB.Items.Add(fileNameNoExt);
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+
+                    // Update last profile folder
+                    Properties.Settings.Default.LastProfileFolder = currentFolder;
+                    //Console.WriteLine(Properties.Settings.Default.LastProfileFolder);
                 }
             }
         }

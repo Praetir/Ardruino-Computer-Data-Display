@@ -103,9 +103,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\trash-can-icon-28692.png" />
     <Content Include="pref.txt" />
     <Content Include="folderpaths.txt" />
     <None Include="Resources\trash-can-icon-28692.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Profiles\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

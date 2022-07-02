@@ -50,16 +50,16 @@
             this.profileCB = new System.Windows.Forms.ComboBox();
             this.dispSaveButton = new System.Windows.Forms.Button();
             this.dispSetTips = new System.Windows.Forms.ToolTip(this.components);
-            this.dispArea = new System.Windows.Forms.PictureBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.trashPicBox = new System.Windows.Forms.PictureBox();
             this.profileFileBrowser = new System.Windows.Forms.FolderBrowserDialog();
+            this.trashPicBox = new System.Windows.Forms.PictureBox();
+            this.dispArea = new System.Windows.Forms.PictureBox();
             this.toolTabs.SuspendLayout();
             this.CPU.SuspendLayout();
             this.ProfilesTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dispArea)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trashPicBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dispArea)).BeginInit();
             this.SuspendLayout();
             // 
             // toolTabs
@@ -67,11 +67,10 @@
             this.toolTabs.Controls.Add(this.CPU);
             this.toolTabs.Controls.Add(this.GPUTab);
             this.toolTabs.Controls.Add(this.ProfilesTab);
-            this.toolTabs.Location = new System.Drawing.Point(16, 15);
-            this.toolTabs.Margin = new System.Windows.Forms.Padding(4);
+            this.toolTabs.Location = new System.Drawing.Point(12, 12);
             this.toolTabs.Name = "toolTabs";
             this.toolTabs.SelectedIndex = 0;
-            this.toolTabs.Size = new System.Drawing.Size(813, 230);
+            this.toolTabs.Size = new System.Drawing.Size(610, 187);
             this.toolTabs.TabIndex = 0;
             // 
             // CPU
@@ -82,11 +81,10 @@
             this.CPU.Controls.Add(this.coreCPULabel);
             this.CPU.Controls.Add(this.tempCPUCL);
             this.CPU.Controls.Add(this.dispCPUCheck);
-            this.CPU.Location = new System.Drawing.Point(4, 25);
-            this.CPU.Margin = new System.Windows.Forms.Padding(4);
+            this.CPU.Location = new System.Drawing.Point(4, 22);
             this.CPU.Name = "CPU";
-            this.CPU.Padding = new System.Windows.Forms.Padding(4);
-            this.CPU.Size = new System.Drawing.Size(805, 201);
+            this.CPU.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.CPU.Size = new System.Drawing.Size(602, 161);
             this.CPU.TabIndex = 0;
             this.CPU.Text = "CPU";
             this.CPU.UseVisualStyleBackColor = true;
@@ -94,32 +92,29 @@
             // tempCPULabel
             // 
             this.tempCPULabel.AutoSize = true;
-            this.tempCPULabel.Location = new System.Drawing.Point(19, 52);
-            this.tempCPULabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.tempCPULabel.Location = new System.Drawing.Point(14, 42);
             this.tempCPULabel.Name = "tempCPULabel";
-            this.tempCPULabel.Size = new System.Drawing.Size(90, 17);
+            this.tempCPULabel.Size = new System.Drawing.Size(67, 13);
             this.tempCPULabel.TabIndex = 3;
             this.tempCPULabel.Text = "Temperature";
             // 
             // coreCPUText
             // 
             this.coreCPUText.Enabled = false;
-            this.coreCPUText.Location = new System.Drawing.Point(225, 5);
-            this.coreCPUText.Margin = new System.Windows.Forms.Padding(4);
+            this.coreCPUText.Location = new System.Drawing.Point(169, 4);
             this.coreCPUText.MaxLength = 2;
             this.coreCPUText.Name = "coreCPUText";
             this.coreCPUText.ShortcutsEnabled = false;
-            this.coreCPUText.Size = new System.Drawing.Size(28, 22);
+            this.coreCPUText.Size = new System.Drawing.Size(22, 20);
             this.coreCPUText.TabIndex = 2;
             this.coreCPUText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CoreCPUText_KeyPress);
             // 
             // coreCPULabel
             // 
             this.coreCPULabel.AutoSize = true;
-            this.coreCPULabel.Location = new System.Drawing.Point(123, 9);
-            this.coreCPULabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.coreCPULabel.Location = new System.Drawing.Point(92, 7);
             this.coreCPULabel.Name = "coreCPULabel";
-            this.coreCPULabel.Size = new System.Drawing.Size(94, 17);
+            this.coreCPULabel.Size = new System.Drawing.Size(71, 13);
             this.coreCPULabel.TabIndex = 1;
             this.coreCPULabel.Text = "Core Amount:";
             this.dispSetTips.SetToolTip(this.coreCPULabel, "Choose how many cores you wish to show.\r\nWill always show the first (#) of cores." +
@@ -132,10 +127,9 @@
             this.tempCPUCL.Items.AddRange(new object[] {
             "CPU Package",
             "CPU Core Average"});
-            this.tempCPUCL.Location = new System.Drawing.Point(23, 71);
-            this.tempCPUCL.Margin = new System.Windows.Forms.Padding(4);
+            this.tempCPUCL.Location = new System.Drawing.Point(17, 58);
             this.tempCPUCL.Name = "tempCPUCL";
-            this.tempCPUCL.Size = new System.Drawing.Size(183, 106);
+            this.tempCPUCL.Size = new System.Drawing.Size(138, 79);
             this.tempCPUCL.TabIndex = 0;
             this.tempCPUCL.Tag = "temp";
             this.tempCPUCL.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.CL_ItemCheck);
@@ -143,10 +137,9 @@
             // dispCPUCheck
             // 
             this.dispCPUCheck.AutoSize = true;
-            this.dispCPUCheck.Location = new System.Drawing.Point(8, 7);
-            this.dispCPUCheck.Margin = new System.Windows.Forms.Padding(4);
+            this.dispCPUCheck.Location = new System.Drawing.Point(6, 6);
             this.dispCPUCheck.Name = "dispCPUCheck";
-            this.dispCPUCheck.Size = new System.Drawing.Size(82, 21);
+            this.dispCPUCheck.Size = new System.Drawing.Size(65, 17);
             this.dispCPUCheck.TabIndex = 0;
             this.dispCPUCheck.Text = "Enabled";
             this.dispCPUCheck.UseVisualStyleBackColor = true;
@@ -154,11 +147,10 @@
             // 
             // GPUTab
             // 
-            this.GPUTab.Location = new System.Drawing.Point(4, 25);
-            this.GPUTab.Margin = new System.Windows.Forms.Padding(4);
+            this.GPUTab.Location = new System.Drawing.Point(4, 22);
             this.GPUTab.Name = "GPUTab";
-            this.GPUTab.Padding = new System.Windows.Forms.Padding(4);
-            this.GPUTab.Size = new System.Drawing.Size(805, 201);
+            this.GPUTab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.GPUTab.Size = new System.Drawing.Size(602, 161);
             this.GPUTab.TabIndex = 1;
             this.GPUTab.Text = "GPU";
             this.GPUTab.UseVisualStyleBackColor = true;
@@ -175,10 +167,11 @@
             this.ProfilesTab.Controls.Add(this.profileLabel);
             this.ProfilesTab.Controls.Add(this.profileCB);
             this.ProfilesTab.Controls.Add(this.dispSaveButton);
-            this.ProfilesTab.Location = new System.Drawing.Point(4, 25);
+            this.ProfilesTab.Location = new System.Drawing.Point(4, 22);
+            this.ProfilesTab.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ProfilesTab.Name = "ProfilesTab";
-            this.ProfilesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ProfilesTab.Size = new System.Drawing.Size(805, 201);
+            this.ProfilesTab.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ProfilesTab.Size = new System.Drawing.Size(602, 161);
             this.ProfilesTab.TabIndex = 2;
             this.ProfilesTab.Text = "Profiles";
             this.ProfilesTab.UseVisualStyleBackColor = true;
@@ -186,9 +179,10 @@
             // fileEditSetCheck
             // 
             this.fileEditSetCheck.AutoSize = true;
-            this.fileEditSetCheck.Location = new System.Drawing.Point(435, 125);
+            this.fileEditSetCheck.Location = new System.Drawing.Point(326, 102);
+            this.fileEditSetCheck.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.fileEditSetCheck.Name = "fileEditSetCheck";
-            this.fileEditSetCheck.Size = new System.Drawing.Size(112, 21);
+            this.fileEditSetCheck.Size = new System.Drawing.Size(90, 17);
             this.fileEditSetCheck.TabIndex = 17;
             this.fileEditSetCheck.Text = "Edit/Set Path";
             this.fileEditSetCheck.UseVisualStyleBackColor = true;
@@ -199,19 +193,22 @@
             this.fileCB.Enabled = false;
             this.fileCB.FormattingEnabled = true;
             this.fileCB.Items.AddRange(new object[] {
-            "C:\\Users\\William\\Source\\Repos\\Ardruino-Computer-Data-Display\\Profiles"});
-            this.fileCB.Location = new System.Drawing.Point(127, 123);
+            "C:\\Users\\William\\source\\repos\\Ardruino-Computer-Data-Display\\Ardruino Computer Da" +
+                "ta Display\\Profiles"});
+            this.fileCB.Location = new System.Drawing.Point(95, 100);
+            this.fileCB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.fileCB.Name = "fileCB";
-            this.fileCB.Size = new System.Drawing.Size(290, 24);
+            this.fileCB.Size = new System.Drawing.Size(218, 21);
             this.fileCB.TabIndex = 16;
             this.dispSetTips.SetToolTip(this.fileCB, resources.GetString("fileCB.ToolTip"));
             this.fileCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FileCB_KeyPress);
             // 
             // fileBrowserButton
             // 
-            this.fileBrowserButton.Location = new System.Drawing.Point(553, 119);
+            this.fileBrowserButton.Location = new System.Drawing.Point(415, 97);
+            this.fileBrowserButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.fileBrowserButton.Name = "fileBrowserButton";
-            this.fileBrowserButton.Size = new System.Drawing.Size(102, 30);
+            this.fileBrowserButton.Size = new System.Drawing.Size(76, 24);
             this.fileBrowserButton.TabIndex = 15;
             this.fileBrowserButton.Text = "Browser";
             this.fileBrowserButton.UseVisualStyleBackColor = true;
@@ -220,9 +217,10 @@
             // fileDeleteButton
             // 
             this.fileDeleteButton.Enabled = false;
-            this.fileDeleteButton.Location = new System.Drawing.Point(672, 119);
+            this.fileDeleteButton.Location = new System.Drawing.Point(504, 97);
+            this.fileDeleteButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.fileDeleteButton.Name = "fileDeleteButton";
-            this.fileDeleteButton.Size = new System.Drawing.Size(102, 30);
+            this.fileDeleteButton.Size = new System.Drawing.Size(76, 24);
             this.fileDeleteButton.TabIndex = 13;
             this.fileDeleteButton.Text = "Delete Path";
             this.fileDeleteButton.UseVisualStyleBackColor = true;
@@ -231,26 +229,29 @@
             // fileLabel
             // 
             this.fileLabel.AutoSize = true;
-            this.fileLabel.Location = new System.Drawing.Point(18, 126);
+            this.fileLabel.Location = new System.Drawing.Point(14, 102);
+            this.fileLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.fileLabel.Name = "fileLabel";
-            this.fileLabel.Size = new System.Drawing.Size(103, 17);
+            this.fileLabel.Size = new System.Drawing.Size(76, 13);
             this.fileLabel.TabIndex = 11;
             this.fileLabel.Text = "Profile Folders:";
             // 
             // dispDeleteButton
             // 
-            this.dispDeleteButton.Location = new System.Drawing.Point(634, 48);
+            this.dispDeleteButton.Location = new System.Drawing.Point(476, 39);
+            this.dispDeleteButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dispDeleteButton.Name = "dispDeleteButton";
-            this.dispDeleteButton.Size = new System.Drawing.Size(102, 30);
+            this.dispDeleteButton.Size = new System.Drawing.Size(76, 24);
             this.dispDeleteButton.TabIndex = 10;
             this.dispDeleteButton.Text = "Delete Profile";
             this.dispDeleteButton.UseVisualStyleBackColor = true;
             // 
             // dispLoadButton
             // 
-            this.dispLoadButton.Location = new System.Drawing.Point(515, 48);
+            this.dispLoadButton.Location = new System.Drawing.Point(386, 39);
+            this.dispLoadButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dispLoadButton.Name = "dispLoadButton";
-            this.dispLoadButton.Size = new System.Drawing.Size(99, 30);
+            this.dispLoadButton.Size = new System.Drawing.Size(74, 24);
             this.dispLoadButton.TabIndex = 6;
             this.dispLoadButton.Text = "Load Profile";
             this.dispLoadButton.UseVisualStyleBackColor = true;
@@ -258,9 +259,10 @@
             // profileLabel
             // 
             this.profileLabel.AutoSize = true;
-            this.profileLabel.Location = new System.Drawing.Point(17, 55);
+            this.profileLabel.Location = new System.Drawing.Point(13, 45);
+            this.profileLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.profileLabel.Name = "profileLabel";
-            this.profileLabel.Size = new System.Drawing.Size(59, 17);
+            this.profileLabel.Size = new System.Drawing.Size(44, 13);
             this.profileLabel.TabIndex = 5;
             this.profileLabel.Text = "Profiles:";
             // 
@@ -269,40 +271,31 @@
             this.profileCB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.profileCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList;
             this.profileCB.FormattingEnabled = true;
-            this.profileCB.Location = new System.Drawing.Point(77, 52);
+            this.profileCB.Location = new System.Drawing.Point(58, 42);
+            this.profileCB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.profileCB.Name = "profileCB";
-            this.profileCB.Size = new System.Drawing.Size(290, 24);
+            this.profileCB.Size = new System.Drawing.Size(218, 21);
             this.profileCB.TabIndex = 4;
-            this.dispSetTips.SetToolTip(this.profileCB, "Choose your profile here.");
+            this.dispSetTips.SetToolTip(this.profileCB, "Choose your profile here.\r\nPress Enter to create profile.\r\n^^^ This does not save" +
+        " anything to the profile.");
             // 
             // dispSaveButton
             // 
-            this.dispSaveButton.Location = new System.Drawing.Point(396, 48);
+            this.dispSaveButton.Location = new System.Drawing.Point(297, 39);
+            this.dispSaveButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dispSaveButton.Name = "dispSaveButton";
-            this.dispSaveButton.Size = new System.Drawing.Size(99, 30);
+            this.dispSaveButton.Size = new System.Drawing.Size(74, 24);
             this.dispSaveButton.TabIndex = 3;
             this.dispSaveButton.Text = "Save Profile";
             this.dispSaveButton.UseVisualStyleBackColor = true;
             // 
-            // dispArea
-            // 
-            this.dispArea.BackColor = System.Drawing.Color.Transparent;
-            this.dispArea.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.dispArea.Location = new System.Drawing.Point(16, 253);
-            this.dispArea.Margin = new System.Windows.Forms.Padding(4);
-            this.dispArea.Name = "dispArea";
-            this.dispArea.Size = new System.Drawing.Size(128, 128);
-            this.dispArea.TabIndex = 1;
-            this.dispArea.TabStop = false;
-            // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(587, 271);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridView1.Location = new System.Drawing.Point(440, 220);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.Size = new System.Drawing.Size(320, 185);
+            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
             this.dataGridView1.TabIndex = 2;
             // 
             // trashPicBox
@@ -310,23 +303,33 @@
             this.trashPicBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.trashPicBox.Cursor = System.Windows.Forms.Cursors.Default;
             this.trashPicBox.Image = global::Ardruino_Computer_Data_Display.Properties.Resources.trash_can_icon_28692;
-            this.trashPicBox.Location = new System.Drawing.Point(500, 370);
+            this.trashPicBox.Location = new System.Drawing.Point(375, 301);
+            this.trashPicBox.Margin = new System.Windows.Forms.Padding(2);
             this.trashPicBox.Name = "trashPicBox";
-            this.trashPicBox.Size = new System.Drawing.Size(77, 83);
+            this.trashPicBox.Size = new System.Drawing.Size(58, 67);
             this.trashPicBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.trashPicBox.TabIndex = 4;
             this.trashPicBox.TabStop = false;
             // 
+            // dispArea
+            // 
+            this.dispArea.BackColor = System.Drawing.Color.Transparent;
+            this.dispArea.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.dispArea.Location = new System.Drawing.Point(12, 206);
+            this.dispArea.Name = "dispArea";
+            this.dispArea.Size = new System.Drawing.Size(96, 104);
+            this.dispArea.TabIndex = 1;
+            this.dispArea.TabStop = false;
+            // 
             // DispEditForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 479);
+            this.ClientSize = new System.Drawing.Size(800, 389);
             this.Controls.Add(this.trashPicBox);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.dispArea);
             this.Controls.Add(this.toolTabs);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "DispEditForm";
             this.Text = "Display Settings";
             this.Load += new System.EventHandler(this.DispEditForm_Load);
@@ -335,9 +338,9 @@
             this.CPU.PerformLayout();
             this.ProfilesTab.ResumeLayout(false);
             this.ProfilesTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dispArea)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trashPicBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dispArea)).EndInit();
             this.ResumeLayout(false);
 
         }

@@ -69,5 +69,15 @@ namespace Ardruino_Computer_Data_Display.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap trash_can_icon_286921 {
+            get {
+                object obj = ResourceManager.GetObject("trash-can-icon-286921", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
