@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DispEditForm));
             this.toolTabs = new System.Windows.Forms.TabControl();
             this.CPU = new System.Windows.Forms.TabPage();
             this.tempCPULabel = new System.Windows.Forms.Label();
@@ -198,12 +199,12 @@
             this.fileCB.Enabled = false;
             this.fileCB.FormattingEnabled = true;
             this.fileCB.Items.AddRange(new object[] {
-            ""});
+            "C:\\Users\\William\\Source\\Repos\\Ardruino-Computer-Data-Display\\Profiles"});
             this.fileCB.Location = new System.Drawing.Point(127, 123);
             this.fileCB.Name = "fileCB";
             this.fileCB.Size = new System.Drawing.Size(290, 24);
             this.fileCB.TabIndex = 16;
-            this.dispSetTips.SetToolTip(this.fileCB, "Choose your profile folder here.");
+            this.dispSetTips.SetToolTip(this.fileCB, resources.GetString("fileCB.ToolTip"));
             this.fileCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FileCB_KeyPress);
             // 
             // fileBrowserButton

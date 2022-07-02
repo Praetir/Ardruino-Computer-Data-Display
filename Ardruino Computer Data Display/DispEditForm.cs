@@ -16,9 +16,6 @@ namespace Ardruino_Computer_Data_Display
         // Initialize data table for display information
         public DataTable dispTable;
 
-        // Initialize dictionary for storing folders
-        Dictionary<string, int> storedFolders = new Dictionary<string, int>();
-
         // Initialize trash can range (1st and 2nd values are for x, 3rd and 4th for y)
         public int[] trashRange = new int[4];
 
@@ -28,10 +25,7 @@ namespace Ardruino_Computer_Data_Display
         public DispEditForm()
         {
             InitializeComponent();
-        }
-        
-        private void DispEditForm_Load(object sender, EventArgs e)
-        {
+
             // Adjust size of display area if needed
             dispArea.Width = ACDDForm.numHorPix;
             dispArea.Height = ACDDForm.numVertPix;
@@ -47,9 +41,12 @@ namespace Ardruino_Computer_Data_Display
             dispTable.Columns.Add(new DataColumn("LabelLocationX"));
             dispTable.Columns.Add(new DataColumn("LabelLocationY"));
 
-            // Add folders from text file to combobox
-            string[] folders = System.IO.File.ReadAllLines(folderPaths);
-            fileCB.Items.AddRange(folders);
+            // Set folder paths combobox based on last set folder
+            if (Properties.Settings.Default.LastProfileFolder != "")
+            {
+                fileCB.SelectedText = Properties.Settings.Default.LastProfileFolder;
+                fileCB.SelectedItem = fileCB.SelectedText;
+            }
 
             // Get trash can range
             Point trashCorner = trashPicBox.Location;
@@ -61,6 +58,11 @@ namespace Ardruino_Computer_Data_Display
             //Console.WriteLine(String.Format("{0}<x<{1} {2}>x>{3}", trashRange[0], trashRange[1], trashRange[2], trashRange[3]));
 
             dataGridView1.DataSource = dispTable; // Temporary for viewing if data table is working properly
+        }
+        
+        private void DispEditForm_Load(object sender, EventArgs e)
+        {
+            
         }
 
         private void DispCPUCheck_CheckedChanged(object sender, EventArgs e)
@@ -308,13 +310,22 @@ namespace Ardruino_Computer_Data_Display
         {
             if (fileEditSetCheck.Checked)
             {
+                // Enable combobox and delete button
                 fileCB.Enabled = true;
                 fileDeleteButton.Enabled = true;
             }
             else
             {
+                // Disable combobox and delete button
                 fileCB.Enabled = false;
                 fileDeleteButton.Enabled = false;
+
+                // Check if there is a valid profile path selected and change settings option if there is
+                if (System.IO.Directory.Exists((string)fileCB.SelectedItem))
+                {
+                    Properties.Settings.Default.LastProfileFolder = (string)fileCB.SelectedItem;
+                    Console.WriteLine(Properties.Settings.Default.LastProfileFolder);
+                }
             }
         }
 
@@ -336,10 +347,12 @@ namespace Ardruino_Computer_Data_Display
                 fileCB.Items.Add(fileCB.Text);
                 UpdateFolderTextFile();
             }
+            
         }
 
         private void UpdateFolderTextFile()
         {
+            // Only do if there is more than the default folder in the combobox
             if (fileCB.Items.Count > 1)
             {
                 string[] folders = new string[fileCB.Items.Count];

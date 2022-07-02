@@ -37,6 +37,7 @@ namespace Ardruino_Computer_Data_Display
             CPUEnabled = true
         };
 
+        // Initialize display edit form
         public DispEditForm edit = new DispEditForm();
 
         public ACDDForm()

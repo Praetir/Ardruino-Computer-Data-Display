@@ -120,6 +120,14 @@
   <metadata name="dispSetTips.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="fileCB.ToolTip" xml:space="preserve">
+    <value>Choose your profile folder here.
+Ckeck Edit/Set Path to allow changes to paths
+Uncheck Edit/Set Path to set path.
+Click in box and type to input a new path.
+Press Enter to create a new path.
+No changes can be made to default path.</value>
+  </data>
   <metadata name="profileFileBrowser.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>151, 17</value>
   </metadata>
