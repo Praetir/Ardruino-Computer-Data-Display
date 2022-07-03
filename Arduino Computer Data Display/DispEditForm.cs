@@ -515,29 +515,26 @@ namespace Arduino_Computer_Data_Display
 
         private void DispLoadButton_Click(object sender, EventArgs e)
         {
-            // Do nothing if profile is the same as the last one
-            if (Properties.Settings.Default.LastProfilePath == profDict[(string)profileCB.SelectedItem])
-            {
-                return;
-            }
-
             // Set loading boolean
             loading = true;
 
-            // Delete labels, update checklists, and clear datatable
-            string nameCL;
-            int indexCL;
-            foreach (DataRow row in dispTable.Rows)
+            // Delete labels, update checklists, and clear datatable (if anything is there)
+            if (dispTable.Rows.Count > 0)
             {
-                nameCL = (string)row["ChecklistName"];
-                indexCL = (int)row["CheckIndex"];
+                string nameCL;
+                int indexCL;
+                for (int i = 0; i <= dispTable.Rows.Count; i++)
+                {
+                    nameCL = (string)dispTable.Rows[0]["ChecklistName"];
+                    indexCL = int.Parse(dispTable.Rows[0]["CheckIndex"].ToString());
 
-                // Update checklist
-                CheckedListBox myCl = (CheckedListBox)Controls.Find(nameCL, true)[0];
-                myCl.SetItemChecked(indexCL, false);
+                    // Update checklist
+                    CheckedListBox myCl = (CheckedListBox)Controls.Find(nameCL, true)[0];
+                    myCl.SetItemChecked(indexCL, false);
 
-                // Delete label
-                DispRemove(nameCL, indexCL);
+                    // Delete label
+                    DispRemove(nameCL, indexCL);
+                }
             }
 
             // Set last profile loaded in settings
