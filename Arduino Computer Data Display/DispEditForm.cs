@@ -453,7 +453,9 @@ namespace Arduino_Computer_Data_Display
                 if (!profileCB.Items.Contains(profileCB.Text))
                 {
                     profileCB.Items.Add(profileCB.Text);
-                    System.IO.File.WriteAllText(System.IO.Path.Combine((string)folderCB.SelectedItem, profileCB.Text + ".txt"), "ACDD Profile", Encoding.UTF8);
+                    string filePath = System.IO.Path.Combine((string)folderCB.SelectedItem, profileCB.Text + ".txt");
+                    System.IO.File.WriteAllText(filePath, "ACDD Profile", Encoding.UTF8);
+                    profDict.Add(profileCB.Text, filePath);
                 }
             }
         }
@@ -464,6 +466,7 @@ namespace Arduino_Computer_Data_Display
             string profileName = (string)profileCB.SelectedItem;
             System.IO.File.Delete(profDict[profileName]);
             profileCB.Items.Remove(profileName);
+            profDict.Remove(profileName);
             profileCB.Text = "";
         }
     }
