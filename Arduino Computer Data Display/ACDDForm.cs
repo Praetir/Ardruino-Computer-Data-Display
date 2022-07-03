@@ -27,11 +27,6 @@ namespace Arduino_Computer_Data_Display
         int dataTime; // Amount of time before the OLED display updates
         string prefPort; // Port set in pref.txt
 
-        public static string programFolder; // Path to program folder
-        public static int numHorPix;
-        public static int numVertPix;
-
-
         readonly Computer c = new Computer()
         {
             GPUEnabled = true,
@@ -47,7 +42,7 @@ namespace Arduino_Computer_Data_Display
 
             // Find path to Arduino Computer Data Display
             bool foundProgramFolder = false;
-            programFolder = System.IO.Directory.GetCurrentDirectory();
+            string programFolder = System.IO.Directory.GetCurrentDirectory();
             while (!foundProgramFolder)
             {
                 if (System.IO.Path.GetFileName(programFolder) == "Arduino Computer Data Display")
@@ -62,6 +57,7 @@ namespace Arduino_Computer_Data_Display
                 }
                 programFolder = System.IO.Directory.GetParent(programFolder).ToString();
             }
+            Properties.Settings.Default.ProgramPath = programFolder;
 
             // Read preferences from text file
             string[] prefData = System.IO.File.ReadAllLines(System.IO.Path.Combine(programFolder, "pref.txt"));
@@ -312,8 +308,8 @@ namespace Arduino_Computer_Data_Display
             dataTime = int.Parse(SeparatePref(2, prefData));
             autoStart = bool.Parse(SeparatePref(3, prefData));
             prefPort = SeparatePref(4, prefData);
-            numHorPix = int.Parse(SeparatePref(5, prefData));
-            numVertPix = int.Parse(SeparatePref(6, prefData));
+            Properties.Settings.Default.numHorPix = int.Parse(SeparatePref(5, prefData));
+            Properties.Settings.Default.numVertPix = int.Parse(SeparatePref(6, prefData));
         }
 
         private string SeparatePref(int prefLineIndex, string[] prefData)

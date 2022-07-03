@@ -46,5 +46,39 @@ namespace Arduino_Computer_Data_Display.Properties {
                 this["LastProfileFolder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastProfilePath {
+            get {
+                return ((string)(this["LastProfilePath"]));
+            }
+            set {
+                this["LastProfilePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public int numHorPix {
+            get {
+                return ((int)(this["numHorPix"]));
+            }
+            set {
+                this["numHorPix"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public int numVertPix {
+            get {
+                return ((int)(this["numVertPix"]));
+            }
+            set {
+                this["numVertPix"] = value;
+            }
+        }
     }
 }

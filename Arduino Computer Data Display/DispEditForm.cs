@@ -33,10 +33,8 @@ namespace Arduino_Computer_Data_Display
             InitializeComponent();
 
             // Adjust size of display area if needed
-            dispArea.Width = ACDDForm.numHorPix;
-            dispArea.Height = ACDDForm.numVertPix;
-            Console.WriteLine(dispArea.Width);
-            Console.WriteLine(dispArea.Height);
+            dispArea.Width = Properties.Settings.Default.numHorPix;
+            dispArea.Height = Properties.Settings.Default.numVertPix;
 
             // Make new data table and add columns
             dispTable = new DataTable();
@@ -71,7 +69,7 @@ namespace Arduino_Computer_Data_Display
             dataGridView1.DataSource = dispTable; // Temporary for viewing if data table is working properly
 
             // Get path to to folderpaths.txt
-            folderPaths = System.IO.Path.Combine(ACDDForm.programFolder, "folderpaths.txt");
+            folderPaths = System.IO.Path.Combine(Properties.Settings.Default.ProgramPath, "folderpaths.txt");
 
             // Add profile folders to combobox
             folderCB.Items.AddRange(System.IO.File.ReadAllLines(folderPaths));
@@ -336,7 +334,6 @@ namespace Arduino_Computer_Data_Display
             {
                 dragRow["DispArea"] = false;
             }
-            
         }
 
         private void FolderBrowserButton_Click(object sender, EventArgs e)
@@ -374,9 +371,9 @@ namespace Arduino_Computer_Data_Display
                         profileCB.Items.Clear();
                         profDict.Clear();
                         string[] lines;
-                        string line = "";
-                        string fileName = "";
-                        string fileNameNoExt = "";
+                        string line;
+                        string fileName;
+                        string fileNameNoExt;
 
                         // Check each file and only add text files with specific header line
                         foreach (string filePath in System.IO.Directory.GetFiles(currentFolder))
@@ -485,6 +482,34 @@ namespace Arduino_Computer_Data_Display
             profileCB.Items.Remove(profileName);
             profDict.Remove(profileName);
             profileCB.Text = "";
+        }
+
+        private void DispSaveButton_Click(object sender, EventArgs e)
+        {
+            // Get profile path
+            string profPath = profDict[(string)profileCB.SelectedItem];
+
+            // Clear file and write first line
+            System.IO.File.WriteAllText(profPath, "ACDD Profile" + Environment.NewLine, Encoding.UTF8);
+
+            foreach (DataRow row in dispTable.Rows)
+            {
+                object[] array = row.ItemArray;
+                string temp = "";
+                for (int i = 0; i < array.Length - 1; i++)
+                {
+                    temp += array[i].ToString() + "|";
+                }
+                System.IO.File.AppendAllText(profPath, temp + Environment.NewLine);
+            }
+        }
+
+        private void DispLoadButton_Click(object sender, EventArgs e)
+        {
+            // Read text file
+            string[] allInfo = System.IO.File.ReadAllLines(profDict[(string)profileCB.SelectedItem]);
+
+            // 
         }
     }
 }

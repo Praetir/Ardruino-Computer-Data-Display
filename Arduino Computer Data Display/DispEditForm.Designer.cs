@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DispEditForm));
             this.toolTabs = new System.Windows.Forms.TabControl();
             this.CPU = new System.Windows.Forms.TabPage();
             this.tempCPULabel = new System.Windows.Forms.Label();
@@ -199,6 +200,8 @@
             this.folderCB.Name = "folderCB";
             this.folderCB.Size = new System.Drawing.Size(218, 21);
             this.folderCB.TabIndex = 16;
+            this.dispSetTips.SetToolTip(this.folderCB, "Choose your profile folder here.\r\nPress Enter to add pathway to profiles folder.\r" +
+        "\n Only valid paths may be added.");
             this.folderCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FolderCB_KeyPress);
             // 
             // fileBrowserButton
@@ -254,6 +257,7 @@
             this.dispLoadButton.TabIndex = 6;
             this.dispLoadButton.Text = "Load Profile";
             this.dispLoadButton.UseVisualStyleBackColor = true;
+            this.dispLoadButton.Click += new System.EventHandler(this.DispLoadButton_Click);
             // 
             // profileLabel
             // 
@@ -273,8 +277,7 @@
             this.profileCB.Name = "profileCB";
             this.profileCB.Size = new System.Drawing.Size(218, 21);
             this.profileCB.TabIndex = 4;
-            this.dispSetTips.SetToolTip(this.profileCB, "Choose your profile here.\r\nPress Enter to create profile.\r\n^^^ This does not save" +
-        " anything to the profile.");
+            this.dispSetTips.SetToolTip(this.profileCB, resources.GetString("profileCB.ToolTip"));
             this.profileCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ProfileCB_KeyPress);
             // 
             // dispSaveButton
@@ -286,6 +289,7 @@
             this.dispSaveButton.TabIndex = 3;
             this.dispSaveButton.Text = "Save Profile";
             this.dispSaveButton.UseVisualStyleBackColor = true;
+            this.dispSaveButton.Click += new System.EventHandler(this.DispSaveButton_Click);
             // 
             // dataGridView1
             // 

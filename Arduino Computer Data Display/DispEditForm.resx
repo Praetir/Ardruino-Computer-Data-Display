@@ -120,9 +120,14 @@
   <metadata name="dispSetTips.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>181, 17</value>
   </metadata>
-  <metadata name="dispSetTips.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>181, 17</value>
-  </metadata>
+  <data name="profileCB.ToolTip" xml:space="preserve">
+    <value>Select the active profile here.
+Press Enter to create profile.
+^^^ This does not save anything to the profile.
+If you want to make a profile outside of this
+program, make a text file with "ACDD Form" 
+as the first line.</value>
+  </data>
   <metadata name="profileFolderBrowser.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
