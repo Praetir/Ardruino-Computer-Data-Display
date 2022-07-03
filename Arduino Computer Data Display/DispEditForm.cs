@@ -28,6 +28,9 @@ namespace Arduino_Computer_Data_Display
         // Initialize dictionary for profile names and profile
         public Dictionary<string, string> profDict = new Dictionary<string, string>();
 
+        // Initialize boolean to determine if profile loading is occurring
+        public bool loading = false;
+
         public DispEditForm()
         {
             InitializeComponent();
@@ -118,6 +121,12 @@ namespace Arduino_Computer_Data_Display
 
         private void CL_ItemCheck(object sender, ItemCheckEventArgs e)
         {
+            // Do nothing is loading bool is true
+            if (loading)
+            {
+                return;
+            }
+
             // Get checklist
             CheckedListBox myCL = (CheckedListBox)sender;
 
@@ -163,7 +172,7 @@ namespace Arduino_Computer_Data_Display
         }
 
         // Add text label to form to represent display items
-        private void DispAdd(string clName, int index, string checkName, string dataType)
+        private void DispAdd(string clName, int index, string checkName, string dataType, string fontName = "Microsoft Sans Serif", float fontSize = 6.0f, int locX = 300, int locY = 280)
         {
             // Get desired label name and text
             string[] labelInfo = MakeLabelTextName(checkName, dataType);
@@ -173,9 +182,9 @@ namespace Arduino_Computer_Data_Display
             {
                 Text = labelInfo[0],
                 Name = labelInfo[1],
-                Location = new Point(300, 280),
                 AutoSize = true,
-                Font = new Font("Microsoft Sans Serif", 6.0f)
+                Font = new Font(fontName, fontSize),
+                Location = new Point(locX, locY)
             };
 
             // Store label and checklist information in datatable
@@ -207,7 +216,7 @@ namespace Arduino_Computer_Data_Display
             }
             DataRow removeRow = remRow[0];
 
-            // Cast the label name data to a string, get the label, and remove it from the form
+            // Get the label and remove it from the form
             string labelDisp = (string)removeRow["LabelName"];
             Controls.Remove(Controls.OfType<Label>().FirstOrDefault(c => c.Name == labelDisp));
             dispTable.Rows.Remove(removeRow);
@@ -496,7 +505,7 @@ namespace Arduino_Computer_Data_Display
             {
                 object[] array = row.ItemArray;
                 string temp = "";
-                for (int i = 0; i < array.Length - 1; i++)
+                for (int i = 0; i <= array.Length - 1; i++)
                 {
                     temp += array[i].ToString() + "|";
                 }
@@ -506,10 +515,65 @@ namespace Arduino_Computer_Data_Display
 
         private void DispLoadButton_Click(object sender, EventArgs e)
         {
+            // Do nothing if profile is the same as the last one
+            if (Properties.Settings.Default.LastProfilePath == profDict[(string)profileCB.SelectedItem])
+            {
+                return;
+            }
+
+            // Set loading boolean
+            loading = true;
+
+            // Delete labels, update checklists, and clear datatable
+            string nameCL;
+            int indexCL;
+            foreach (DataRow row in dispTable.Rows)
+            {
+                nameCL = (string)row["ChecklistName"];
+                indexCL = (int)row["CheckIndex"];
+
+                // Update checklist
+                CheckedListBox myCl = (CheckedListBox)Controls.Find(nameCL, true)[0];
+                myCl.SetItemChecked(indexCL, false);
+
+                // Delete label
+                DispRemove(nameCL, indexCL);
+            }
+
+            // Set last profile loaded in settings
+            Properties.Settings.Default.LastProfilePath = profDict[(string)profileCB.SelectedItem];
+            Console.WriteLine(Properties.Settings.Default.LastProfilePath);
+
             // Read text file
             string[] allInfo = System.IO.File.ReadAllLines(profDict[(string)profileCB.SelectedItem]);
 
-            // 
+            // Do nothing if there are no labels
+            if (allInfo.Length <= 1)
+            {
+                loading = false;
+                return;
+            }
+
+            // Get each row
+            string[] rowInfo;
+            int checkIndex;
+            for (int i = 1; i <= allInfo.Length - 1; i++)
+            {
+                // Split at the |
+                rowInfo = allInfo[i].Split('|');
+
+                // Update checklist
+                checkIndex = int.Parse(rowInfo[1]);
+
+                CheckedListBox myCl = (CheckedListBox)Controls.Find(rowInfo[0], true)[0];
+                myCl.SetItemChecked(checkIndex, true);
+
+                // Pass information needed to label adder
+                DispAdd(myCl.Name, checkIndex, (string)myCl.Items[checkIndex], (string)myCl.Tag, rowInfo[4], float.Parse(rowInfo[5]), int.Parse(rowInfo[6]), int.Parse(rowInfo[7]));
+            }
+
+            // Return to non-loading
+            loading = false;
         }
     }
 }
