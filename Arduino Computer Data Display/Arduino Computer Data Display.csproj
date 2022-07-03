@@ -114,6 +114,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Images\blank.png" />
     <Content Include="Images\trash-can-icon-28692.png" />
     <Content Include="pref.txt" />
     <Content Include="folderpaths.txt" />

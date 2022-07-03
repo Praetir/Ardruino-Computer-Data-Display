@@ -300,6 +300,7 @@
             // 
             this.trashPicBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.trashPicBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.trashPicBox.Image = global::Arduino_Computer_Data_Display.Properties.Resources.trash_can_icon_28692;
             this.trashPicBox.Location = new System.Drawing.Point(375, 301);
             this.trashPicBox.Margin = new System.Windows.Forms.Padding(2);
             this.trashPicBox.Name = "trashPicBox";
@@ -311,11 +312,12 @@
             // dispArea
             // 
             this.dispArea.BackColor = System.Drawing.Color.Transparent;
+            this.dispArea.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.dispArea.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.dispArea.Location = new System.Drawing.Point(12, 206);
+            this.dispArea.Location = new System.Drawing.Point(12, 205);
             this.dispArea.Name = "dispArea";
-            this.dispArea.Size = new System.Drawing.Size(96, 104);
-            this.dispArea.TabIndex = 1;
+            this.dispArea.Size = new System.Drawing.Size(128, 128);
+            this.dispArea.TabIndex = 5;
             this.dispArea.TabStop = false;
             // 
             // DispEditForm
@@ -323,9 +325,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 389);
+            this.Controls.Add(this.dispArea);
             this.Controls.Add(this.trashPicBox);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.dispArea);
             this.Controls.Add(this.toolTabs);
             this.Name = "DispEditForm";
             this.Text = "Display Settings";
@@ -353,7 +355,6 @@
         private System.Windows.Forms.TextBox coreCPUText;
         private System.Windows.Forms.ToolTip dispSetTips;
         private System.Windows.Forms.Label tempCPULabel;
-        private System.Windows.Forms.PictureBox dispArea;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.PictureBox trashPicBox;
         private System.Windows.Forms.TabPage ProfilesTab;
@@ -368,5 +369,6 @@
         private System.Windows.Forms.FolderBrowserDialog profileFolderBrowser;
         private System.Windows.Forms.ComboBox folderCB;
         private System.Windows.Forms.CheckBox folderEditSetCheck;
+        private System.Windows.Forms.PictureBox dispArea;
     }
 }

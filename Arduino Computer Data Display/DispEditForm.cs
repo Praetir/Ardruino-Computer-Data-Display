@@ -19,8 +19,11 @@ namespace Arduino_Computer_Data_Display
         // Initialize trash can range (1st and 2nd values are for x, 3rd and 4th for y)
         public int[] trashRange = new int[4];
 
+        // Initialize display area range
+        public int[] dispRange = new int[4];
+
         // File path string for folderpaths.txt
-        public string folderPaths = @"C:\Users\William\source\repos\Arduino-Computer-Data-Display\Arduino Computer Data Display\folderpaths.txt";
+        public string folderPaths;
 
         // Initialize dictionary for profile names and profile
         public Dictionary<string, string> profDict = new Dictionary<string, string>();
@@ -32,6 +35,8 @@ namespace Arduino_Computer_Data_Display
             // Adjust size of display area if needed
             dispArea.Width = ACDDForm.numHorPix;
             dispArea.Height = ACDDForm.numVertPix;
+            Console.WriteLine(dispArea.Width);
+            Console.WriteLine(dispArea.Height);
 
             // Make new data table and add columns
             dispTable = new DataTable();
@@ -43,6 +48,9 @@ namespace Arduino_Computer_Data_Display
             dispTable.Columns.Add(new DataColumn("LabelFontSize"));
             dispTable.Columns.Add(new DataColumn("LabelLocationX"));
             dispTable.Columns.Add(new DataColumn("LabelLocationY"));
+            dispTable.Columns.Add(new DataColumn("DispArea"));
+            dispTable.Columns.Add(new DataColumn("DispX"));
+            dispTable.Columns.Add(new DataColumn("DispY"));
 
             // Get trash can range
             Point trashCorner = trashPicBox.Location;
@@ -52,25 +60,15 @@ namespace Arduino_Computer_Data_Display
             trashRange[2] = trashCorner.Y;
             trashRange[3] = trashRange[2] + trashSize.Height;
 
-            dataGridView1.DataSource = dispTable; // Temporary for viewing if data table is working properly
+            // Get display area range
+            Point dispCorner = dispArea.Location;
+            Size dispSize = dispArea.Size;
+            dispRange[0] = dispCorner.X;
+            dispRange[1] = dispRange[0] + dispSize.Width;
+            dispRange[2] = dispCorner.Y;
+            dispRange[3] = dispRange[2] + dispSize.Height;
 
-            // Find path to Arduino Computer Data Display
-            bool foundProgramFolder = false;
-            ACDDForm.programFolder = System.IO.Directory.GetCurrentDirectory();
-            while (!foundProgramFolder)
-            {
-                if (System.IO.Path.GetFileName(ACDDForm.programFolder) == "Arduino Computer Data Display")
-                {
-                    foundProgramFolder = true;
-                    Console.WriteLine(System.IO.Path.GetFileName(ACDDForm.programFolder));
-                    continue;
-                }
-                if (ACDDForm.programFolder == null)
-                {
-                    // Do some error handling here
-                }
-                ACDDForm.programFolder = System.IO.Directory.GetParent(ACDDForm.programFolder).ToString();
-            }
+            dataGridView1.DataSource = dispTable; // Temporary for viewing if data table is working properly
 
             // Get path to to folderpaths.txt
             folderPaths = System.IO.Path.Combine(ACDDForm.programFolder, "folderpaths.txt");
@@ -184,7 +182,7 @@ namespace Arduino_Computer_Data_Display
 
             // Store label and checklist information in datatable
             
-            dispTable.Rows.Add(clName, index, labelDisp.Name, labelDisp.Text, labelDisp.Font.Name, labelDisp.Font.Size, labelDisp.Location.X, labelDisp.Location.Y);
+            dispTable.Rows.Add(clName, index, labelDisp.Name, labelDisp.Text, labelDisp.Font.Name, labelDisp.Font.Size, labelDisp.Location.X, labelDisp.Location.Y, false);
 
             // Make label draggable, add to form, and put it to front
             ControlExtension.Draggable(labelDisp, true);
@@ -309,15 +307,34 @@ namespace Arduino_Computer_Data_Display
                 return;
             }
 
+            // Update label coordinates to data table
             DataRow dragRow = tempRows[0];
             dragRow["LabelLocationX"] = labelPoint.X;
             dragRow["LabelLocationY"] = labelPoint.Y;
+
+            // Size of label for display area determination
+            Size labelSize = dragLabel.Size;
 
             // Determine if dragged label should be deleted
             if (trashRange[0] <= mouseLocX && mouseLocX <= trashRange[1] && trashRange[2] <= mouseLocY && mouseLocY <= trashRange[3])
             {
                 Controls.Remove(dragLabel);
                 dispTable.Rows.Remove(dragRow);
+            }
+            // Determine if label is within the display area by using the upper left and lower right points of the label
+            else if (dispRange[0] <= labelPoint.X && (labelPoint.X + labelSize.Width) <= dispRange[1] && dispRange[2] <= labelPoint.Y && (labelPoint.Y + labelSize.Height) <= dispRange[3])
+            {
+                // Update if the label is within the display area
+                dragRow["DispArea"] = true;
+
+                // Add relative coordinates of label within display area
+                dragRow["DispX"] = labelPoint.X - dispRange[0];
+                dragRow["DispY"] = labelPoint.Y - dispRange[2];
+            }
+            // Set display area boolean to false
+            else
+            {
+                dragRow["DispArea"] = false;
             }
             
         }

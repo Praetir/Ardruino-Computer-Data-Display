@@ -38,18 +38,33 @@ namespace Arduino_Computer_Data_Display
             CPUEnabled = true
         };
 
-        // Initialize display edit form
-        public DispEditForm edit = new DispEditForm();
+        // Declare display edit form
+        public DispEditForm edit;
 
         public ACDDForm()
         {
             InitializeComponent();
-        }
 
-        private void ACDD_Load(object sender, EventArgs e)
-        {
+            // Find path to Arduino Computer Data Display
+            bool foundProgramFolder = false;
+            programFolder = System.IO.Directory.GetCurrentDirectory();
+            while (!foundProgramFolder)
+            {
+                if (System.IO.Path.GetFileName(programFolder) == "Arduino Computer Data Display")
+                {
+                    foundProgramFolder = true;
+                    Console.WriteLine(System.IO.Path.GetFileName(programFolder));
+                    continue;
+                }
+                if (programFolder == null)
+                {
+                    // Do some error handling here
+                }
+                programFolder = System.IO.Directory.GetParent(programFolder).ToString();
+            }
+
             // Read preferences from text file
-            string[] prefData = System.IO.File.ReadAllLines(@"C:\Users\William\source\repos\Arduino-Computer-Data-Display\Arduino Computer Data Display\pref.txt");
+            string[] prefData = System.IO.File.ReadAllLines(System.IO.Path.Combine(programFolder, "pref.txt"));
 
             // Set preference values
             PrefSet(prefData);
@@ -62,7 +77,7 @@ namespace Arduino_Computer_Data_Display
             timerCom.Interval = waitTime + 2000;
 
             // Determine timer interval for timerData
-            timerData.Interval = dataTime/sizeSam;
+            timerData.Interval = dataTime / sizeSam;
 
             // Add all ports to combo box
             string[] ports = SerialPort.GetPortNames();
@@ -73,6 +88,14 @@ namespace Arduino_Computer_Data_Display
             {
                 ButtonOpenPort_Click(this, new EventArgs());
             }
+
+            // Initialize display edit form
+            edit = new DispEditForm();
+        }
+
+        private void ACDD_Load(object sender, EventArgs e)
+        {
+
         }
 
         private void TimerData_Tick(object sender, EventArgs e)
