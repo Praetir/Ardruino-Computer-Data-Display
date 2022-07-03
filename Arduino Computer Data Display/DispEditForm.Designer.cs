@@ -192,8 +192,8 @@
             this.folderCB.Enabled = false;
             this.folderCB.FormattingEnabled = true;
             this.folderCB.Items.AddRange(new object[] {
-            "C:\\Users\\William\\source\\repos\\Arduino-Computer-Data-Display\\Arduino Computer Da" +
-                "ta Display\\Profiles"});
+            "C:\\Users\\William\\source\\repos\\Arduino-Computer-Data-Display\\Arduino Computer Data" +
+                " Display\\Profiles"});
             this.folderCB.Location = new System.Drawing.Point(95, 100);
             this.folderCB.Margin = new System.Windows.Forms.Padding(2);
             this.folderCB.Name = "folderCB";
@@ -243,6 +243,7 @@
             this.dispDeleteButton.TabIndex = 10;
             this.dispDeleteButton.Text = "Delete Profile";
             this.dispDeleteButton.UseVisualStyleBackColor = true;
+            this.dispDeleteButton.Click += new System.EventHandler(this.DispDeleteButton_Click);
             // 
             // dispLoadButton
             // 
@@ -266,8 +267,6 @@
             // 
             // profileCB
             // 
-            this.profileCB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.profileCB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList;
             this.profileCB.FormattingEnabled = true;
             this.profileCB.Location = new System.Drawing.Point(58, 42);
             this.profileCB.Margin = new System.Windows.Forms.Padding(2);

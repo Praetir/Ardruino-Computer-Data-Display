@@ -27,6 +27,7 @@ namespace Arduino_Computer_Data_Display
         int dataTime; // Amount of time before the OLED display updates
         string prefPort; // Port set in pref.txt
 
+        public static string programFolder; // Path to program folder
         public static int numHorPix;
         public static int numVertPix;
 

@@ -23,7 +23,7 @@ namespace Arduino_Computer_Data_Display
         public string folderPaths = @"C:\Users\William\source\repos\Arduino-Computer-Data-Display\Arduino Computer Data Display\folderpaths.txt";
 
         // Initialize dictionary for profile names and profile
-        public Dictionary<string, string> profiles = new Dictionary<string, string>();
+        public Dictionary<string, string> profDict = new Dictionary<string, string>();
 
         public DispEditForm()
         {
@@ -44,16 +44,6 @@ namespace Arduino_Computer_Data_Display
             dispTable.Columns.Add(new DataColumn("LabelLocationX"));
             dispTable.Columns.Add(new DataColumn("LabelLocationY"));
 
-            // Add profile folders to combobox
-            folderCB.Items.AddRange(System.IO.File.ReadAllLines(folderPaths));
-
-            // Set folder paths combobox based on last set folder
-            if (Properties.Settings.Default.LastProfileFolder != "")
-            {
-                folderCB.SelectedText = Properties.Settings.Default.LastProfileFolder;
-                folderCB.SelectedItem = folderCB.SelectedText;
-            }
-
             // Get trash can range
             Point trashCorner = trashPicBox.Location;
             Size trashSize = trashPicBox.Size;
@@ -64,26 +54,36 @@ namespace Arduino_Computer_Data_Display
 
             dataGridView1.DataSource = dispTable; // Temporary for viewing if data table is working properly
 
-            // Find path to folderpaths.txt
+            // Find path to Arduino Computer Data Display
             bool foundProgramFolder = false;
-            string tempPath = System.IO.Directory.GetCurrentDirectory();
-            while (!foundProgramFolder) 
+            ACDDForm.programFolder = System.IO.Directory.GetCurrentDirectory();
+            while (!foundProgramFolder)
             {
-                Console.WriteLine(tempPath);
-                if (System.IO.Path.GetFileName(tempPath) == "Arduino Computer Data Display")
+                if (System.IO.Path.GetFileName(ACDDForm.programFolder) == "Arduino Computer Data Display")
                 {
                     foundProgramFolder = true;
-                    Console.WriteLine(System.IO.Path.GetFileName(tempPath));
+                    Console.WriteLine(System.IO.Path.GetFileName(ACDDForm.programFolder));
                     continue;
                 }
-                Console.WriteLine(System.IO.Path.GetFileName(tempPath));
-                if (tempPath == null)
+                if (ACDDForm.programFolder == null)
                 {
-                    
+                    // Do some error handling here
                 }
-                tempPath = System.IO.Directory.GetParent(tempPath).ToString();
+                ACDDForm.programFolder = System.IO.Directory.GetParent(ACDDForm.programFolder).ToString();
             }
-            Console.WriteLine(tempPath);
+
+            // Get path to to folderpaths.txt
+            folderPaths = System.IO.Path.Combine(ACDDForm.programFolder, "folderpaths.txt");
+
+            // Add profile folders to combobox
+            folderCB.Items.AddRange(System.IO.File.ReadAllLines(folderPaths));
+
+            // Set folder paths combobox based on last set folder
+            if (Properties.Settings.Default.LastProfileFolder != "")
+            {
+                folderCB.Text = Properties.Settings.Default.LastProfileFolder;
+                folderCB.SelectedItem = folderCB.Text;
+            }
         }
         
         private void DispEditForm_Load(object sender, EventArgs e)
@@ -355,6 +355,7 @@ namespace Arduino_Computer_Data_Display
                     {
                         // Clear profiles and declare string for text lines
                         profileCB.Items.Clear();
+                        profDict.Clear();
                         string[] lines;
                         string line = "";
                         string fileName = "";
@@ -377,7 +378,7 @@ namespace Arduino_Computer_Data_Display
                                     {
                                         fileNameNoExt = System.IO.Path.GetFileNameWithoutExtension(filePath);
                                         // Add file path and file name to dictionary
-                                        profiles.Add(fileNameNoExt, filePath);
+                                        profDict.Add(fileNameNoExt, filePath);
                                         profileCB.Items.Add(fileNameNoExt);
                                     }
                                 }
@@ -406,7 +407,7 @@ namespace Arduino_Computer_Data_Display
         private void FolderCB_KeyPress(object sender, KeyPressEventArgs e)
         {
             // Update combobox if enter key has been pressed and contents are a valid directory
-            if ((e.KeyChar == (char)Keys.Enter) && System.IO.Directory.Exists(folderCB.Text))
+            if ((e.KeyChar == (char)Keys.Enter || e.KeyChar == (char)Keys.Return) && System.IO.Directory.Exists(folderCB.Text))
             {
                 folderCB.Items.Add(folderCB.Text);
                 UpdateFolderTextFile();
@@ -443,15 +444,27 @@ namespace Arduino_Computer_Data_Display
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && !char.IsLetter(e.KeyChar))
             {
                 e.Handled = true;
+                Console.WriteLine(e.KeyChar);
             }
-            
             // Update combobox and create file if enter key has been pressed
-            if ((e.KeyChar == (char)Keys.Enter) && System.IO.Directory.Exists(folderCB.Text))
+            else if ((e.KeyChar == (char)Keys.Enter || e.KeyChar == (char)Keys.Return) && System.IO.Directory.Exists((string)folderCB.SelectedItem))
             {
-                Console.WriteLine("adding");
-                profileCB.Items.Add(profileCB.Text);
-                System.IO.File.WriteAllText((string)folderCB.SelectedItem, "ACDD Profile", Encoding.UTF8);
+                // Check is combobox contains profile of the same name and do nothing if it does
+                if (!profileCB.Items.Contains(profileCB.Text))
+                {
+                    profileCB.Items.Add(profileCB.Text);
+                    System.IO.File.WriteAllText(System.IO.Path.Combine((string)folderCB.SelectedItem, profileCB.Text + ".txt"), "ACDD Profile", Encoding.UTF8);
+                }
             }
+        }
+
+        private void DispDeleteButton_Click(object sender, EventArgs e)
+        {
+            // Get file path from dictionary
+            string profileName = (string)profileCB.SelectedItem;
+            System.IO.File.Delete(profDict[profileName]);
+            profileCB.Items.Remove(profileName);
+            profileCB.Text = "";
         }
     }
 }
