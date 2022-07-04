@@ -95,9 +95,7 @@ namespace Arduino_Computer_Data_Display
         }
 
         private void TimerData_Tick(object sender, EventArgs e)
-        {
-            //Console.WriteLine("Timer1 ticked");
-            
+        {            
             // Get hardware data
             NumsGet();
 
@@ -120,8 +118,6 @@ namespace Arduino_Computer_Data_Display
 
         private void TimerCom_Tick(object sender, EventArgs e)
         {
-            //Console.WriteLine("Timer2 ticked");
-
             // Reset Arduino and wait a couple of seconds
             ardPort.WriteLine("@");
             Thread.Sleep(waitTime);
@@ -253,13 +249,11 @@ namespace Arduino_Computer_Data_Display
 
         private void NumsGet()
         {
-            Console.WriteLine("Getting hardware info");
+            // Check each hardware part in c
             foreach (var hardware in c.Hardware)
             {
-                Console.WriteLine("Got hardware");
                 if (hardware.HardwareType == HardwareType.CPU)
                 {
-                    //Console.WriteLine("Getting CPU info");
                     hardware.Update();
                     foreach (var sensor in hardware.Sensors)
                     {
@@ -277,7 +271,6 @@ namespace Arduino_Computer_Data_Display
 
                 if (hardware.HardwareType == HardwareType.GpuNvidia)
                 {
-                    //Console.WriteLine("Getting GPU info");
                     hardware.Update();
                     foreach (var sensor in hardware.Sensors)
                     {
@@ -297,7 +290,6 @@ namespace Arduino_Computer_Data_Display
 
         private void SendArd()
         {
-            Console.WriteLine("<" + tempCPU + ")" + tempGPU + ">");
             ardPort.WriteLine("<" + tempCPU + ")" + tempGPU + ">");
         }
 

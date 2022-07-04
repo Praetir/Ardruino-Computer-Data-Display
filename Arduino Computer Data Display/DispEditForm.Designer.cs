@@ -50,14 +50,12 @@
             this.profileCB = new System.Windows.Forms.ComboBox();
             this.dispSaveButton = new System.Windows.Forms.Button();
             this.dispSetTips = new System.Windows.Forms.ToolTip(this.components);
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.profileFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.trashPicBox = new System.Windows.Forms.PictureBox();
             this.dispArea = new System.Windows.Forms.PictureBox();
             this.toolTabs.SuspendLayout();
             this.CPU.SuspendLayout();
             this.ProfilesTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trashPicBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dispArea)).BeginInit();
             this.SuspendLayout();
@@ -291,21 +289,12 @@
             this.dispSaveButton.UseVisualStyleBackColor = true;
             this.dispSaveButton.Click += new System.EventHandler(this.DispSaveButton_Click);
             // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(440, 220);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
-            this.dataGridView1.TabIndex = 2;
-            // 
             // trashPicBox
             // 
             this.trashPicBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.trashPicBox.Cursor = System.Windows.Forms.Cursors.Default;
             this.trashPicBox.Image = global::Arduino_Computer_Data_Display.Properties.Resources.trash_can_icon_28692;
-            this.trashPicBox.Location = new System.Drawing.Point(375, 301);
+            this.trashPicBox.Location = new System.Drawing.Point(560, 266);
             this.trashPicBox.Margin = new System.Windows.Forms.Padding(2);
             this.trashPicBox.Name = "trashPicBox";
             this.trashPicBox.Size = new System.Drawing.Size(58, 67);
@@ -328,10 +317,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 389);
+            this.ClientSize = new System.Drawing.Size(635, 346);
             this.Controls.Add(this.dispArea);
             this.Controls.Add(this.trashPicBox);
-            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.toolTabs);
             this.Name = "DispEditForm";
             this.Text = "Display Settings";
@@ -341,7 +329,6 @@
             this.CPU.PerformLayout();
             this.ProfilesTab.ResumeLayout(false);
             this.ProfilesTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trashPicBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dispArea)).EndInit();
             this.ResumeLayout(false);
@@ -359,7 +346,6 @@
         private System.Windows.Forms.TextBox coreCPUText;
         private System.Windows.Forms.ToolTip dispSetTips;
         private System.Windows.Forms.Label tempCPULabel;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.PictureBox trashPicBox;
         private System.Windows.Forms.TabPage ProfilesTab;
         private System.Windows.Forms.Label profileLabel;

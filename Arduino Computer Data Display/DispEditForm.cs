@@ -69,8 +69,6 @@ namespace Arduino_Computer_Data_Display
             dispRange[2] = dispCorner.Y;
             dispRange[3] = dispRange[2] + dispSize.Height;
 
-            dataGridView1.DataSource = dispTable; // Temporary for viewing if data table is working properly
-
             // Get path to to folderpaths.txt
             folderPaths = System.IO.Path.Combine(Properties.Settings.Default.ProgramPath, "folderpaths.txt");
 
