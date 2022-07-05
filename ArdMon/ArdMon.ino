@@ -1,3 +1,17 @@
+/* ArdMon.ino
+ *  Sketch that allows the Arduino to receive formatting and computer information
+ *  to present on an Arduino compatible display.
+ *  
+ *  Written by William Schaffer
+ *  Created: 9/30/2021
+ *  Last Modified: 7/4/2022
+ */
+
+#include <Arduino.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1351.h>
+#include <SPI.h>
+
 // Declare some variables
 String tempCPU = "";
 String tempGPU = "";
@@ -22,10 +36,6 @@ void(* resetFunc) (void) = 0;
 #define DC_PIN   7
 #define CS_PIN   10
 #define RST_PIN  8
-
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1351.h>
-#include <SPI.h>
 
 // SSD1331 color definitions
 #define BLACK           0x0000

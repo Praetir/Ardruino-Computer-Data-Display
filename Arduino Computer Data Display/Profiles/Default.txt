@@ -1,3 +1,2 @@
 ﻿ACDD Profile
-tempCPUCL|0|CPUPackageTempLabel|CPU Package Temp: ##.#°C|Microsoft Sans Serif|6|24|248|True|12|43|
-tempCPUCL|1|CPUCoreAvgTempLabel|CPU Core Avg Temp: ##.#°C|Microsoft Sans Serif|6|24|224|True|12|19|
+tempCPUCL|1|CPUCoreAvgTempLabel|CPU Core Avg Temp: ##.#°C|Microsoft Sans Serif|6|18|237|True|6|32|

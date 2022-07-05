@@ -39,6 +39,7 @@
             this.buttonOpenPort = new System.Windows.Forms.Button();
             this.buttonClosePort = new System.Windows.Forms.Button();
             this.editDispButton = new System.Windows.Forms.Button();
+            this.loadButton = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,17 +48,16 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 45);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 34);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(664, 24);
+            this.statusStrip1.Size = new System.Drawing.Size(604, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 18);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
             // 
             // timerData
             // 
@@ -76,28 +76,25 @@
             // portCBox
             // 
             this.portCBox.FormattingEnabled = true;
-            this.portCBox.Location = new System.Drawing.Point(115, 7);
-            this.portCBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.portCBox.Location = new System.Drawing.Point(86, 6);
             this.portCBox.Name = "portCBox";
-            this.portCBox.Size = new System.Drawing.Size(160, 24);
+            this.portCBox.Size = new System.Drawing.Size(121, 21);
             this.portCBox.TabIndex = 3;
             // 
             // portLabel
             // 
             this.portLabel.AutoSize = true;
-            this.portLabel.Location = new System.Drawing.Point(16, 11);
-            this.portLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.portLabel.Location = new System.Drawing.Point(12, 9);
             this.portLabel.Name = "portLabel";
-            this.portLabel.Size = new System.Drawing.Size(91, 17);
+            this.portLabel.Size = new System.Drawing.Size(68, 13);
             this.portLabel.TabIndex = 4;
             this.portLabel.Text = "Arduino Port:";
             // 
             // buttonOpenPort
             // 
-            this.buttonOpenPort.Location = new System.Drawing.Point(292, 7);
-            this.buttonOpenPort.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonOpenPort.Location = new System.Drawing.Point(219, 6);
             this.buttonOpenPort.Name = "buttonOpenPort";
-            this.buttonOpenPort.Size = new System.Drawing.Size(100, 28);
+            this.buttonOpenPort.Size = new System.Drawing.Size(75, 23);
             this.buttonOpenPort.TabIndex = 5;
             this.buttonOpenPort.Text = "Open";
             this.buttonOpenPort.UseVisualStyleBackColor = true;
@@ -106,10 +103,9 @@
             // buttonClosePort
             // 
             this.buttonClosePort.Enabled = false;
-            this.buttonClosePort.Location = new System.Drawing.Point(400, 7);
-            this.buttonClosePort.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonClosePort.Location = new System.Drawing.Point(300, 6);
             this.buttonClosePort.Name = "buttonClosePort";
-            this.buttonClosePort.Size = new System.Drawing.Size(100, 28);
+            this.buttonClosePort.Size = new System.Drawing.Size(75, 23);
             this.buttonClosePort.TabIndex = 6;
             this.buttonClosePort.Text = "Close";
             this.buttonClosePort.UseVisualStyleBackColor = true;
@@ -117,27 +113,36 @@
             // 
             // editDispButton
             // 
-            this.editDispButton.Location = new System.Drawing.Point(535, 7);
-            this.editDispButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.editDispButton.Location = new System.Drawing.Point(401, 6);
             this.editDispButton.Name = "editDispButton";
-            this.editDispButton.Size = new System.Drawing.Size(100, 28);
+            this.editDispButton.Size = new System.Drawing.Size(75, 23);
             this.editDispButton.TabIndex = 7;
             this.editDispButton.Text = "Edit Display";
             this.editDispButton.UseVisualStyleBackColor = true;
             this.editDispButton.Click += new System.EventHandler(this.EditDispButton_Click);
             // 
+            // loadButton
+            // 
+            this.loadButton.Location = new System.Drawing.Point(501, 6);
+            this.loadButton.Name = "loadButton";
+            this.loadButton.Size = new System.Drawing.Size(91, 23);
+            this.loadButton.TabIndex = 8;
+            this.loadButton.Text = "Load Settings";
+            this.loadButton.UseVisualStyleBackColor = true;
+            this.loadButton.Click += new System.EventHandler(this.LoadButton_Click);
+            // 
             // ACDDForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(664, 69);
+            this.ClientSize = new System.Drawing.Size(604, 56);
+            this.Controls.Add(this.loadButton);
             this.Controls.Add(this.editDispButton);
             this.Controls.Add(this.buttonClosePort);
             this.Controls.Add(this.buttonOpenPort);
             this.Controls.Add(this.portLabel);
             this.Controls.Add(this.portCBox);
             this.Controls.Add(this.statusStrip1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ACDDForm";
             this.Text = "Arduino Computer Monitor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ACDD_FormClosing);
@@ -161,6 +166,7 @@
         private System.Windows.Forms.Button buttonOpenPort;
         private System.Windows.Forms.Button buttonClosePort;
         private System.Windows.Forms.Button editDispButton;
+        private System.Windows.Forms.Button loadButton;
     }
 }
 

@@ -19,6 +19,7 @@ namespace Arduino_Computer_Data_Display
         bool estContact = false;
         bool nextChar = true;
         bool autoStart = false;
+        bool ardConfig = false;
         float tempCPU, tempGPU;
         float sumCPU, sumGPU;
         int sizeSam; // Number of samples before the OLED display updates
@@ -127,8 +128,6 @@ namespace Arduino_Computer_Data_Display
 
         private void ButtonOpenPort_Click(object sender, EventArgs e)
         {
-            try
-            {
                 // Update status
                 toolStripStatusLabel1.Text = ("Connecting to Arduino...");
 
@@ -150,11 +149,6 @@ namespace Arduino_Computer_Data_Display
                 buttonClosePort.Enabled = true;
 
                 timerCom.Start();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void ButtonClosePort_Click(object sender, EventArgs e)
@@ -163,7 +157,11 @@ namespace Arduino_Computer_Data_Display
             {
                 // Close selected port after sending disconnect line and disabling timerData
                 timerData.Stop();
-                ardPort.WriteLine("_");
+                
+                if (ardPort.IsOpen)
+                {
+                    ardPort.WriteLine("_");
+                }
                 ardPort.Close();
 
                 // Change buttons
@@ -176,14 +174,25 @@ namespace Arduino_Computer_Data_Display
             }
         }
 
-        private void ArdPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        private void ArdPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             mChar = (char)ardPort.ReadChar();
-            Console.WriteLine(mChar);
             if (!estContact)
             {
                 timerCom.Stop();
                 ComVerify();
+            }
+            else if (mChar == '*')
+            {
+                ardConfig = true;
+
+                // Call function to continue
+                LoadButton_Click(new object(), new EventArgs());
+            }
+            else
+            {
+                ardConfig = false;
+                Console.WriteLine("Did not receive expected character.");
             }
         }
 
@@ -210,6 +219,54 @@ namespace Arduino_Computer_Data_Display
                 edit.ShowDialog();
         }
 
+        private void LoadButton_Click(object sender, EventArgs e)
+        {
+            //// Set Arduino to configure
+            //ardPort.WriteLine("Config");
+            //loadButton.Enabled = false;
+
+            //// Check if Arduino is in configure mode, return if not
+            //if (!ardConfig)
+            //{
+            //    return;
+            //}
+
+            // Read text file with label data
+            string[] allInfo = System.IO.File.ReadAllLines(Properties.Settings.Default.LastProfilePath);
+
+            // Do not load labels if there are none
+            if (allInfo.Length <= 1)
+            {
+                // End configure mode
+                ardPort.WriteLine("End");
+                ardConfig = false;
+                loadButton.Enabled = true;
+                Console.WriteLine("No labels in profile");
+                return;
+            }
+
+            // Get info for each row and send what is needed to the Arduino (skip first line)
+            string[] rowSplit;
+            foreach (string row in allInfo)
+            {
+                // Check if boolean is false (indicates the label is not the display area), otherwise keep going
+                if (row.Contains("False") || row.Contains("ACDD Profile"))
+                {
+                    continue;
+                }
+
+                // Split at the |
+                rowSplit = row.Split('|');
+               
+                // Needed information: Label Text, Data Type(e.g. temp), Font Name, Font Size, Font Color, Cursor Position (DispX and DispY, see DispEditForm)
+                // Need to make a translator for fonts here... probably
+                // Order all needed information
+                // Data type simplified to one letter, t for temperature, s for storage, l for load
+                // Write to Arduino
+                Console.WriteLine(rowSplit[3].Split(':')[0] + '|' + rowSplit[0][0] + '|' + rowSplit[4] + '|' + rowSplit[5] + '|' + "COLOR" + '|' + rowSplit[9] + '|' + rowSplit[10] + '|');
+            }
+        }
+
         private void ComVerify()
         {
             // Rechecks character if arduino throws ? back after the reset
@@ -218,7 +275,6 @@ namespace Arduino_Computer_Data_Display
                 if (mChar == '?')
                 {
                     mChar = (char)ardPort.ReadChar();
-                    Console.WriteLine(mChar);
                 }
                 else
                 {
@@ -230,8 +286,8 @@ namespace Arduino_Computer_Data_Display
             {
                 estContact = true;
                 toolStripStatusLabel1.Text = "Connected to Arduino...";
+                Invoke(new Action(() => loadButton.Enabled = true));
                 Invoke(new Action(() => timerData.Start()));
-                Console.WriteLine("Communication verified");
             }
             else
             {
@@ -293,6 +349,7 @@ namespace Arduino_Computer_Data_Display
             ardPort.WriteLine("<" + tempCPU + ")" + tempGPU + ">");
         }
 
+        // Set preferences and settings based on pref.txt
         private void PrefSet(string[] prefData)
         {
             sizeSam = int.Parse(SeparatePref(0, prefData));

@@ -537,7 +537,6 @@ namespace Arduino_Computer_Data_Display
 
             // Set last profile loaded in settings
             Properties.Settings.Default.LastProfilePath = profDict[(string)profileCB.SelectedItem];
-            Console.WriteLine(Properties.Settings.Default.LastProfilePath);
 
             // Read text file
             string[] allInfo = System.IO.File.ReadAllLines(profDict[(string)profileCB.SelectedItem]);
