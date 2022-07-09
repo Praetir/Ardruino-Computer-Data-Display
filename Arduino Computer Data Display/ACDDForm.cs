@@ -269,7 +269,7 @@ namespace Arduino_Computer_Data_Display
 
         private void ComVerify()
         {
-            // Rechecks character if arduino throws ? back after the reset
+            // Rechecks character if arduino throws ? back after the reset 
             while (nextChar)
             {
                 if (mChar == '?')

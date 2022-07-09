@@ -8,15 +8,16 @@
  */
 
 #include <Arduino.h>
+#include <Adafruit_BusIO.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1351.h>
 #include <SPI.h>
 
 // Declare some variables
-String tempCPU = "";
-String tempGPU = "";
-String myStr = "";
-char myChar = 0;
+String tempCPU;
+String tempGPU;
+String myStr;
+char myChar;
 bool strBool = false;
 bool estCon = false;
 int n = 0; // Incrementing variable for turning off display
@@ -106,7 +107,8 @@ void loop() {
     }
     
     // Check if last value is collected (must be BEFORE adding myChar to myStr to keep > out of myStr)
-    if (myChar == '>') {
+    if (myChar == '>') 
+    {
       valPrint(myStr, 't', "GPU ", 0, 10);
       myStr = "";
       strBool = false;
@@ -114,7 +116,8 @@ void loop() {
     }
 
     // Check if first value is collected (must be BEFORE adding myChar to myStr to keep ) out of myStr)
-    if (myChar == ')') {
+    if (myChar == ')') 
+    {
       disp.fillScreen(BLACK);
       valPrint(myStr, 't', "CPU ", 0, 0);
       myStr = "";
@@ -122,13 +125,15 @@ void loop() {
     }
 
     // Check if adding characters to string (must be HERE)
-    if (strBool) {
+    if (strBool) 
+    {
       myStr += myChar;
       return;
     }
 
     // Check if beginning of string (must be AFTER adding myChar to myStr to string to keep < out of myStr)
-    if (myChar == '<') {
+    if (myChar == '<') 
+    {
       strBool = true;
     }
   }
