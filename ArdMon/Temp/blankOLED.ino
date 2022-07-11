@@ -1,6 +1,5 @@
-/* ArdMon.ino
- *  Sketch that allows the Arduino to receive formatting and computer information
- *  to present on an Arduino compatible display.
+/* blankOLED.ino
+ *  Sketch for experimenting with Arduino and serial display functionality.
  *  
  *  Written by William Schaffer
  *  Created: 9/30/2021
@@ -75,22 +74,11 @@ void setup() {
 void loop() {
   if (Serial.available() > 0) 
   {
-
-    // Read first character in buffer
-    myChar = Serial.read();
-
-    // Print if it's the end of the string
-    if (myChar == '|') 
-    {
-      disp.print(myStr);
-      Serial.println(myStr);
-      myStr = "";
-    } 
-    else
-    {
-      // Add character to string
-      myStr += myChar;
-    }
+    // Read string
+    myStr = Serial.readString();
+    disp.print(myStr);
+    Serial.println(myStr);
+    myStr = "";
   }
   
   /*

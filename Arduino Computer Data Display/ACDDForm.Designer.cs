@@ -123,6 +123,7 @@
             // 
             // loadButton
             // 
+            this.loadButton.Enabled = false;
             this.loadButton.Location = new System.Drawing.Point(501, 6);
             this.loadButton.Name = "loadButton";
             this.loadButton.Size = new System.Drawing.Size(91, 23);

@@ -160,7 +160,7 @@ namespace Arduino_Computer_Data_Display
                 
                 if (ardPort.IsOpen)
                 {
-                    ardPort.WriteLine("_");
+                    ardPort.WriteLine("disconnect");
                 }
                 ardPort.Close();
 
@@ -221,15 +221,16 @@ namespace Arduino_Computer_Data_Display
 
         private void LoadButton_Click(object sender, EventArgs e)
         {
-            //// Set Arduino to configure
-            //ardPort.WriteLine("Config");
-            //loadButton.Enabled = false;
+            // Set Arduino to configure
+            timerData.Enabled = false;
+            ardPort.WriteLine("config");
+            loadButton.Enabled = false;
 
-            //// Check if Arduino is in configure mode, return if not
-            //if (!ardConfig)
-            //{
-            //    return;
-            //}
+            // Check if Arduino is in configure mode, return if not
+            if (!ardConfig)
+            {
+                return;
+            }
 
             // Read text file with label data
             string[] allInfo = System.IO.File.ReadAllLines(Properties.Settings.Default.LastProfilePath);
@@ -238,7 +239,7 @@ namespace Arduino_Computer_Data_Display
             if (allInfo.Length <= 1)
             {
                 // End configure mode
-                ardPort.WriteLine("End");
+                ardPort.WriteLine("end");
                 ardConfig = false;
                 loadButton.Enabled = true;
                 Console.WriteLine("No labels in profile");
