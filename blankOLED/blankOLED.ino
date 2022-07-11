@@ -64,7 +64,7 @@ void setup() {
   // Start display
   disp.begin();
   disp.setFont(&FreeSerif9pt7b);
-  disp.setCursor(0,0);
+  disp.setCursor(0,20);
   disp.fillScreen(backColor);
   disp.setTextColor(textColor);
   disp.setTextSize(1);
@@ -75,7 +75,7 @@ void loop() {
   if (Serial.available() > 0) 
   {
     // Read string
-    myStr = Serial.readString();
+    myStr = Serial.readStringUntil('|');
     disp.print(myStr);
     Serial.println(myStr);
     myStr = "";
