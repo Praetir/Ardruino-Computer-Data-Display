@@ -206,7 +206,7 @@ namespace Arduino_Computer_Data_Display
             // Check if serial port is open, close if true
             if (ardPort.IsOpen)
             {
-                ardPort.WriteLine("_");
+                ardPort.WriteLine("_|");
                 ardPort.Close();
             }
 
@@ -223,7 +223,7 @@ namespace Arduino_Computer_Data_Display
         {
             // Set Arduino to configure
             timerData.Enabled = false;
-            ardPort.WriteLine("config");
+            ardPort.WriteLine("config|");
             loadButton.Enabled = false;
 
             // Check if Arduino is in configure mode, return if not
@@ -239,7 +239,7 @@ namespace Arduino_Computer_Data_Display
             if (allInfo.Length <= 1)
             {
                 // End configure mode
-                ardPort.WriteLine("end");
+                ardPort.WriteLine("end|");
                 ardConfig = false;
                 loadButton.Enabled = true;
                 Console.WriteLine("No labels in profile");
@@ -266,6 +266,12 @@ namespace Arduino_Computer_Data_Display
                 // Write to Arduino
                 Console.WriteLine(rowSplit[3].Split(':')[0] + '|' + rowSplit[0][0] + '|' + rowSplit[4] + '|' + rowSplit[5] + '|' + "COLOR" + '|' + rowSplit[9] + '|' + rowSplit[10] + '|');
             }
+
+            // End configure mode
+            ardPort.WriteLine("end|");
+            ardConfig = false;
+            timerData.Enabled = true;
+            loadButton.Enabled = true;
         }
 
         private void ComVerify()

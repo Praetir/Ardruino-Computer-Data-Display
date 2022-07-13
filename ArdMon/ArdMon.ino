@@ -4,7 +4,7 @@
 
     Written by William Schaffer
     Created: 9/30/2021
-    Last Modified: 7/4/2022
+    Last Modified: 7/12/2022
 */
 
 #include <Arduino.h>
@@ -13,24 +13,22 @@
 #include <SPI.h>
 
 // Declare some variables
-String tempCPU;
-String tempGPU;
 String myStr;
-char myChar;
 bool strBool = false;
 bool estCon = false;
-int n = 0; // Incrementing variable for turning off display
+int const labelMax = 10; // Arbitarily assigned maximum number of labels allowed to be assigned in display
 int nOff = 10000; // Used to determine how many loops of a function until display is turned off
+int labelCount; // Number of labels passed from program
+int labelIndex; // Corresponds to the current value passed to Arduino
 
 // Declare formatting variable arrays
-String[] labelText;
-char[] labelDataType; // Not variable data type
-String[] labelFontName; // To be replaced
-float[] labelFontSize; // To be replaced
-uint16_t[] labelColor;
-int[] labelX;
-int[] labelY;
-
+String labelText[labelMax];
+char labelDataType[labelMax]; // Not variable data type
+String labelFontName[labelMax]; // To be replaced
+float labelFontSize[labelMax]; // To be replaced
+String labelColor[labelMax]; // Change to uint16_t or other variable later
+int labelX[labelMax];
+int labelY[labelMax];
 
 // Declare reset function
 void(* resetFunc) (void) = 0;
@@ -102,66 +100,35 @@ void loop()
 {
   if (Serial.available() > 0)
   {
+    // Read string until '|'
+    myStr = Serial.readStringUntil('|');
 
-    // Read leading character in buffer
-    myChar = Serial.read();
-
-    // Check if a reset is requested from computer
-    checkReset();
-
-
-
-    /*
-      // Check if last value is collected (must be BEFORE adding myChar to myStr to keep > out of myStr)
-      if (myChar == '>')
-      {
-      valPrint(myStr, 't', "GPU ", 0, 10);
-      myStr = "";
-      strBool = false;
-      return;
-      }
-
-      // Check if first value is collected (must be BEFORE adding myChar to myStr to keep ) out of myStr)
-      if (myChar == ')')
-      {
-      disp.fillScreen(BLACK);
-      valPrint(myStr, 't', "CPU ", 0, 0);
-      myStr = "";
-      return;
-      }
-
-      // Check if adding characters to string (must be HERE)
-      if (strBool)
-      {
-      myStr += myChar;
-      return;
-      }
-
-      // Check if beginning of string (must be AFTER adding myChar to myStr to string to keep < out of myStr)
-      if (myChar == '<')
-      {
-      strBool = true;
-      }
-      }
-
-
-      if ((myChar != '0') && (!Serial.available())) {
-      Serial.println(myChar); //Print received string to Computer
-      myChar = '0';
-      }
-    */
-
-    // If no other block as skipped to the next loop
-    myStr += myChar;
-
-    // Check if disconnected
-    checkDisconnect();
+    // Check string for reset or disconnect
+    checkString();
 
     // Check if display format is to be configured
-    if (myStr == "config")
+    if (myStr.indexOf("config") >= 0)
     {
-      myStr = "";
       configDisp();
+      labelIndex = 0;
+      return;
+    }
+
+    // Check if any labels have been established
+    if (labelCount > 0)
+    {
+      // Reset screen if the current label is 0
+      if (labelIndex == 0) disp.fillScreen(backColor);
+      
+      // Print each passed value
+      valPrint(myStr, labelIndex);
+      labelIndex++;
+    }
+
+    // Reset label index if it reaches the max
+    if (labelIndex >= labelCount)
+    {
+      labelIndex = 0;
     }
   }
 }
@@ -169,75 +136,121 @@ void loop()
 // Recieves information for display formatting
 void configDisp()
 {
+  // Flush
+  Serial.flush();
+
   // Send handshake character to computer
   Serial.println('*');
 
   // Declare needed variables for configuration
-  bool configuring = true;
-  int labelSection = 1;
-  int labelCount = 0;
+  int labelParam = 1;
+  labelCount = 0;
+  long unsigned colorTemp;
+
+  // Clear all previously acquired configurations
+  memset(labelText, 0, sizeof(labelText));
+  memset(labelDataType, 0, sizeof(labelDataType)); // Not variable data type
+  memset(labelFontName, 0, sizeof(labelFontName)); // To be replaced
+  memset(labelFontSize, 0, sizeof(labelFontSize)); // To be replaced
+  memset(labelColor, 0, sizeof(labelColor));
+  memset(labelX, 0, sizeof(labelX));
+  memset(labelY, 0, sizeof(labelY));
 
   // Loop
-  while (configuring)
+  while (labelCount < labelMax)
   {
     if (Serial.available() > 0)
     {
-      // Read leading character in buffer
-      myChar = Serial.read();
+      // Read string until '|'
+      myStr = Serial.readStringUntil('|');
 
-      // Check if a reset is requested from computer
-      checkReset();
-
-      // 
-
-      // If no other block as skipped to the next loop
-      myStr += myChar;
-
-      // Check if disconnected
-      checkDisconnect();
+      // Check string for reset or disconnect
+      checkString();
 
       // Check if configuration is done
-      if (myStr == "end")
+      if (myStr.indexOf("end") >= 0) break;
+
+      // Store label information
+      switch (labelParam)
       {
-        configuring = false;
+        case 1:
+          labelText[labelCount] = myStr;
+          labelParam++;
+          break;
+        case 2:
+          labelDataType[labelCount] = myStr[0];
+          labelParam++;
+          break;
+        case 3:
+          labelFontName[labelCount] = myStr;
+          labelParam++;
+          break;
+        case 4:
+          labelFontSize[labelCount] = myStr.toFloat();
+          labelParam++;
+          break;
+        case 5:
+          // colorTemp = stroul(myStr, NULL, 16); Come back to this
+          labelColor[labelCount] = myStr;
+          labelParam++;
+          break;
+        case 6:
+          labelX[labelCount] = myStr.toInt();
+          labelParam++;
+          break;
+        case 7:
+          labelY[labelCount] = myStr.toInt();
+          labelParam = 1;
+          labelCount++;
+          break;
+        default:
+          break;
       }
     }
   }
 }
 
-// Function to attempt a elegant display printing solution to having varying component values and units
-// Valid param characters: t, f, p
-void valPrint(String val, char param, String comp, int cur1, int cur2)
+// Function to attempt a elegant display printing solution to having varying component values and units, n is current label to be printed
+void valPrint(String value, int n)
 {
-  switch (param)
-  {
-    case 't':
-      disp.setCursor(cur1, cur2);
-      disp.print(comp + "Temp" + char(58) + " " + val + char(247) + "C");
-      break;
+  // Apply label properties
+  disp.setCursor(labelX[n], labelY[n]);
+  disp.setTextColor(WHITE);
 
+  // Get string ready to print
+  String label = labelText[n];
+  switch (labelDataType[n])
+  {
+    case 'l':
+      label += value + '%';
+      break;
+    case 's':
+      label += value + "GB";
+      break;
+    case 't':
+      label += value + char(247) + "C";
+      break;
     default:
       break;
   }
+
+  // Print string
+  disp.print(label);
 }
 
-// Check if arduino is disconnected from ACDD program
-void checkDisconnect()
+// Check if arduino is disconnected from ACDD program or should reset
+// May need to pass a bool in the future
+void checkString()
 {
   // Check if Arduino has been disconnected
-  if (myStr == "disconnect")
+  if (myStr.indexOf("disconnect") >= 0)
   {
     disp.setCursor(0, 64);
     disp.fillScreen(BLACK);
     disp.print("Disconnected");
     dispOffTimer();
   }
-}
-
-// Checks if Arduino should reset
-void checkReset()
-{
-  if (myChar == '@')
+  else if (myStr.indexOf('@') >= 0)
   {
     resetFunc();
   }
@@ -246,29 +259,34 @@ void checkReset()
 // Waits for computer program to send symbol to establish contact and confirm correct program
 void establishContact()
 {
+  int n = 0;
+
   while (!estCon)
   {
     n++;
-    myChar = Serial.read();
-    if (myChar == '!')
+    myStr = Serial.readString();
+    if (myStr.indexOf('!') >= 0)
     {
       estCon = true;
       Serial.println('&');
     }
-    checkReset();
+    checkString();
     if (n >= nOff) dispDisable();
   }
-  n = 0;
 }
 
 // Timer for turning the display off, may be removed if not used anywhere else
 void dispOffTimer()
 {
-  while (dispOn && (n <= nOff)) {
-    myChar = Serial.read();
-    checkReset();
+  int n = 0;
+
+  while (dispOn && (n <= nOff))
+  {
+    myStr = Serial.readString();
+    checkString();
     n++;
   }
+
   dispDisable();
 }
 
@@ -277,5 +295,11 @@ void dispDisable()
 {
   dispOn = !dispOn;
   disp.enableDisplay(dispOn);
-  n = 0;
+
+  // To be replaced, trap in a loop here
+  while (true)
+  {
+    myStr = Serial.readString();
+    checkString();
+  }
 }

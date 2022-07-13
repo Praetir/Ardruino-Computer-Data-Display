@@ -90,6 +90,7 @@
             // tempCPULabel
             // 
             this.tempCPULabel.AutoSize = true;
+            this.tempCPULabel.ForeColor = System.Drawing.SystemColors.ControlText;
             this.tempCPULabel.Location = new System.Drawing.Point(14, 42);
             this.tempCPULabel.Name = "tempCPULabel";
             this.tempCPULabel.Size = new System.Drawing.Size(67, 13);

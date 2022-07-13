@@ -3,7 +3,7 @@
  *  
  *  Written by William Schaffer
  *  Created: 9/30/2021
- *  Last Modified: 7/4/2022
+ *  Last Modified: 7/11/2022
  */
 
 #include <Arduino.h>
@@ -75,7 +75,8 @@ void loop() {
   if (Serial.available() > 0) 
   {
     // Read string
-    myStr = Serial.readStringUntil('|');
+    myStr = Serial.readString();
+    Serial.println(myStr.indexOf('@'));
     disp.print(myStr);
     Serial.println(myStr);
     myStr = "";
