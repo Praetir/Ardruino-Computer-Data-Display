@@ -231,7 +231,7 @@ namespace Arduino_Computer_Data_Display
             {
                 return;
             }
-
+            
             // Read text file with label data
             string[] allInfo = System.IO.File.ReadAllLines(Properties.Settings.Default.LastProfilePath);
 
