@@ -27,6 +27,7 @@ namespace Arduino_Computer_Data_Display
         int waitTime;  // Amount of time before next communication verification cycle starts
         int dataTime; // Amount of time before the OLED display updates
         string prefPort; // Port set in pref.txt
+        public List<string> labelNames; // List of label names to get data for
 
         readonly Computer c = new Computer()
         {
@@ -231,7 +232,10 @@ namespace Arduino_Computer_Data_Display
             {
                 return;
             }
-            
+
+            // Clear label names list
+            labelNames.Clear();
+
             // Read text file with label data
             string[] allInfo = System.IO.File.ReadAllLines(Properties.Settings.Default.LastProfilePath);
 
@@ -258,12 +262,16 @@ namespace Arduino_Computer_Data_Display
 
                 // Split at the |
                 rowSplit = row.Split('|');
-               
+
+                // Stick label name in label names array
+                labelNames.Add(rowSplit[2]);
+
                 // Needed information: Label Text, Data Type(e.g. temp), Font Name, Font Size, Font Color, Cursor Position (DispX and DispY, see DispEditForm)
                 // Need to make a translator for fonts here... probably
                 // Order all needed information
                 // Data type simplified to one letter, t for temperature, s for storage, l for load
                 // Write to Arduino
+                ardPort.WriteLine(rowSplit[3].Split(':')[0] + '|' + rowSplit[0][0] + '|' + rowSplit[4] + '|' + rowSplit[5] + '|' + "COLOR" + '|' + rowSplit[9] + '|' + rowSplit[10] + '|');
                 Console.WriteLine(rowSplit[3].Split(':')[0] + '|' + rowSplit[0][0] + '|' + rowSplit[4] + '|' + rowSplit[5] + '|' + "COLOR" + '|' + rowSplit[9] + '|' + rowSplit[10] + '|');
             }
 

@@ -229,38 +229,34 @@ namespace Arduino_Computer_Data_Display
             // Allocate strings
             string labelText = "";
             string labelName = "";
+            string coreNum = "";
 
             // Add to label text and name based on the computer component
             if (checkName.Contains("CPU"))
             {
                 labelText = "CPU";
-                labelName = "CPU";
             }
             else if (checkName.Contains("GPU"))
             {
                 labelText = "GPU";
-                labelName = "GPU";
             }
 
             // Add to label text and name based on the component part
             if (checkName.Contains("Core Average"))
             {
                 labelText += " Core Avg";
-                labelName += "CoreAvg";
             }
             else if (checkName.Contains("Package"))
             {
                 labelText += " Package";
-                labelName += "Package";
             }
             else if (checkName.Contains("Core"))
             {
                 labelText += " Core";
-                labelName += "Core";
                 string[] checkSplit = checkName.Split(' ');
                 labelText += " ";
                 labelText += checkSplit[2];
-                labelName += checkSplit[2];
+                coreNum = "_" + checkSplit[2];
             }
 
             // Add to label text and name based on the type of computer data
@@ -268,21 +264,22 @@ namespace Arduino_Computer_Data_Display
             {
                 case "temp":
                     labelText += " Temp: ##.#°C";
-                    labelName += "Temp";
+                    labelName = "temp_";
                     break;
                 case "storage":
                     labelText += " Storage: ####.#GB";
-                    labelName += "Storage";
+                    labelName = "storage_";
                     break;
                 case "load":
                     labelText += " Load: ##%";
-                    labelName += "Load";
+                    labelName = "load_";
                     break;
                 default:
                     break;
             }
 
-            labelName += "Label";
+            labelName += checkName.Replace(" ", "_") + coreNum ;
+            labelName += "_Label";
 
             //Console.WriteLine(labelText);
             //Console.WriteLine(labelName);
