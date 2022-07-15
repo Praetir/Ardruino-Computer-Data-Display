@@ -320,7 +320,12 @@ namespace Arduino_Computer_Data_Display
 
         private void NumsGet()
         {
-            // Check each hardware part in c
+            foreach (var name in labelNames)
+            {
+
+            }
+
+            /*/ Check each hardware part in c
             foreach (var hardware in c.Hardware)
             {
                 if (hardware.HardwareType == HardwareType.CPU)
@@ -356,7 +361,7 @@ namespace Arduino_Computer_Data_Display
                         }
                     }
                 }
-            }
+            }*/
         }
 
         private void SendArd()
