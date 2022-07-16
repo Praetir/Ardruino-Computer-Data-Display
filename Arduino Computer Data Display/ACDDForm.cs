@@ -27,7 +27,7 @@ namespace Arduino_Computer_Data_Display
         int waitTime;  // Amount of time before next communication verification cycle starts
         int dataTime; // Amount of time before the OLED display updates
         string prefPort; // Port set in pref.txt
-        public List<string> labelNames; // List of label names to get data for
+        public List<string> labelNames = new List<string>(); // List of label names to get data for
 
         readonly Computer c = new Computer()
         {
@@ -97,7 +97,7 @@ namespace Arduino_Computer_Data_Display
         }
 
         private void TimerData_Tick(object sender, EventArgs e)
-        {            
+        {
             // Get hardware data
             NumsGet();
 
@@ -110,7 +110,7 @@ namespace Arduino_Computer_Data_Display
             if (curSam >= sizeSam)
             {
                 tempCPU = sumCPU / 10;
-                tempGPU = sumGPU  / 10;
+                tempGPU = sumGPU / 10;
                 SendArd();
                 sumCPU = 0;
                 sumGPU = 0;
@@ -121,63 +121,63 @@ namespace Arduino_Computer_Data_Display
         private void TimerCom_Tick(object sender, EventArgs e)
         {
             // Reset Arduino and wait a couple of seconds
-            ardPort.WriteLine("@");
+            ardPort.WriteLine("@|");
             Thread.Sleep(waitTime);
 
-            ardPort.WriteLine("!");
+            ardPort.WriteLine("!|");
         }
 
         private void ButtonOpenPort_Click(object sender, EventArgs e)
         {
-                // Update status
-                toolStripStatusLabel1.Text = ("Connecting to Arduino...");
+            // Open selected port
+            if (autoStart)
+            {
+                ardPort.PortName = prefPort;
+            }
+            else if (portCBox.Text.Length > 0)
+            {
+                ardPort.PortName = portCBox.Text;
+            }
+            else
+            {
+                return;
+            }
 
-                // Open selected port
-                if (autoStart)
-                {
-                    ardPort.PortName = prefPort;
-                } 
-                else
-                {
-                    ardPort.PortName = portCBox.Text;
-                }
-                
-                ardPort.Open();
-                Thread.Sleep(1000);
+            // Update status
+            toolStripStatusLabel1.Text = ("Connecting to Arduino...");
 
-                // Change buttons
-                buttonOpenPort.Enabled = false;
-                buttonClosePort.Enabled = true;
+            ardPort.Open();
+            Thread.Sleep(1000);
 
-                timerCom.Start();
+            // Change buttons
+            buttonOpenPort.Enabled = false;
+            buttonClosePort.Enabled = true;
+
+            timerCom.Start();
         }
 
         private void ButtonClosePort_Click(object sender, EventArgs e)
         {
-            try
-            {
-                // Close selected port after sending disconnect line and disabling timerData
-                timerData.Stop();
-                
-                if (ardPort.IsOpen)
-                {
-                    ardPort.WriteLine("disconnect");
-                }
-                ardPort.Close();
+            // Close selected port after sending disconnect line and disabling timerData
+            timerData.Stop();
+            estContact = false;
 
-                // Change buttons
-                buttonOpenPort.Enabled = true;
-                buttonClosePort.Enabled = false;
-            }
-            catch (Exception ex)
+            if (ardPort.IsOpen)
             {
-                MessageBox.Show(ex.Message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ardPort.WriteLine("disconnect|");
             }
+            ardPort.Close();
+
+            // Change buttons
+            buttonOpenPort.Enabled = true;
+            buttonClosePort.Enabled = false;
         }
 
         private void ArdPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             mChar = (char)ardPort.ReadChar();
+            Console.WriteLine(mChar);
+
             if (!estContact)
             {
                 timerCom.Stop();
@@ -186,14 +186,16 @@ namespace Arduino_Computer_Data_Display
             else if (mChar == '*')
             {
                 ardConfig = true;
-
                 // Call function to continue
                 LoadButton_Click(new object(), new EventArgs());
             }
             else
             {
-                ardConfig = false;
-                Console.WriteLine("Did not receive expected character.");
+                if (ardConfig)
+                {
+                    ardConfig = false;
+                    Console.WriteLine("Did not receive expected character.");
+                }
             }
         }
 
@@ -217,7 +219,7 @@ namespace Arduino_Computer_Data_Display
 
         private void EditDispButton_Click(object sender, EventArgs e)
         {
-                edit.ShowDialog();
+            edit.ShowDialog();
         }
 
         private void LoadButton_Click(object sender, EventArgs e)
@@ -236,8 +238,20 @@ namespace Arduino_Computer_Data_Display
             // Clear label names list
             labelNames.Clear();
 
+            // Check if there is a profile in the settings
+            string path = Properties.Settings.Default.LastProfilePath;
+            if (path == "")
+            {
+                // End configure mode
+                ardPort.WriteLine("end|");
+                ardConfig = false;
+                Invoke(new Action(() => loadButton.Enabled = true));
+                Console.WriteLine("No valid path");
+                return;
+            }
+
             // Read text file with label data
-            string[] allInfo = System.IO.File.ReadAllLines(Properties.Settings.Default.LastProfilePath);
+            string[] allInfo = System.IO.File.ReadAllLines(path);
 
             // Do not load labels if there are none
             if (allInfo.Length <= 1)
@@ -245,7 +259,7 @@ namespace Arduino_Computer_Data_Display
                 // End configure mode
                 ardPort.WriteLine("end|");
                 ardConfig = false;
-                loadButton.Enabled = true;
+                Invoke(new Action(() => loadButton.Enabled = true));
                 Console.WriteLine("No labels in profile");
                 return;
             }
@@ -279,7 +293,7 @@ namespace Arduino_Computer_Data_Display
             ardPort.WriteLine("end|");
             ardConfig = false;
             timerData.Enabled = true;
-            loadButton.Enabled = true;
+            Invoke(new Action(() => loadButton.Enabled = true));
         }
 
         private void ComVerify()
@@ -320,9 +334,13 @@ namespace Arduino_Computer_Data_Display
 
         private void NumsGet()
         {
-            foreach (var name in labelNames)
+            if (labelNames.Count() > 0)
             {
-
+                Console.WriteLine(labelNames.Count());
+                foreach (var name in labelNames)
+                {
+                    Console.WriteLine(name);
+                }
             }
 
             /*/ Check each hardware part in c

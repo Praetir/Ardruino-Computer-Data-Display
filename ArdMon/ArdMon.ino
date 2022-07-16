@@ -82,16 +82,14 @@ void setup() {
 
   // Wait for serial port to connect. Needed for native USB port only
   disp.print("Waiting for serial port");
+  int n = 0;
   while (!Serial)
   {
-    ;
+    n++;
+    if (n >= nOff) dispDisable;
   }
 
-  // Recieve then send a synbol to establish contact with program
-  disp.fillScreen(backColor);
-  disp.setCursor(0, 64);
-  disp.print("Waiting for contact\nwith computer program");
-  delay(100);
+  // Recieve then send a symbol to establish contact with program
   establishContact();
   disp.fillScreen(backColor);
 }
@@ -259,6 +257,12 @@ void checkString()
 // Waits for computer program to send symbol to establish contact and confirm correct program
 void establishContact()
 {
+  // Set display
+  disp.fillScreen(backColor);
+  disp.setCursor(0, 64);
+  disp.print("Waiting for contact\nwith computer program");
+
+  // Counter for display timer
   int n = 0;
 
   while (!estCon)

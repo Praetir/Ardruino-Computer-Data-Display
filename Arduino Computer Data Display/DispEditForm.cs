@@ -170,7 +170,7 @@ namespace Arduino_Computer_Data_Display
         }
 
         // Add text label to form to represent display items
-        private void DispAdd(string clName, int index, string checkName, string dataType, string fontName = "Microsoft Sans Serif", float fontSize = 6.0f, int locX = 300, int locY = 280)
+        private void DispAdd(string clName, int index, string checkName, string dataType, string fontName = "Microsoft Sans Serif", float fontSize = 6.0f, int locX = 300, int locY = 280, bool inDisp = false, int dispX = 0, int dispY = 0)
         {
             // Get desired label name and text
             string[] labelInfo = MakeLabelTextName(checkName, dataType);
@@ -187,7 +187,7 @@ namespace Arduino_Computer_Data_Display
 
             // Store label and checklist information in datatable
             
-            dispTable.Rows.Add(clName, index, labelDisp.Name, labelDisp.Text, labelDisp.Font.Name, labelDisp.Font.Size, labelDisp.Location.X, labelDisp.Location.Y, false);
+            dispTable.Rows.Add(clName, index, labelDisp.Name, labelDisp.Text, labelDisp.Font.Name, labelDisp.Font.Size, labelDisp.Location.X, labelDisp.Location.Y, inDisp, dispX, dispY);
 
             // Make label draggable, add to form, and put it to front
             ControlExtension.Draggable(labelDisp, true);
@@ -560,7 +560,8 @@ namespace Arduino_Computer_Data_Display
                 myCl.SetItemChecked(checkIndex, true);
 
                 // Pass information needed to label adder
-                DispAdd(myCl.Name, checkIndex, (string)myCl.Items[checkIndex], (string)myCl.Tag, rowInfo[4], float.Parse(rowInfo[5]), int.Parse(rowInfo[6]), int.Parse(rowInfo[7]));
+                DispAdd(myCl.Name, checkIndex, (string)myCl.Items[checkIndex], (string)myCl.Tag, rowInfo[4], float.Parse(rowInfo[5]), int.Parse(rowInfo[6]), int.Parse(rowInfo[7]), bool.Parse(rowInfo[8]), int.Parse(rowInfo[9]), int.Parse(rowInfo[10]));
+
             }
 
             // Return to non-loading
