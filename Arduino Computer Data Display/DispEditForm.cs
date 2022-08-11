@@ -136,7 +136,7 @@ namespace Arduino_Computer_Data_Display
             if (!checkedItem)
             {
                 // Add label to form/data table, and add checklist/index to data table
-                DispAdd(myCL.Name, index, checkName, (string)myCL.Tag);
+                DispAdd(myCL.Name, index, checkName);
 
                 //Console.WriteLine("Added");
             }
@@ -163,17 +163,17 @@ namespace Arduino_Computer_Data_Display
             // Add updated number of CPU core temperature options to check list
             for (int i = 1; i <= int.Parse(coreCPUText.Text); i++)
             {
-                list.Items.Add(String.Format("{0} {1}", part, i), false);
+                list.Items.Add(String.Format("{0} #{1}", part, i), false);
             }
 
             return;
         }
 
         // Add text label to form to represent display items
-        private void DispAdd(string clName, int index, string checkName, string dataType, string fontName = "Microsoft Sans Serif", float fontSize = 6.0f, int locX = 300, int locY = 280, bool inDisp = false, int dispX = 0, int dispY = 0)
+        private void DispAdd(string clName, int index, string checkName, string fontName = "Microsoft Sans Serif", float fontSize = 6.0f, int locX = 300, int locY = 280, bool inDisp = false, int dispX = 0, int dispY = 0)
         {
             // Get desired label name and text
-            string[] labelInfo = MakeLabelTextName(checkName, dataType);
+            string[] labelInfo = MakeLabelTextName(checkName, clName);
 
             // Create label
             Label labelDisp = new Label
@@ -224,7 +224,7 @@ namespace Arduino_Computer_Data_Display
         }
 
         // Determine text and name for label
-        private string[] MakeLabelTextName (string checkName, string dataType)
+        private string[] MakeLabelTextName (string checkName, string listName)
         {
             // Allocate strings
             string labelText = "";
@@ -260,22 +260,20 @@ namespace Arduino_Computer_Data_Display
             }
 
             // Add to label text and name based on the type of computer data
-            switch (dataType)
+            if (listName.Contains("temp"))
             {
-                case "temp":
-                    labelText += " Temp: ##.#°C";
-                    labelName = "temp_";
-                    break;
-                case "storage":
-                    labelText += " Storage: ####.#GB";
-                    labelName = "storage_";
-                    break;
-                case "load":
-                    labelText += " Load: ##%";
-                    labelName = "load_";
-                    break;
-                default:
-                    break;
+                labelText += " Temp: ##.#°C";
+                labelName = "temp_";
+            }
+            else if (listName.Contains("storage"))
+            {
+                labelText += " Storage: ####.#GB";
+                labelName = "storage_";
+            }
+            else if (listName.Contains("load"))
+            {
+                labelText += " Load: ##%";
+                labelName = "load_";
             }
 
             labelName += checkName.Replace(" ", "_") + coreNum ;
@@ -560,7 +558,7 @@ namespace Arduino_Computer_Data_Display
                 myCl.SetItemChecked(checkIndex, true);
 
                 // Pass information needed to label adder
-                DispAdd(myCl.Name, checkIndex, (string)myCl.Items[checkIndex], (string)myCl.Tag, rowInfo[4], float.Parse(rowInfo[5]), int.Parse(rowInfo[6]), int.Parse(rowInfo[7]), bool.Parse(rowInfo[8]), int.Parse(rowInfo[9]), int.Parse(rowInfo[10]));
+                DispAdd(myCl.Name, checkIndex, myCl.Items[checkIndex].ToString(), rowInfo[4], float.Parse(rowInfo[5]), int.Parse(rowInfo[6]), int.Parse(rowInfo[7]), bool.Parse(rowInfo[8]), int.Parse(rowInfo[9]), int.Parse(rowInfo[10]));
 
             }
 

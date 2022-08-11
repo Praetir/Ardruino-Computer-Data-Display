@@ -20,14 +20,18 @@ namespace Arduino_Computer_Data_Display
         bool nextChar = true;
         bool autoStart = false;
         bool ardConfig = false;
-        float tempCPU, tempGPU;
-        float sumCPU, sumGPU;
+        float[] dataValues;
         int sizeSam; // Number of samples before the OLED display updates
         int curSam = 1;
         int waitTime;  // Amount of time before next communication verification cycle starts
         int dataTime; // Amount of time before the OLED display updates
         string prefPort; // Port set in pref.txt
-        public List<string> labelNames = new List<string>(); // List of label names to get data for
+
+        // Initialize dictionary for label names and values
+        public Dictionary<string, ISensor> sensDict = new Dictionary<string, ISensor>();
+
+        // Initialize list for label names (to handle averages)
+        public List<string> send2Ard = new List<string>();
 
         readonly Computer c = new Computer()
         {
@@ -98,23 +102,57 @@ namespace Arduino_Computer_Data_Display
 
         private void TimerData_Tick(object sender, EventArgs e)
         {
-            // Get hardware data
-            NumsGet();
+            // Make sure there are values to send
+            if (send2Ard.Count() <= 0) return;
 
-            // Add up the values and index
-            sumCPU += tempCPU;
-            sumGPU += tempGPU;
-            curSam += 1;
+            // Update sensors
+            foreach (var hardware in c.Hardware) hardware.Update();
+
+            // Update values
+            float value = 0;
+            int avgNum = 0;
+            for (int i = 0; i < send2Ard.Count(); i++)
+            {
+                // Check for average labels and handle
+                if (send2Ard[i].Contains("Average"))
+                {
+                    // Add all sensors to be averaged
+                    foreach (var pair in sensDict)
+                    {
+                        if (pair.Key.Contains(send2Ard[i].Substring(0, send2Ard[i].Length - (send2Ard[i].IndexOf("Average") - 1))))
+                        {
+                            value += pair.Value.Value.GetValueOrDefault();
+                            avgNum++;
+                        }
+                    }
+
+                    // Divide all sensors to be averaged
+                    value /= avgNum;
+                }
+                else
+                {
+                    value = sensDict[send2Ard[i]].Value.GetValueOrDefault();
+                }
+
+                dataValues[i] += value;
+            }
+
+            // Index up
+            curSam++;
 
             // Average then send to Arduino if at sample size
             if (curSam >= sizeSam)
             {
-                tempCPU = sumCPU / 10;
-                tempGPU = sumGPU / 10;
-                SendArd();
-                sumCPU = 0;
-                sumGPU = 0;
-                curSam = 1;
+                // Update values and send to arduino
+                for (int i = 0; i < send2Ard.Count(); i++)
+                {
+                    dataValues[i] /=  sizeSam;
+                    ardPort.Write(dataValues[i].ToString() + ' ');
+                }
+
+                // Clear values and reset sample number
+                dataValues = new float[send2Ard.Count()];
+                curSam = 0;
             }
         }
 
@@ -235,8 +273,9 @@ namespace Arduino_Computer_Data_Display
                 return;
             }
 
-            // Clear label names list
-            labelNames.Clear();
+            // Clear sensor dictionary and labels list
+            sensDict.Clear();
+            send2Ard.Clear();
 
             // Check if there is a profile in the settings
             string path = Properties.Settings.Default.LastProfilePath;
@@ -277,8 +316,9 @@ namespace Arduino_Computer_Data_Display
                 // Split at the |
                 rowSplit = row.Split('|');
 
-                // Stick label name in label names array
-                labelNames.Add(rowSplit[2]);
+                // Stick label name in dictionary and list
+                sensDict.Add(rowSplit[2].Replace('_', ' '), null);
+                send2Ard.Add(rowSplit[2].Replace('_', ' '));
 
                 // Needed information: Label Text, Data Type(e.g. temp), Font Name, Font Size, Font Color, Cursor Position (DispX and DispY, see DispEditForm)
                 // Need to make a translator for fonts here... probably
@@ -294,6 +334,12 @@ namespace Arduino_Computer_Data_Display
             ardConfig = false;
             timerData.Enabled = true;
             Invoke(new Action(() => loadButton.Enabled = true));
+
+            // Get all desired sensors
+            SensorGet();
+
+            // Populate data value array with zeros
+            dataValues = new float[send2Ard.Count()];
         }
 
         private void ComVerify()
@@ -332,59 +378,183 @@ namespace Arduino_Computer_Data_Display
             Application.Exit();
         }
 
-        private void NumsGet()
+        private void SensorGet()
         {
-            if (labelNames.Count() > 0)
+            string currentSensor;
+            string dataType;
+            bool sensorAverage;
+
+            // Easier sensor dictionary population
+            foreach (var label in sensDict.Keys)
             {
-                Console.WriteLine(labelNames.Count());
-                foreach (var name in labelNames)
+                // Reset average boolean to false
+                sensorAverage = false;
+
+                // Get just the label's component
+                currentSensor = label.Substring(label.IndexOf(' ') + 1);
+
+                // Get data type
+                dataType = label.Split(' ')[0];
+
+                // Check if this is an average
+                if (currentSensor.Contains("Average"))
                 {
-                    Console.WriteLine(name);
+                    currentSensor = currentSensor.Substring(0, currentSensor.Length - (currentSensor.IndexOf("Average") - 1));
+                    sensorAverage = true;
+                }
+
+                // Check each enabled hardware component
+                foreach (var hardware in c.Hardware)
+                {
+                    // Check each sensor from each component
+                    foreach (var sensor in hardware.Sensors)
+                    {
+                        // Check if name matches label
+                        if (sensor.Name.Contains(currentSensor))
+                        {
+                            // Check if sensor type matches label data type
+                            if (sensor.SensorType == SensorType.Temperature && label.Contains("temp"))
+                            {
+                                // Handle if average
+                                if (sensorAverage)
+                                {
+                                    SensorAverageAdd(dataType, sensor);
+                                    continue;
+                                }
+
+                                // Assign sensor to key
+                                sensDict[currentSensor] = sensor;
+                            }
+                            else if (sensor.SensorType == SensorType.Load && label.Contains("load"))
+                            {
+                                // Handle if average
+                                if (sensorAverage)
+                                {
+                                    SensorAverageAdd(dataType, sensor);
+                                    continue;
+                                }
+
+                                // Assign sensor to key
+                                sensDict[currentSensor] = sensor;
+                            }
+
+                            // HERE: Add more later
+                        }
+
+                    }
                 }
             }
 
-            /*/ Check each hardware part in c
-            foreach (var hardware in c.Hardware)
-            {
-                if (hardware.HardwareType == HardwareType.CPU)
-                {
-                    hardware.Update();
-                    foreach (var sensor in hardware.Sensors)
-                    {
-                        if (sensor.SensorType == SensorType.Temperature)
-                        {
-                            Console.WriteLine("Getting CPU temp info");
-                            if (sensor.Name == "CPU Package")
-                            {
-                                Console.WriteLine("Getting CPU Package info");
-                                tempCPU = sensor.Value.GetValueOrDefault();
-                            }
-                        }
-                    }
-                }
+            //// Check if there are value to get
+            //if (namesValues.Keys.Count() > 0)
+            //{
+            //    IEnumerable<IHardware> queryHardware;
+            //    List<ISensor[]> sensors = new List<ISensor[]>();
+            //    List<ISensor> querySensor = new List<ISensor>();
+            //    IEnumerable<string> compList;
+            //    string curSen;
 
-                if (hardware.HardwareType == HardwareType.GpuNvidia)
-                {
-                    hardware.Update();
-                    foreach (var sensor in hardware.Sensors)
-                    {
-                        if (sensor.SensorType == SensorType.Temperature)
-                        {
-                            Console.WriteLine("Getting GPU temp info");
-                            if (sensor.Name == "GPU Core")
-                            {
-                                Console.WriteLine("Getting GPU Core info");
-                                tempGPU = sensor.Value.GetValueOrDefault();
-                            }
-                        }
-                    }
-                }
-            }*/
+            //    // Get any values for CPU
+            //    if (namesValues.Keys.Contains("CPU"))
+            //    {
+            //        // Get list items that are for the CPU
+            //        compList = namesValues.Keys.Where(label => label.Contains("CPU"));
+
+            //        // Get CPU component(s)
+            //        queryHardware = c.Hardware.Where(parts => parts.HardwareType == HardwareType.CPU);
+
+            //        // Get sensors
+            //        foreach (var parts in queryHardware)
+            //        {
+            //            // Update parts and throw all sensors into a list
+            //            parts.Update();
+            //            sensors.Add(parts.Sensors);
+            //        }
+
+            //        // Get values for temperature sensors
+            //        if (compList.Contains("temp"))
+            //        {
+            //            // Narrow list of desired values
+            //            IEnumerable<string> senList = compList.Where(label => label.Contains("temp"));
+
+            //            // Add individual sensors to list
+            //            foreach (var sensorSet in sensors)
+            //            {
+            //                foreach (var sensor in sensorSet)
+            //                {
+            //                    if (sensor.SensorType == SensorType.Temperature)
+            //                    {
+            //                        querySensor.Add(sensor);
+            //                    }
+            //                }
+            //            }
+
+            //            // Go through the narrowed label list and match them to sensors in the narrowed sensor list
+            //            foreach (var label in senList)
+            //            {
+            //                curSen = label.Substring(label.IndexOf(' ')+1);
+            //                namesValues[label] = querySensor.Find(sen => sen.Name == curSen).Value.GetValueOrDefault();
+            //            }
+            //        }
+            //    }
+            //}
+
+            //// Experiment
+            //if (saved)
+            //{
+            //    foreach (var hardware in c.Hardware)
+            //    {
+            //        hardware.Update();
+            //    }
+            //    Console.WriteLine(namesValues["CPU Package"].Value.GetValueOrDefault());
+            //    return;
+            //}
+
+
+            //// Check each hardware part in c
+            //foreach (var hardware in c.Hardware)
+            //{
+            //    //Console.WriteLine("Hardware Name: " + hardware.Name + "\r\n Hardware Type: " + hardware.HardwareType.ToString());
+            //    if (hardware.HardwareType == HardwareType.CPU)
+            //    {
+            //        hardware.Update();
+            //        foreach (var sensor in hardware.Sensors)
+            //        {
+            //            //Console.WriteLine("Sensor Name: " + sensor.Name + "\r\n Sensor Type: " + sensor.SensorType.ToString());
+            //            if (sensor.SensorType == SensorType.Temperature)
+            //            {
+            //                if (sensor.Name == "CPU Package")
+            //                {
+            //                    namesValues.Add("CPU Package", sensor);
+            //                    Console.WriteLine(namesValues["CPU Package"].Value.GetValueOrDefault());
+            //                    saved = true;
+            //                }
+            //            }
+            //        }
+            //    }
+
+            //    if (hardware.HardwareType == HardwareType.GpuNvidia)
+            //    {
+            //        hardware.Update();
+            //        foreach (var sensor in hardware.Sensors)
+            //        {
+            //            if (sensor.SensorType == SensorType.Temperature)
+            //            {
+            //                Console.WriteLine("Getting GPU temp info");
+            //                if (sensor.Name == "GPU Core")
+            //                {
+            //                    Console.WriteLine("Getting GPU Core info");
+            //                    tempGPU = sensor.Value.GetValueOrDefault();
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
         }
 
-        private void SendArd()
+        private void  SensorAverageAdd(string type, ISensor sensor)
         {
-            ardPort.WriteLine("<" + tempCPU + ")" + tempGPU + ">");
+            sensDict.Add(type + ' ' + sensor.Name, sensor);
         }
 
         // Set preferences and settings based on pref.txt
